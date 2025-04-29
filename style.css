@@ -34,6 +34,42 @@ body.dark #toggle-theme {
 body.dark #toggle-theme:hover {
   background: #333;
 }
+
+.github-button {
+  position: absolute;
+  right: 100px;
+  top: 20px;
+  background: none;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: #333;
+}
+
+.github-button:hover {
+  background: #f0f0f0;
+  transform: scale(1.05);
+}
+
+.github-button svg {
+  width: 18px;
+  height: 18px;
+}
+
+body.dark .github-button {
+  border-color: #555;
+  color: #eee;
+}
+
+body.dark .github-button:hover {
+  background: #333;
+}
 h1 {
   font-size: 2.8em;
   margin-bottom: 16px;
