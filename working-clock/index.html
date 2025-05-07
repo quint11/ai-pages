@@ -3,75 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>实时工资计算器</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="index.css">
+    <title>工资计算器</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="calculator">
-        <h1>实时工资计算器</h1>
-        
-        <div class="input-wrapper">
-            <div class="input-group">
-                <label for="monthlySalary">月工资 (元)</label>
-                <i class="input-icon fas fa-money-bill-wave"></i>
-                <input type="number" id="monthlySalary" placeholder="请输入您的月工资" min="0" step="100">
+    <div class="calculator-app">
+        <header>
+            <div class="title-section">
+                <h1>工资计算器</h1>
+                <p class="subtitle">(Demo)</p>
             </div>
-            
-            <div class="input-group">
-                <label for="workDays">月工作天数 (天)</label>
-                <i class="input-icon fas fa-calendar-alt"></i>
-                <input type="number" id="workDays" placeholder="请输入月工作天数" value="22" min="1" max="31">
-            </div>
-            
-            <div class="input-group">
-                <label for="hoursPerDay">日工作时长 (小时)</label>
-                <i class="input-icon fas fa-clock"></i>
-                <input type="number" id="hoursPerDay" placeholder="请输入每天工作小时数" value="8" min="0" max="24" step="0.5">
-            </div>
-        </div>
-        
-        <button onclick="calculate()">
-            <i class="fas fa-calculator"></i>
-            开始计算
-        </button>
-        
-        <div class="real-time-wrapper" id="realTimeDisplay" style="display: none;">
-            <div class="coin-animation" id="coinContainer"></div>
-            <div class="real-time-label">当前收益</div>
-            <div class="real-time-value">
-                <span id="currentSalary">0.00</span>
-                <span class="currency">元</span>
-            </div>
-        </div>
-        
-        <div class="result" id="resultDisplay" style="display: none;">
-            <div class="result-item">
-                <span>每分钟收益:</span>
-                <span class="highlight"><span id="salaryPerMinute">0.00</span> 元</span>
-            </div>
-            <div class="result-item">
-                <span><i class="fas fa-mug-hot milk-tea-icon"></i>一杯奶茶 (15元) 需要工作:</span>
-                <span class="highlight"><span id="milkTeaTime">0</span> 分钟</span>
-            </div>
-        </div>
-        
-        <div class="timer-controls" id="timer" style="display: none;">
-            <button id="timerButton" class="timer-button" onclick="toggleTimer()">
-                <i class="fas fa-pause"></i>
-                暂停计时
-            </button>
-            <button id="resetButton" class="timer-button" onclick="resetTimerAndCalculate()">
-                <i class="fas fa-redo-alt"></i>
-                重置
-            </button>
-        </div>
-        
-        <div class="explanation">
-            <p>说明: 该计算器基于您输入的月工资、工作天数和每日工作时长，实时显示您的工资累积情况。数据仅在本地计算，不会被上传或存储。</p>
+            <button class="settings-trigger-button" id="openSettingsButton" aria-label="设置">
+              <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24" height="24" viewBox="0 0 24 24">
+                <path d="M16,18.928c0.678-0.391,1.459-0.424,2.135-0.164c0.564,0.217,1.209,0.037,1.592-0.43	c0.683-0.833,1.234-1.778,1.621-2.805c0.221-0.587,0.012-1.232-0.467-1.638C20.342,13.437,20,12.761,20,12	c0-0.761,0.342-1.437,0.88-1.893c0.479-0.406,0.689-1.05,0.467-1.638c-0.387-1.026-0.937-1.972-1.621-2.805	c-0.383-0.467-1.028-0.647-1.592-0.43C17.459,5.496,16.678,5.463,16,5.072c-0.68-0.393-1.1-1.056-1.21-1.775	c-0.09-0.588-0.556-1.058-1.143-1.158C13.111,2.048,12.561,2,12,2s-1.111,0.048-1.647,0.139C9.766,2.239,9.301,2.709,9.21,3.297	C9.1,4.016,8.68,4.679,8,5.072C7.322,5.463,6.541,5.496,5.865,5.235c-0.564-0.217-1.209-0.037-1.592,0.43	C3.59,6.498,3.04,7.443,2.653,8.47C2.431,9.057,2.641,9.702,3.12,10.107C3.658,10.563,4,11.239,4,12c0,0.761-0.342,1.437-0.88,1.893	c-0.479,0.406-0.689,1.05-0.467,1.638c0.387,1.026,0.937,1.972,1.621,2.805c0.383,0.467,1.028,0.647,1.592,0.43	C6.541,18.504,7.322,18.537,8,18.928c0.68,0.393,1.1,1.056,1.21,1.775c0.09,0.588,0.556,1.058,1.143,1.158	C10.889,21.952,11.439,22,12,22s1.111-0.048,1.647-0.139c0.587-0.099,1.053-0.569,1.143-1.158C14.9,19.984,15.32,19.321,16,18.928z" opacity=".35"></path><path d="M12,8c-2.209,0-4,1.791-4,4s1.791,4,4,4s4-1.791,4-4S14.209,8,12,8z"></path>
+                </svg>
+          </button>
+        </header>
+
+        <main>
+            <section class="income-display">
+                <p class="income-label">收益 (元)</p>
+                <p class="income-amount" id="incomeAmount">0.00</p>
+                <div class="progress-container">
+                    <div class="progress-bar-wrapper">
+                        <div class="progress-bar" id="progressBar"></div>
+                    </div>
+                    <div class="progress-markers">
+                        <span>开始</span>
+                        <span></span>
+                        <span>结束</span>
+                    </div>
+                </div>
+            </section>
+
+            <nav class="time-toggles">
+                <button class="toggle-btn active" data-period="day">日进度</button>
+                <button class="toggle-btn" data-period="week">周进度</button>
+                <button class="toggle-btn" data-period="month">月进度</button>
+                <button class="toggle-btn" data-period="cumulative">累计收入</button> 
+            </nav>
+        </main>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-content">
+            <h2>初始设置</h2>
+            <form id="settingsForm">
+                <div class="form-group">
+                    <label for="monthlySalary">月薪 (元):</label>
+                    <input type="number" id="monthlySalary" required min="0" step="100" value="10000">
+                </div>
+                <div class="form-group">
+                    <label for="startDate">入职日期:</label>
+                    <input type="date" id="startDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="workDaysPerMonth">月工作天数 (例如: 21.75):</label>
+                    <input type="number" id="workDaysPerMonth" required min="1" max="31" step="0.01" value="21.75">
+                </div>
+                <div class="form-group">
+                    <label for="workHoursPerDay">日工作小时数:</label>
+                    <input type="number" id="workHoursPerDay" required min="1" max="24" step="0.5" value="8">
+                </div>
+                <div class="form-group">
+                    <label for="workStartTime">日上班时间 (HH:MM):</label>
+                    <input type="time" id="workStartTime" required value="09:00">
+                </div>
+                <button type="submit">保存并开始</button>
+            </form>
         </div>
     </div>
 
-    <script src="index.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
