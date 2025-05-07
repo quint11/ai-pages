@@ -1,0 +1,548 @@
+```html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>打工人工资计算器 💼🧮</title>
+  <style>
+    :root {
+      --bg-color: #f4f6f8;
+      --text-color: #111827;
+      --card-bg: #ffffff;
+      --primary-color: #3b82f6;
+      --accent-color: #10b981;
+      --danger-color: #ef4444;
+      --shadow: 0 4px 12px rgba(0,0,0,0.1);
+      --font-stack: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    [data-theme="dark"] {
+      --bg-color: #1f2937;
+      --text-color: #f9fafb;
+      --card-bg: #374151;
+      --primary-color: #60a5fa;
+      --accent-color: #34d399;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: var(--font-stack);
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .container {
+      max-width: 900px;
+      width: 95%;
+      margin: auto;
+      padding: 2rem;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: 2rem;
+      color: var(--primary-color);
+    }
+
+    .section {
+      margin-bottom: 2rem;
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+    }
+
+    .realtime-display {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .realtime-box {
+      flex: 1;
+      min-width: 200px;
+      padding: 1rem;
+      background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+      color: white;
+      border-radius: 10px;
+      font-size: 1.5rem;
+      font-weight: bold;
+      text-align: center;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.8; }
+    }
+
+    .input-group {
+      margin-bottom: 1rem;
+      text-align: left;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+
+    input[type="number"],
+    input[type="time"],
+    select {
+      width: 100%;
+      padding: 0.6rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+
+    button {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    button:hover {
+      background-color: #2563eb;
+    }
+
+    .toggle-btn {
+      margin-left: 1rem;
+    }
+
+    .hidden-input {
+      display: none;
+    }
+
+    .chart-container {
+      height: 300px;
+      margin-top: 1rem;
+    }
+
+    .total-income {
+      font-size: 1.5rem;
+      color: var(--accent-color);
+      margin-top: 1rem;
+    }
+
+    .goal-progress {
+      margin-top: 1rem;
+    }
+
+    .progress-bar {
+      width: 100%;
+      background: #e5e7eb;
+      border-radius: 6px;
+      overflow: hidden;
+      height: 20px;
+      margin-top: 0.5rem;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background-color: var(--accent-color);
+      width: 0%;
+      transition: width 0.3s ease-in-out;
+    }
+
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background-color: var(--accent-color);
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      color: white;
+      cursor: pointer;
+      z-index: 999;
+    }
+
+    canvas {
+      background-color: var(--card-bg);
+      border-radius: 10px;
+    }
+
+    .fullscreen-btn {
+      float: right;
+      background-color: var(--danger-color);
+      margin-top: -1.5rem;
+    }
+
+    @media (max-width: 600px) {
+      .realtime-display {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>💼 打工人工资计算器</h1>
+
+    <!-- 实时收入展示 -->
+    <div class="section">
+      <button class="fullscreen-btn" onclick="toggleFullscreen()">全屏模式</button>
+      <div class="realtime-display">
+        <div class="realtime-box">今日：￥<span id="todayEarnings">0.00</span></div>
+        <div class="realtime-box">本周：￥<span id="weekEarnings">0.00</span></div>
+        <div class="realtime-box">本月：￥<span id="monthEarnings">0.00</span></div>
+      </div>
+    </div>
+
+    <!-- 基础配置 -->
+    <div class="section">
+      <div class="input-group">
+        <label for="startTime">上班时间：</label>
+        <input type="time" id="startTime" value="09:00" />
+      </div>
+      <div class="input-group">
+        <label for="salary">月薪（元）：</label>
+        <input type="number" id="salary" class="hidden-input" placeholder="请输入月薪" />
+        <button class="toggle-btn" onclick="toggleSalaryInput()">显示/隐藏输入框</button>
+      </div>
+      <div class="input-group">
+        <label for="taxToggle">计算方式：</label>
+        <select id="taxToggle">
+          <option value="before">税前</option>
+          <option value="after">税后</option>
+        </select>
+      </div>
+      <div class="input-group tax-details hidden-input" id="taxDetails">
+        <label>社保比例（%）：<input type="number" id="socialSecurityRate" value="8" /></label>
+        <label>公积金比例（%）：<input type="number" id="housingFundRate" value="7" /></label>
+        <label>个税起征点：<input type="number" id="taxThreshold" value="5000" /></label>
+      </div>
+      <button onclick="saveSettings()">保存设置</button>
+    </div>
+
+    <!-- 累计总收入 + 目标达成 -->
+    <div class="section">
+      <div class="total-income">你已赚到：<strong id="totalIncome">0.00</strong> 元</div>
+      <div class="goal-progress">
+        <label for="dailyGoal">设定今日目标（元）：</label>
+        <input type="number" id="dailyGoal" value="500" />
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      </div>
+    </div>
+
+    <!-- 收入趋势图 -->
+    <div class="section">
+      <h2>📈 每日收入记录</h2>
+      <div class="chart-container">
+        <canvas id="incomeChart"></canvas>
+      </div>
+    </div>
+
+    <!-- 未来预估 -->
+    <div class="section">
+      <h2>🔮 未来收入预估</h2>
+      <div class="input-group">
+        <label>涨薪时间（月）：<input type="number" id="raiseMonth" value="6" /></label>
+        <label>涨幅比例（%）：<input type="number" id="raisePercent" value="10" /></label>
+      </div>
+      <div class="chart-container">
+        <canvas id="forecastChart"></canvas>
+      </div>
+      <button onclick="generateForecast()">生成预估图表</button>
+    </div>
+
+    <!-- 数据导出 -->
+    <div class="section">
+      <button onclick="exportData()">导出CSV数据</button>
+    </div>
+  </div>
+
+  <button class="theme-toggle" onclick="toggleTheme()">🌙 切换主题</button>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const salaryInput = document.getElementById('salary');
+    const taxDetails = document.getElementById('taxDetails');
+    const taxToggle = document.getElementById('taxToggle');
+
+    function toggleSalaryInput() {
+      salaryInput.classList.toggle('hidden-input');
+    }
+
+    taxToggle.addEventListener('change', () => {
+      if (taxToggle.value === 'after') {
+        taxDetails.classList.remove('hidden-input');
+      } else {
+        taxDetails.classList.add('hidden-input');
+      }
+    });
+
+    let hourlyRate = 0;
+    let dailyEarnings = {};
+    let totalIncome = 0;
+
+    function loadFromLocalStorage() {
+      const data = localStorage.getItem('incomeData');
+      if (data) {
+        dailyEarnings = JSON.parse(data);
+      } else {
+        dailyEarnings = {};
+      }
+
+      const savedSettings = localStorage.getItem('salarySettings');
+      if (savedSettings) {
+        const settings = JSON.parse(savedSettings);
+        salaryInput.value = settings.salary;
+        taxToggle.value = settings.taxMode;
+        document.getElementById('socialSecurityRate').value = settings.socialSecurityRate || 8;
+        document.getElementById('housingFundRate').value = settings.housingFundRate || 7;
+        document.getElementById('taxThreshold').value = settings.taxThreshold || 5000;
+        if (settings.taxMode === 'after') taxDetails.classList.remove('hidden-input');
+      }
+    }
+
+    function saveSettings() {
+      const salary = parseFloat(salaryInput.value);
+      const taxMode = taxToggle.value;
+      const socialSecurityRate = parseFloat(document.getElementById('socialSecurityRate').value);
+      const housingFundRate = parseFloat(document.getElementById('housingFundRate').value);
+      const taxThreshold = parseFloat(document.getElementById('taxThreshold').value);
+
+      let finalSalary = salary;
+      if (taxMode === 'after') {
+        const deductionRate = (socialSecurityRate + housingFundRate) / 100;
+        const baseDeduction = salary * deductionRate;
+        const taxable = salary - baseDeduction - taxThreshold;
+        if (taxable > 0) {
+          // 简化个税计算（仅作演示）
+          const tax = taxable * 0.1;
+          finalSalary -= baseDeduction + tax;
+        } else {
+          finalSalary -= baseDeduction;
+        }
+      }
+
+      hourlyRate = finalSalary / 22 / 8;
+      localStorage.setItem('salarySettings', JSON.stringify({
+        salary,
+        taxMode,
+        socialSecurityRate,
+        housingFundRate,
+        taxThreshold
+      }));
+    }
+
+    function getTodayKey() {
+      const now = new Date();
+      return `${now.getFullYear()}-${now.getMonth()+1}-${now.getDate()}`;
+    }
+
+    function calculateEarnings() {
+      const startTimeStr = document.getElementById('startTime').value;
+      const now = new Date();
+      const [startHour, startMinute] = startTimeStr.split(':').map(Number);
+      const startDate = new Date(now);
+      startDate.setHours(startHour, startMinute, 0, 0);
+
+      if (now < startDate) {
+        document.getElementById('todayEarnings').textContent = '尚未开始';
+        return;
+      }
+
+      const diffMs = now - startDate;
+      const hoursWorked = diffMs / (1000 * 60 * 60);
+      const todayEarnings = hoursWorked * hourlyRate;
+
+      document.getElementById('todayEarnings').textContent = todayEarnings.toFixed(2);
+
+      // 更新本周、本月
+      const weekStart = new Date(now);
+      weekStart.setDate(now.getDate() - now.getDay());
+      let weekTotal = 0;
+      for (let i = 0; i <= now.getDay(); i++) {
+        const day = new Date(now);
+        day.setDate(now.getDate() - i);
+        const key = `${day.getFullYear()}-${day.getMonth()+1}-${day.getDate()}`;
+        weekTotal += dailyEarnings[key] || 0;
+      }
+      document.getElementById('weekEarnings').textContent = weekTotal.toFixed(2);
+
+      const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+      let monthTotal = 0;
+      for (let d = new Date(monthStart); d <= now; d.setDate(d.getDate() + 1)) {
+        const key = `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
+        monthTotal += dailyEarnings[key] || 0;
+      }
+      document.getElementById('monthEarnings').textContent = monthTotal.toFixed(2);
+
+      // 更新当日数据
+      const todayKey = getTodayKey();
+      dailyEarnings[todayKey] = todayEarnings;
+      localStorage.setItem('incomeData', JSON.stringify(dailyEarnings));
+
+      updateTotalIncome();
+      updateProgress();
+    }
+
+    function updateTotalIncome() {
+      totalIncome = Object.values(dailyEarnings).reduce((sum, val) => sum + val, 0);
+      document.getElementById('totalIncome').textContent = totalIncome.toFixed(2);
+    }
+
+    function updateProgress() {
+      const goal = parseFloat(document.getElementById('dailyGoal').value) || 0;
+      const todayEarnings = parseFloat(document.getElementById('todayEarnings').textContent) || 0;
+      const percent = Math.min(100, (todayEarnings / goal) * 100);
+      document.getElementById('progressFill').style.width = percent + '%';
+    }
+
+    function generateChartData() {
+      const labels = [];
+      const data = [];
+
+      const oneWeekAgo = new Date();
+      oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+      for (let i = 0; i < 7; i++) {
+        const date = new Date(oneWeekAgo);
+        date.setDate(date.getDate() + i);
+        const key = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
+        labels.push(`${date.getMonth()+1}/${date.getDate()}`);
+        data.push(dailyEarnings[key] || 0);
+      }
+
+      return { labels, data };
+    }
+
+    let incomeChart, forecastChart;
+
+    function initCharts() {
+      const ctx = document.getElementById('incomeChart').getContext('2d');
+      const forecastCtx = document.getElementById('forecastChart').getContext('2d');
+
+      const chartData = generateChartData();
+
+      incomeChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: chartData.labels,
+          datasets: [{
+            label: '每日收入（元）',
+            data: chartData.data,
+            borderColor: '#3b82f6',
+            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+            tension: 0.4
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: false }
+          }
+        }
+      });
+
+      forecastChart = new Chart(forecastCtx, {
+        type: 'line',
+        data: {
+          labels: [],
+          datasets: [{
+            label: '预计收入（元）',
+            data: [],
+            borderColor: '#10b981',
+            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+            tension: 0.4
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: false }
+          }
+        }
+      });
+    }
+
+    function generateForecast() {
+      const raiseMonth = parseInt(document.getElementById('raiseMonth').value);
+      const raisePercent = parseFloat(document.getElementById('raisePercent').value) / 100;
+      const currentSalary = parseFloat(salaryInput.value);
+      const now = new Date();
+      const labels = [];
+      const data = [];
+
+      let monthlySalary = currentSalary;
+      let cumulative = totalIncome;
+
+      for (let i = 1; i <= 24; i++) {
+        if (i === raiseMonth) {
+          monthlySalary *= (1 + raisePercent);
+        }
+        const hourly = monthlySalary / 22 / 8;
+        const daysInMonth = new Date(now.getFullYear(), now.getMonth() + i, 0).getDate();
+        const earnedThisMonth = hourly * 8 * daysInMonth;
+        cumulative += earnedThisMonth;
+        labels.push(`+${i}月`);
+        data.push(cumulative);
+      }
+
+      forecastChart.data.labels = labels;
+      forecastChart.data.datasets[0].data = data;
+      forecastChart.update();
+    }
+
+    function exportData() {
+      let csv = '日期,收入\n';
+      for (const key in dailyEarnings) {
+        csv += `${key},${dailyEarnings[key].toFixed(2)}\n`;
+      }
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = '工资记录.csv';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function toggleTheme() {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      if (currentTheme === 'dark') {
+        document.documentElement.removeAttribute('data-theme');
+      } else {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    }
+
+    function toggleFullscreen() {
+      const elem = document.body;
+      if (!document.fullscreenElement) {
+        elem.requestFullscreen().catch(err => alert("无法进入全屏"));
+      } else {
+        document.exitFullscreen();
+      }
+    }
+
+    // 初始化
+    loadFromLocalStorage();
+    initCharts();
+    setInterval(() => {
+      calculateEarnings();
+      incomeChart.data = generateChartData();
+      incomeChart.update();
+    }, 1000);
+    window.onload = () => {
+      calculateEarnings();
+      incomeChart.data = generateChartData();
+      incomeChart.update();
+    };
+  </script>
+</body>
+</html>
+```
