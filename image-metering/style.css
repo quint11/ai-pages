@@ -1,0 +1,163 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 10px; /* Reduced body padding */
+    background-color: #f0f2f5;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1.5; /* Slightly reduced line-height */
+    -webkit-tap-highlight-color: transparent;
+}
+
+.container {
+    width: 100%;
+    max-width: 95vw; /* Allow container to be wider */
+    background-color: #fff;
+    padding: 15px; /* Reduced container padding */
+    border-radius: 10px; /* Slightly smaller radius */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    box-sizing: border-box;
+    display: flex; /* Added for centering content if needed */
+    flex-direction: column; /* Ensure vertical flow */
+}
+
+h1 {
+    text-align: center;
+    color: #007bff;
+    margin-top: 0;
+    margin-bottom: 15px; /* Reduced margin */
+    font-size: 1.5em; /* Reduced font size */
+}
+
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px; /* Reduced gap */
+    margin-bottom: 15px; /* Reduced margin */
+    justify-content: center;
+}
+
+.button {
+    padding: 7px 12px; /* Reduced padding */
+    border: none;
+    border-radius: 5px; /* Slightly smaller radius */
+    cursor: pointer;
+    font-size: 14px; /* Reduced font size */
+    font-weight: 500;
+    text-align: center;
+    transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+    color: white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* Smaller shadow */
+}
+
+.button:active {
+    transform: translateY(1px);
+    box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+}
+
+.primary-button { background-color: #007bff; }
+.primary-button:hover { background-color: #0056b3; }
+
+.secondary-button { background-color: #6c757d; }
+.secondary-button:hover { background-color: #545b62; }
+
+.warning-button { background-color: #dc3545; }
+.warning-button:hover { background-color: #b02a37; }
+
+.success-button { background-color: #28a745; }
+.success-button:hover { background-color: #1e7e34; }
+
+.canvas-wrapper {
+    width: 100%;
+    border: 1px solid #ced4da;
+    margin-bottom: 10px; /* Reduced margin */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #e9ecef;
+    border-radius: 6px; /* Smaller radius */
+    overflow: hidden;
+    position: relative;
+    flex-grow: 1; /* Allow canvas wrapper to take available space */
+}
+
+#imageCanvas {
+    display: block;
+    max-width: 100%;
+    max-height: 80vh; /* Increased max height for canvas, adjust as needed */
+    object-fit: contain;
+    cursor: crosshair;
+    background-color: #fff;
+}
+
+.info {
+    text-align: center;
+    font-size: 0.85em; /* Smaller info text */
+    color: #555;
+    margin-top: 5px; /* Reduced margin */
+}
+
+/* Modal Styles - Shrink modal buttons slightly */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: auto;
+    padding: 20px; /* Slightly reduced padding */
+    border: 1px solid #ddd;
+    width: 90%;
+    max-width: 350px; /* Slightly smaller max-width */
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.modal-content h3 {
+    margin-top: 0;
+    margin-bottom: 15px; /* Reduced margin */
+    color: #333;
+    font-size: 1.2em; /* Reduced font size */
+}
+
+#distanceInput {
+    width: calc(100% - 22px);
+    padding: 10px; /* Reduced padding */
+    margin-bottom: 20px; /* Reduced margin */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 15px; /* Slightly smaller font */
+    box-sizing: border-box;
+}
+#distanceInput:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.15rem rgba(0,123,255,.25); /* Smaller shadow */
+    outline: none;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: space-around;
+    gap: 10px; /* Reduced gap */
+}
+
+.modal-actions .button {
+    flex-grow: 1;
+    min-width: 90px; /* Smaller min-width */
+    padding: 7px 10px; /* Reduced padding for modal buttons */
+    font-size: 14px; /* Reduced font size for modal buttons */
+}

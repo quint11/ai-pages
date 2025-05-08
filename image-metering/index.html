@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>增强版图片量尺工具</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>图片量尺工具 Pro</h1>
+
+        <div class="controls">
+            <label for="imageLoader" class="button primary-button">选择图片/拍照</label>
+            <input type="file" id="imageLoader" accept="image/*" capture="environment" style="display: none;">
+            <button id="undoAnnotation" class="button secondary-button">撤销</button>
+            <button id="clearAnnotations" class="button warning-button">清空标注</button>
+            <button id="saveImage" class="button success-button">保存图片</button>
+        </div>
+
+        <div class="canvas-wrapper">
+            <canvas id="imageCanvas"></canvas>
+        </div>
+
+        <div class="info">
+            <p>提示：选择图片后，在图片上点击并拖动来画线，然后输入距离进行标注。</p>
+        </div>
+    </div>
+
+    <!-- Modal for distance input -->
+    <div id="distanceModal" class="modal">
+        <div class="modal-content">
+            <h3>输入距离</h3>
+            <input type="text" id="distanceInput" placeholder="例如: 3.5m">
+            <div class="modal-actions">
+                <button id="submitDistance" class="button primary-button">确定</button>
+                <button id="cancelDistance" class="button secondary-button">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
