@@ -29,9 +29,9 @@ const ANNOTATION_COLOR = '#FFC107';
 const ANNOTATION_TEXT_OUTLINE_COLOR = 'rgba(0, 0, 0, 0.75)';
 const TEMP_ANNOTATION_COLOR = 'rgba(255, 100, 0, 0.8)';
 
-// --- Image Loading and Canvas Sizing (Keep as is from previous complete version) ---
+// --- Image Loading and Canvas Sizing ---
 imageLoader.addEventListener('change', handleImage);
-function handleImage(e) { /* ... same as before ... */
+function handleImage(e) {
     const reader = new FileReader();
     reader.onload = function(event) {
         currentImage = new Image();
@@ -55,20 +55,21 @@ function handleImage(e) { /* ... same as before ... */
     }
 }
 
-function setCanvasSize() { /* ... same as before ... */
+function setCanvasSize() {
     if (!currentImage || !currentImage.complete || currentImage.naturalWidth === 0) {
         canvas.width = canvas.parentElement.clientWidth || 300;
         canvas.height = 200;
         drawInitialMessage();
         return;
     }
+
     const wrapper = canvas.parentElement;
     const MAX_WIDTH = wrapper.clientWidth;
+
     const headerHeight = document.querySelector('.app-header')?.offsetHeight || 50;
     const infoBarHeight = document.querySelector('.info-bar')?.offsetHeight || 30;
     const containerVPadding = 20; // Combined body/app-container top/bottom padding
     const buffer = 20; // Extra buffer
-    // Ensure MAX_CANVAS_HEIGHT is positive
     const MAX_CANVAS_HEIGHT = Math.max(100, window.innerHeight - headerHeight - infoBarHeight - containerVPadding - buffer);
 
     let newWidth, newHeight;
@@ -90,145 +91,305 @@ function setCanvasSize() { /* ... same as before ... */
     canvas.height = newHeight;
 }
 
-
-// --- Drawing Logic (Keep as is from previous complete version) ---
-canvas.addEventListener('mousedown', handleDrawStart); /* ... etc. ... */
+// --- Drawing Logic ---
+canvas.addEventListener('mousedown', handleDrawStart);
 canvas.addEventListener('mousemove', handleDrawMove);
 canvas.addEventListener('mouseup', handleDrawEnd);
 canvas.addEventListener('mouseleave', handleDrawLeave);
-canvas.addEventListener('touchstart', (e) => { if (fullscreenOverlay.style.display === 'flex') return; e.preventDefault(); handleDrawStart(getTouchPos(e, canvas)); }, { passive: false });
-canvas.addEventListener('touchmove', (e) => { if (fullscreenOverlay.style.display === 'flex') return; e.preventDefault(); handleDrawMove(getTouchPos(e, canvas)); }, { passive: false });
-canvas.addEventListener('touchend', (e) => { if (fullscreenOverlay.style.display === 'flex') return; e.preventDefault(); handleDrawEnd(getTouchPos(e, canvas)); }, { passive: false });
 
-function getCanvasCoordinates(event, canvasElement){ /* ... same as before ... */
+canvas.addEventListener('touchstart', (e) => {
+    if (fullscreenOverlay.style.display === 'flex') return;
+    e.preventDefault();
+    handleDrawStart(getTouchPos(e, canvas));
+}, { passive: false });
+
+canvas.addEventListener('touchmove', (e) => {
+    if (fullscreenOverlay.style.display === 'flex') return;
+    e.preventDefault();
+    handleDrawMove(getTouchPos(e, canvas));
+}, { passive: false });
+
+canvas.addEventListener('touchend', (e) => {
+    if (fullscreenOverlay.style.display === 'flex') return;
+    e.preventDefault();
+    handleDrawEnd(getTouchPos(e, canvas));
+}, { passive: false });
+
+
+function getCanvasCoordinates(event, canvasElement) {
     const rect = canvasElement.getBoundingClientRect();
     let x, y;
-    if (event.clientX !== undefined) { x = event.clientX - rect.left; y = event.clientY - rect.top;
-    } else if (event.x !== undefined && event.y !== undefined) { x = event.x; y = event.y;
-    } else { return { x: 0, y: 0 }; }
-    return { x: Math.max(0, Math.min(x, canvasElement.width)), y: Math.max(0, Math.min(y, canvasElement.height)) };
+    if (event.clientX !== undefined) {
+        x = event.clientX - rect.left;
+        y = event.clientY - rect.top;
+    } else if (event.x !== undefined && event.y !== undefined) {
+        x = event.x;
+        y = event.y;
+    } else {
+        return { x: 0, y: 0 };
+    }
+    return {
+        x: Math.max(0, Math.min(x, canvasElement.width)),
+        y: Math.max(0, Math.min(y, canvasElement.height))
+    };
 }
-function getTouchPos(touchEvent, canvasElement){ /* ... same as before ... */
+
+function getTouchPos(touchEvent, canvasElement) {
     const rect = canvasElement.getBoundingClientRect();
     let touch;
-    if (touchEvent.touches && touchEvent.touches.length > 0) { touch = touchEvent.touches[0];
-    } else if (touchEvent.changedTouches && touchEvent.changedTouches.length > 0) { touch = touchEvent.changedTouches[0];
-    } else { return touchEvent; }
-    return { x: touch.clientX - rect.left, y: touch.clientY - rect.top };
+    if (touchEvent.touches && touchEvent.touches.length > 0) {
+        touch = touchEvent.touches[0];
+    } else if (touchEvent.changedTouches && touchEvent.changedTouches.length > 0) {
+        touch = touchEvent.changedTouches[0];
+    } else {
+        return touchEvent;
+    }
+    return {
+        x: touch.clientX - rect.left,
+        y: touch.clientY - rect.top
+    };
 }
-function handleDrawStart(event){ /* ... same as before ... */
+
+
+function handleDrawStart(event) {
     if (!currentImage || distanceModal.style.display === 'flex' || fullscreenOverlay.style.display === 'flex') return;
-    drawing = true; startPoint = getCanvasCoordinates(event, canvas); tempEndPoint = { ...startPoint };
+    drawing = true;
+    startPoint = getCanvasCoordinates(event, canvas);
+    tempEndPoint = { ...startPoint };
 }
-function handleDrawMove(event){ /* ... same as before ... */
+
+function handleDrawMove(event) {
     if (!drawing || !currentImage || fullscreenOverlay.style.display === 'flex') return;
-    tempEndPoint = getCanvasCoordinates(event, canvas); redrawCanvas();
-    ctx.beginPath(); ctx.moveTo(startPoint.x, startPoint.y); ctx.lineTo(tempEndPoint.x, tempEndPoint.y);
-    ctx.strokeStyle = TEMP_ANNOTATION_COLOR; ctx.lineWidth = 2.5; ctx.setLineDash([5, 2]); ctx.stroke(); ctx.setLineDash([]);
+    tempEndPoint = getCanvasCoordinates(event, canvas);
+    redrawCanvas(); // Redraws base image and existing annotations
+
+    // Draw temporary feedback line
+    ctx.beginPath();
+    ctx.moveTo(startPoint.x, startPoint.y);
+    ctx.lineTo(tempEndPoint.x, tempEndPoint.y);
+    ctx.strokeStyle = TEMP_ANNOTATION_COLOR;
+    ctx.lineWidth = 2.5;
+    ctx.setLineDash([5, 2]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
     drawArrowhead(ctx, startPoint, tempEndPoint, TEMP_ANNOTATION_COLOR, 2.5, 8);
     drawArrowhead(ctx, tempEndPoint, startPoint, TEMP_ANNOTATION_COLOR, 2.5, 8);
 }
-function handleDrawLeave(event){ /* ... same as before ... */
-    if (drawing && fullscreenOverlay.style.display !== 'flex') { drawing = false; redrawCanvas(); }
+
+function handleDrawLeave(event) {
+    if (drawing && fullscreenOverlay.style.display !== 'flex') {
+        drawing = false;
+        redrawCanvas(); // Clear temporary line
+    }
 }
-async function handleDrawEnd(event){ /* ... same as before ... */
+
+async function handleDrawEnd(event) {
     if (!drawing || !currentImage || fullscreenOverlay.style.display === 'flex') return;
-    drawing = false; const endPoint = getCanvasCoordinates(event, canvas);
+    drawing = false;
+    const endPoint = getCanvasCoordinates(event, canvas);
+
     const lineLength = Math.sqrt(Math.pow(startPoint.x - endPoint.x, 2) + Math.pow(startPoint.y - endPoint.y, 2));
-    if (lineLength < 8) { redrawCanvas(); return; }
+    if (lineLength < 8) { // Minimum distance threshold
+        redrawCanvas(); // Clear any temporary line
+        return;
+    }
+
     try {
         const distanceText = await getDistanceViaModal();
         if (distanceText && distanceText.trim() !== "") {
-            annotations.push({ start: { ...startPoint }, end: { ...endPoint }, text: distanceText.trim() });
+            annotations.push({
+                start: { ...startPoint },
+                end: { ...endPoint },
+                text: distanceText.trim()
+            });
         }
-    } catch (error) { console.log("Distance input aborted:", error); }
-    finally { redrawCanvas(); }
+    } catch (error) {
+        // Modal was cancelled or closed
+        console.log("Distance input aborted:", error);
+    } finally {
+        redrawCanvas();
+    }
 }
 
-// --- Modal Logic (Keep as is from previous complete version) ---
-function getDistanceViaModal(){ /* ... same as before ... */
-    distanceModal.style.display = 'flex'; distanceInput.value = ''; distanceInput.focus();
-    return new Promise((resolve, reject) => { resolveDistancePromise = { resolve, reject }; });
+// --- Modal Logic for Distance Input ---
+function getDistanceViaModal() {
+    distanceModal.style.display = 'flex';
+    distanceInput.value = '';
+    distanceInput.focus();
+
+    return new Promise((resolve, reject) => {
+        resolveDistancePromise = { resolve, reject };
+    });
 }
-submitDistanceButton.addEventListener('click', () => { /* ... same as before ... */
-    if (resolveDistancePromise) { resolveDistancePromise.resolve(distanceInput.value); resolveDistancePromise = null; }
+
+submitDistanceButton.addEventListener('click', () => {
+    if (resolveDistancePromise) {
+        resolveDistancePromise.resolve(distanceInput.value);
+        resolveDistancePromise = null;
+    }
     distanceModal.style.display = 'none';
 });
-cancelDistanceButton.addEventListener('click', () => { /* ... same as before ... */
-    if (resolveDistancePromise) { resolveDistancePromise.reject('cancelled'); resolveDistancePromise = null; }
+
+cancelDistanceButton.addEventListener('click', () => {
+    if (resolveDistancePromise) {
+        resolveDistancePromise.reject('cancelled');
+        resolveDistancePromise = null;
+    }
     distanceModal.style.display = 'none';
 });
-window.addEventListener('click', (event) => { /* ... same as before ... */
+
+// Close modal if user clicks outside of modal-content
+window.addEventListener('click', (event) => {
     if (event.target === distanceModal) {
-        if (resolveDistancePromise) { resolveDistancePromise.reject('clicked_outside'); resolveDistancePromise = null; }
-        distanceModal.style.display = 'none'; if (drawing) { drawing = false; redrawCanvas(); }
+        if (resolveDistancePromise) {
+            resolveDistancePromise.reject('clicked_outside');
+            resolveDistancePromise = null;
+        }
+        distanceModal.style.display = 'none';
+        if (drawing) { // If a drawing was in progress and modal was cancelled
+           drawing = false;
+           redrawCanvas(); // Clear temp line
+        }
     }
 });
 
-// --- Redrawing Canvas and Annotations (Keep as is from previous complete version) ---
-function redrawCanvas(){ /* ... same as before ... */
+
+// --- Redrawing Canvas and Annotations ---
+function redrawCanvas() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    if (!currentImage || !currentImage.complete || currentImage.naturalWidth === 0) { drawInitialMessage(); return; }
+
+    if (!currentImage || !currentImage.complete || currentImage.naturalWidth === 0) {
+        drawInitialMessage();
+        return;
+    }
     ctx.drawImage(currentImage, 0, 0, canvas.width, canvas.height);
+
     annotations.forEach(ann => {
         const lineAndArrowWidth = 2.5;
-        ctx.beginPath(); ctx.moveTo(ann.start.x, ann.start.y); ctx.lineTo(ann.end.x, ann.end.y);
-        ctx.strokeStyle = ANNOTATION_COLOR; ctx.lineWidth = lineAndArrowWidth; ctx.stroke();
+
+        // Line
+        ctx.beginPath();
+        ctx.moveTo(ann.start.x, ann.start.y);
+        ctx.lineTo(ann.end.x, ann.end.y);
+        ctx.strokeStyle = ANNOTATION_COLOR;
+        ctx.lineWidth = lineAndArrowWidth;
+        ctx.stroke();
+
+        // Arrowheads
         drawArrowhead(ctx, ann.start, ann.end, ANNOTATION_COLOR, lineAndArrowWidth, 9 + lineAndArrowWidth);
         drawArrowhead(ctx, ann.end, ann.start, ANNOTATION_COLOR, lineAndArrowWidth, 9 + lineAndArrowWidth);
+
+        // Text
         drawAnnotationText(ann.text, ann.start, ann.end);
     });
 }
-function drawAnnotationText(text, start, end){ /* ... same as before ... */
-    const midX = (start.x + end.x) / 2; const midY = (start.y + end.y) / 2;
+
+function drawAnnotationText(text, start, end) {
+    const midX = (start.x + end.x) / 2;
+    const midY = (start.y + end.y) / 2;
     const angle = Math.atan2(end.y - start.y, end.x - start.x);
-    ctx.save(); ctx.translate(midX, midY); ctx.rotate(angle);
-    const fontSize = 14; ctx.font = `bold ${fontSize}px Arial`;
-    let textOffsetY = -8; let textRotationAdjustment = 0;
-    if (angle > Math.PI / 2 || angle < -Math.PI / 2) { textRotationAdjustment = Math.PI; textOffsetY = 8 + fontSize * 0.5; }
+
+    ctx.save();
+    ctx.translate(midX, midY);
+    ctx.rotate(angle);
+
+    const fontSize = 14;
+    ctx.font = `bold ${fontSize}px Arial`;
+
+    let textOffsetY = -8;
+    let textRotationAdjustment = 0;
+
+    if (angle > Math.PI / 2 || angle < -Math.PI / 2) {
+        textRotationAdjustment = Math.PI;
+        textOffsetY = 8 + fontSize * 0.5;
+    }
     ctx.rotate(textRotationAdjustment);
-    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.strokeStyle = ANNOTATION_TEXT_OUTLINE_COLOR; ctx.lineWidth = 3; ctx.strokeText(text, 0, textOffsetY);
-    ctx.fillStyle = ANNOTATION_COLOR; ctx.fillText(text, 0, textOffsetY);
+
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    ctx.strokeStyle = ANNOTATION_TEXT_OUTLINE_COLOR;
+    ctx.lineWidth = 3; // Outline thickness
+    ctx.strokeText(text, 0, textOffsetY);
+
+    ctx.fillStyle = ANNOTATION_COLOR;
+    ctx.fillText(text, 0, textOffsetY);
+
     ctx.restore();
 }
-function drawArrowhead(context, from, to, color, lineWidth, headLength){ /* ... same as before ... */
-    headLength = headLength || (8 + lineWidth); const angle = Math.atan2(to.y - from.y, to.x - from.x);
-    context.save(); context.fillStyle = color;
-    context.beginPath(); context.moveTo(to.x, to.y);
+
+function drawArrowhead(context, from, to, color, lineWidth, headLength) {
+    headLength = headLength || (8 + lineWidth);
+    const angle = Math.atan2(to.y - from.y, to.x - from.x);
+
+    context.save();
+    context.fillStyle = color;
+
+    context.beginPath();
+    context.moveTo(to.x, to.y);
     context.lineTo(to.x - headLength * Math.cos(angle - Math.PI / 7), to.y - headLength * Math.sin(angle - Math.PI / 7));
     context.lineTo(to.x - headLength * Math.cos(angle + Math.PI / 7), to.y - headLength * Math.sin(angle + Math.PI / 7));
-    context.closePath(); context.fill(); context.restore();
+    context.closePath();
+    context.fill();
+    context.restore();
 }
 
-// --- Control Buttons (Keep as is from previous complete version) ---
-clearButton.addEventListener('click', () => { /* ... same as before ... */
-    if (currentImage) { if (confirm("确定要清除所有标注吗？")) { annotations = []; redrawCanvas(); }
-    } else { alert("没有图片可以清除标注。"); }
+// --- Control Buttons ---
+clearButton.addEventListener('click', () => {
+    if (currentImage) {
+        if (confirm("确定要清除所有标注吗？")) {
+            annotations = [];
+            redrawCanvas();
+        }
+    } else {
+        alert("没有图片可以清除标注。");
+    }
 });
-undoButton.addEventListener('click', () => { /* ... same as before ... */
-    if (annotations.length > 0) { annotations.pop(); redrawCanvas();
-    } else { alert("没有标注可以撤销。"); }
+
+undoButton.addEventListener('click', () => {
+    if (annotations.length > 0) {
+        annotations.pop();
+        redrawCanvas();
+    } else {
+        alert("没有标注可以撤销。");
+    }
 });
-saveImageButton.addEventListener('click', () => { /* ... same as before ... */
-    if (!currentImage || !currentImage.complete || currentImage.naturalWidth === 0) { alert("请先加载一张有效的图片。"); return; }
-    if (annotations.length === 0) { if (!confirm("图片上没有标注。您确定要保存原始图片吗？")) { return; } }
-    const originalCursor = canvas.style.cursor; canvas.style.cursor = 'wait';
+
+saveImageButton.addEventListener('click', () => {
+    if (!currentImage || !currentImage.complete || currentImage.naturalWidth === 0) {
+        alert("请先加载一张有效的图片。");
+        return;
+    }
+    if (annotations.length === 0) {
+        if (!confirm("图片上没有标注。您确定要保存原始图片吗？")) {
+            return;
+        }
+    }
+
+    const originalCursor = canvas.style.cursor;
+    canvas.style.cursor = 'wait';
     redrawCanvas(); // Ensure final draw before generating data URL
     setTimeout(() => {
         try {
             const dataURL = canvas.toDataURL('image/png');
             const link = document.createElement('a');
             const timestamp = new Date().toISOString().replace(/[:.-]/g, '').slice(0, -4);
-            link.download = `量尺标注_${timestamp}.png`; link.href = dataURL;
-            document.body.appendChild(link); link.click(); document.body.removeChild(link);
-        } catch (e) { console.error("Error saving image:", e); alert("保存图片失败。可能是图片过大或浏览器安全限制。"); }
-        finally { canvas.style.cursor = 'crosshair'; }
+            link.download = `量尺标注_${timestamp}.png`;
+            link.href = dataURL;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } catch (e) {
+            console.error("Error saving image:", e);
+            alert("保存图片失败。可能是图片过大或浏览器安全限制。");
+        } finally {
+            canvas.style.cursor = 'crosshair';
+        }
     }, 100);
 });
 
-
-// --- MODIFIED: Fullscreen View Logic ---
+// --- Fullscreen View Logic ---
 fullscreenViewButton.addEventListener('click', () => {
     if (!currentImage || !currentImage.complete || currentImage.naturalWidth === 0) {
         alert("请先加载一张有效的图片才能全屏查看。");
@@ -273,14 +434,17 @@ document.addEventListener('keydown', (event) => {
 });
 
 
-// --- Initial State and Resize Handling (Keep as is from previous complete version) ---
-function drawInitialMessage(){ /* ... same as before ... */
+// --- Initial State and Resize Handling ---
+function drawInitialMessage(){
     if (!canvas.width || !canvas.height) {
         canvas.width = canvas.parentElement.clientWidth || 300;
         canvas.height = 200;
     }
-    ctx.clearRect(0,0,canvas.width, canvas.height); ctx.fillStyle = "#888";
-    ctx.font = "15px Arial"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    ctx.clearRect(0,0,canvas.width, canvas.height);
+    ctx.fillStyle = "#888";
+    ctx.font = "15px Arial";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
     ctx.fillText("点击图片图标选择图片开始标注", canvas.width / 2, canvas.height / 2);
 }
 window.addEventListener('resize', () => {

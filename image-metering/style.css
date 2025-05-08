@@ -41,6 +41,14 @@ body {
     /* No flex properties needed here if parent .app-header handles alignment */
 }
 
+.attribution {
+    font-size: 0.7em; /* Smaller font size */
+    color: #6c757d;   /* Muted color */
+    font-weight: 400; /* Normal weight */
+    opacity: 0.8;     /* Slightly transparent */
+    /* margin-left: 8px; /* Alternative to gap if not using flex gap */
+}
+
 .main-controls {
     display: flex; /* This is already here, good */
     align-items: center; /* Ensures icons within controls are aligned if their heights differ */
