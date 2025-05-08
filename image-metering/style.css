@@ -1,163 +1,143 @@
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     margin: 0;
-    padding: 10px; /* Reduced body padding */
-    background-color: #f0f2f5;
+    background-color: #e9ecef;
     color: #333;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    line-height: 1.5; /* Slightly reduced line-height */
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding-top: 10px;
+    box-sizing: border-box;
     -webkit-tap-highlight-color: transparent;
 }
 
-.container {
+.app-container {
     width: 100%;
-    max-width: 95vw; /* Allow container to be wider */
+    max-width: 700px;
     background-color: #fff;
-    padding: 15px; /* Reduced container padding */
-    border-radius: 10px; /* Slightly smaller radius */
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    box-sizing: border-box;
-    display: flex; /* Added for centering content if needed */
-    flex-direction: column; /* Ensure vertical flow */
-}
-
-h1 {
-    text-align: center;
-    color: #007bff;
-    margin-top: 0;
-    margin-bottom: 15px; /* Reduced margin */
-    font-size: 1.5em; /* Reduced font size */
-}
-
-.controls {
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     display: flex;
-    flex-wrap: wrap;
-    gap: 8px; /* Reduced gap */
-    margin-bottom: 15px; /* Reduced margin */
-    justify-content: center;
+    flex-direction: column;
+    overflow: hidden;
 }
 
-.button {
-    padding: 7px 12px; /* Reduced padding */
+.app-header {
+    display: flex;
+    justify-content: space-between; /* Distributes space between title and controls */
+    align-items: center; /* Vertically aligns items in the center */
+    padding: 10px 15px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+    min-height: 38px; /* Ensure header has some minimum height for alignment */
+}
+
+.app-header h1 {
+    margin: 0;
+    font-size: 1.2em;
+    color: #007bff;
+    font-weight: 600;
+    /* No flex properties needed here if parent .app-header handles alignment */
+}
+
+.main-controls {
+    display: flex; /* This is already here, good */
+    align-items: center; /* Ensures icons within controls are aligned if their heights differ */
+    gap: 8px;
+}
+
+.icon-button {
+    background-color: transparent;
     border: none;
-    border-radius: 5px; /* Slightly smaller radius */
+    color: #495057;
+    font-size: 1.2em; /* Base icon size */
+    padding: 0; /* Remove padding, let width/height define clickable area */
+    border-radius: 50%;
     cursor: pointer;
-    font-size: 14px; /* Reduced font size */
-    font-weight: 500;
-    text-align: center;
-    transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
-    color: white;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* Smaller shadow */
+    width: 38px; /* Fixed width for circular button */
+    height: 38px; /* Fixed height for circular button */
+    display: flex; /* For centering the icon inside the button */
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    line-height: 1; /* Helps with vertical alignment of icon itself */
+}
+.icon-button i { /* Target the icon itself for fine-tuning if needed */
+    font-size: 1em; /* Make icon size relative to button's font-size if preferred */
 }
 
-.button:active {
-    transform: translateY(1px);
-    box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+
+.icon-button:hover {
+    background-color: #e9ecef;
+    color: #007bff;
+}
+.icon-button:active {
+    background-color: #ced4da;
 }
 
-.primary-button { background-color: #007bff; }
-.primary-button:hover { background-color: #0056b3; }
+#clearAnnotations:hover i { /* Target icon specifically for color change */
+    color: #dc3545;
+}
+#saveImage:hover i {
+    color: #28a745;
+}
 
-.secondary-button { background-color: #6c757d; }
-.secondary-button:hover { background-color: #545b62; }
-
-.warning-button { background-color: #dc3545; }
-.warning-button:hover { background-color: #b02a37; }
-
-.success-button { background-color: #28a745; }
-.success-button:hover { background-color: #1e7e34; }
 
 .canvas-wrapper {
     width: 100%;
-    border: 1px solid #ced4da;
-    margin-bottom: 10px; /* Reduced margin */
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #e9ecef;
-    border-radius: 6px; /* Smaller radius */
+    background-color: #f1f3f5;
     overflow: hidden;
     position: relative;
-    flex-grow: 1; /* Allow canvas wrapper to take available space */
+    flex-grow: 1;
+    min-height: 300px;
 }
 
 #imageCanvas {
     display: block;
     max-width: 100%;
-    max-height: 80vh; /* Increased max height for canvas, adjust as needed */
+    /* max-height calculation will be handled by JS or set here if preferred */
+    /* For example: max-height: calc(100vh - 160px); Adjust 160px based on header/footer/padding */
     object-fit: contain;
     cursor: crosshair;
     background-color: #fff;
 }
 
-.info {
+.info-bar {
     text-align: center;
-    font-size: 0.85em; /* Smaller info text */
-    color: #555;
-    margin-top: 5px; /* Reduced margin */
+    font-size: 0.8em;
+    color: #6c757d;
+    padding: 8px 15px;
+    background-color: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+}
+.info-bar p {
+    margin: 0;
+}
+.small-icon {
+    font-size: 0.9em;
+    color: #007bff;
 }
 
-/* Modal Styles - Shrink modal buttons slightly */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.5);
-    justify-content: center;
-    align-items: center;
-}
+/* Modal Styles (Unchanged from previous working version) */
+.modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.6); justify-content: center; align-items: center; }
+.modal-content { background-color: #fff; margin: auto; padding: 20px; border: 1px solid #ddd; width: 90%; max-width: 350px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); text-align: center; box-sizing: border-box; }
+.modal-content h3 { margin-top: 0; margin-bottom: 15px; color: #333; font-size: 1.2em; }
+#distanceInput { width: calc(100% - 22px); padding: 10px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 4px; font-size: 15px; box-sizing: border-box; }
+#distanceInput:focus { border-color: #007bff; box-shadow: 0 0 0 0.15rem rgba(0,123,255,.25); outline: none; }
+.modal-actions { display: flex; justify-content: space-around; gap: 10px; }
+.modal-actions .button { flex-grow: 1; min-width: 90px; padding: 8px 12px; font-size: 14px; border-radius: 5px; color: white; border: none; cursor: pointer; transition: background-color 0.2s ease; }
+.modal-actions .primary-button { background-color: #007bff; }
+.modal-actions .primary-button:hover { background-color: #0056b3; }
+.modal-actions .secondary-button { background-color: #6c757d; }
+.modal-actions .secondary-button:hover { background-color: #545b62; }
 
-.modal-content {
-    background-color: #fff;
-    margin: auto;
-    padding: 20px; /* Slightly reduced padding */
-    border: 1px solid #ddd;
-    width: 90%;
-    max-width: 350px; /* Slightly smaller max-width */
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    text-align: center;
-    box-sizing: border-box;
-}
 
-.modal-content h3 {
-    margin-top: 0;
-    margin-bottom: 15px; /* Reduced margin */
-    color: #333;
-    font-size: 1.2em; /* Reduced font size */
-}
-
-#distanceInput {
-    width: calc(100% - 22px);
-    padding: 10px; /* Reduced padding */
-    margin-bottom: 20px; /* Reduced margin */
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 15px; /* Slightly smaller font */
-    box-sizing: border-box;
-}
-#distanceInput:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 0 0.15rem rgba(0,123,255,.25); /* Smaller shadow */
-    outline: none;
-}
-
-.modal-actions {
-    display: flex;
-    justify-content: space-around;
-    gap: 10px; /* Reduced gap */
-}
-
-.modal-actions .button {
-    flex-grow: 1;
-    min-width: 90px; /* Smaller min-width */
-    padding: 7px 10px; /* Reduced padding for modal buttons */
-    font-size: 14px; /* Reduced font size for modal buttons */
-}
+/* Fullscreen Image Viewer Styles (Unchanged from previous working version) */
+.fullscreen-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.9); display: none; justify-content: center; align-items: center; z-index: 2000; padding: 20px; box-sizing: border-box; }
+#fullscreenImage { max-width: 100%; max-height: 100%; object-fit: contain; box-shadow: 0 0 30px rgba(0,0,0,0.5); }
+.fullscreen-close-button { position: absolute; top: 20px; right: 20px; font-size: 1.5em; color: #fff; background-color: rgba(0,0,0,0.3); width: 44px; height: 44px; display: flex; justify-content: center; align-items: center; border-radius:50%; padding:0; border:none; cursor:pointer; }
+.fullscreen-close-button:hover { background-color: rgba(0,0,0,0.5); color: #eee; }
