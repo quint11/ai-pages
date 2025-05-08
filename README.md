@@ -10,6 +10,7 @@
 | [舔狗语录生成器](./dog/README.md)      | 💘 一个有趣的舔狗语录生成网页应用，专为那些需要"舔狗文案"灵感的人设计。        | [👉 点击体验](https://quint11.github.io/ai-pages/dog/index.html)   | ![cover](./dog/cover.png)        |
 | [Love 爱心动画](./love/README.md)      | 💗 这是一个浪漫的爱心动画网页, 可以用来表达浓浓的爱意。通过优雅的粒子动画和文字特效，营造出温馨浪漫的氛围。非常适合用作表白、纪念日等特殊场合。       | [👉 点击体验](https://quint11.github.io/ai-pages/love/index.html)   | ![cover](./love/cover.gif)        |
 | [天气卡片](./atmos/README.md)      | 🌈 Atmos是一个优雅的天气卡片应用，提供沉浸式的天气体验。通过精美的动画和交互效果，直观地展示不同天气状况。       | [👉 点击体验](https://quint11.github.io/ai-pages/atmos/index.html)   | ![cover](./atmos/cover.gif)        |
+| [工资计算器](./working-clock/README.md)      | 一个简洁的Web应用，帮助您实时追踪根据工时计算的预估收益。非常适合想知道“这个月/这周/今天已经赚了多少钱？”的朋友们！😉       | [👉 点击体验](https://quint11.github.io/ai-pages/working-clock/index.html)   | ![cover](./working-clock/cover.png)        |
 
 ---
 

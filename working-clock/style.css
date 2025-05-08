@@ -89,13 +89,18 @@ main {
 }
 
 .income-amount {
-    font-size: 3em; /* Large like image */
+    font-size: 3em;
     font-weight: bold;
-    color: var(--text-color); /* Darker color for amount */
+    color: #D90000; /* Main red color for the integer part */
     margin-bottom: 25px;
     line-height: 1;
+    /* We will set the content via innerHTML, so direct text styling here is for the base */
 }
 
+.income-amount .income-decimal-part {
+    font-size: 0.5em;  /* Smaller font size relative to the integer part */
+    opacity: 0.85;      /* Slightly less opaque */
+}
 .progress-container {
     width: 100%;
 }
@@ -238,4 +243,85 @@ main {
 .settings-trigger-button svg {
     width: 22px;
     height: 22px;
+}
+
+/* ... (previous CSS) ... */
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+    color: var(--text-light);
+}
+
+.form-group input,
+.form-group select { /* Apply to select as well */
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1em;
+    background-color: white; /* Ensure background for select */
+    color: var(--text-color); /* Ensure text color for select */
+}
+.form-group input:focus,
+.form-group select:focus { /* Apply to select as well */
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(74, 123, 254, 0.2);
+}
+
+/* Custom styling for the select dropdown */
+.select-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.select-wrapper select {
+    appearance: none; /* Remove default arrow for Chrome, Safari, Opera, Edge */
+    -webkit-appearance: none; /* Safari */
+    -moz-appearance: none; /* Firefox */
+    padding-right: 30px; /* Make space for custom arrow */
+    cursor: pointer;
+}
+
+/* Custom arrow for the select */
+.select-wrapper::after {
+    content: '▼'; /* Or use an SVG icon */
+    font-size: 0.8em;
+    color: var(--text-light);
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none; /* So it doesn't interfere with select click */
+}
+
+/* For Firefox, -moz-appearance: none; might not fully hide the arrow.
+   Sometimes you need to target it specifically, or use a more complex overlay.
+   This basic styling works for most modern browsers.
+*/
+
+
+.modal-content button[type="submit"] {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1em;
+    width: 100%;
+    transition: background-color 0.2s ease;
+}
+
+#anchorDateGroup small {
+    display: block;
+    font-size: 0.8em;
+    color: var(--text-light);
+    margin-top: 4px;
 }
