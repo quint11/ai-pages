@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>工资计算器</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="calculator-app">
+        <header>
+            <div class="title-section">
+                <h1>工资计算器</h1>
+                <p class="subtitle">酷兔AI (Demo)</p>
+            </div>
+            <button class="settings-trigger-button" id="openSettingsButton" aria-label="设置">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 .54 1.73L6.22 12h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.1a2 2 0 0 1-.54-1.73L17.78 2h-.44a2 2 0 0 0-2-2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 .54 1.73L6.22 12h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.1a2 2 0 0 1-.54-1.73L17.78 2zM12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+            </button>
+        </header>
+
+        <main>
+            <section class="income-display">
+                <p class="income-label">收益 (元)</p>
+                <p class="income-amount" id="incomeAmount">0.00</p>
+                <div class="progress-container">
+                    <div class="progress-bar-wrapper">
+                        <div class="progress-bar" id="progressBar"></div>
+                    </div>
+                    <div class="progress-markers">
+                        <span>开始</span>
+                        <span></span>
+                        <span>结束</span>
+                    </div>
+                </div>
+            </section>
+
+            <nav class="time-toggles">
+                <button class="toggle-btn active" data-period="day">日进度</button>
+                <button class="toggle-btn" data-period="week">周进度</button>
+                <button class="toggle-btn" data-period="month">月进度</button>
+                <button class="toggle-btn" data-period="cumulative">累计收入</button>
+            </nav>
+        </main>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-content">
+            <h2>初始设置</h2>
+            <form id="settingsForm">
+                <div class="form-group">
+                    <label for="monthlySalary">月薪 (元):</label>
+                    <input type="number" id="monthlySalary" required min="0" step="100">
+                </div>
+                <div class="form-group">
+                    <label for="startDate">入职日期:</label>
+                    <input type="date" id="startDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="restSchedule">休息制度:</label>
+                    <select id="restSchedule" required>
+                        <option value="dual">双休（周六、日休）</option>
+                        <option value="single_sun_off">单休（周日休）</option>
+                        <option value="alternate_single_dual">大小周（单双休交替,大周休周六日,小周休周日）</option> 
+                        <option value="none">无休</option>
+                    </select>
+                </div>
+               <div class="form-group" id="anchorDateGroup" style="display: none;">
+                    <label for="anchorBigWeekMonday">锚定大周的周一日期:</label>
+                    <input type="date" id="anchorBigWeekMonday">
+                    <small>请选择一个作为“大周”（双休）的周一作为参考点。</small>
+               </div>
+
+                <div class="form-group">
+                    <label for="workHoursPerDay">日工作小时数:</label>
+                    <input type="number" id="workHoursPerDay" required min="1" max="24" step="0.5">
+                </div>
+                <div class="form-group">
+                    <label for="workStartTime">日上班时间 (HH:MM):</label>
+                    <input type="time" id="workStartTime" required>
+                </div>
+                <button type="submit">保存并开始</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

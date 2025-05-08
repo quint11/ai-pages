@@ -1,0 +1,327 @@
+:root {
+    --primary-color: #4A7BFE;
+    --background-color: #F0F2F5;
+    --card-background: #FFFFFF;
+    --text-color: #333333;
+    --text-light: #777777;
+    --border-radius: 12px;
+    --app-max-width: 420px; /* Typical mobile app width */
+    --header-padding: 20px;
+    --main-padding: 20px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    background-color: var(--background-color);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Align to top for better scroll view */
+    min-height: 100vh;
+    padding-top: 20px; /* Give some space at the top */
+}
+
+.calculator-app {
+    background-color: #e9edf2; /* Slightly off-white, similar to image */
+    width: 90%;
+    max-width: var(--app-max-width);
+    border-radius: 20px; /* More rounded corners like image */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    padding: 15px; /* Padding for the outer shell */
+    border: 8px solid #4F5B6F; /* Dark border like image */
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--header-padding) var(--main-padding) 10px;
+    background-color: #e9edf2; /* Match app background for seamless top */
+}
+
+.title-section h1 {
+    font-size: 1.8em;
+    color: var(--text-color);
+    margin-bottom: 2px;
+}
+
+.subtitle {
+    font-size: 0.9em;
+    color: var(--text-light);
+}
+
+.search-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    color: #555;
+}
+.search-button svg {
+    width: 22px;
+    height: 22px;
+}
+
+
+main {
+    padding: 0 var(--main-padding) var(--main-padding);
+}
+
+.income-display {
+    background-color: var(--card-background);
+    border-radius: var(--border-radius);
+    padding: 25px 20px;
+    text-align: center;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.income-label {
+    font-size: 1.1em;
+    color: var(--text-color);
+    margin-bottom: 8px;
+}
+
+.income-amount {
+    font-size: 3em;
+    font-weight: bold;
+    color: #D90000; /* Main red color for the integer part */
+    margin-bottom: 25px;
+    line-height: 1;
+    /* We will set the content via innerHTML, so direct text styling here is for the base */
+}
+
+.income-amount .income-decimal-part {
+    font-size: 0.5em;  /* Smaller font size relative to the integer part */
+    opacity: 0.85;      /* Slightly less opaque */
+}
+.progress-container {
+    width: 100%;
+}
+
+.progress-bar-wrapper {
+    background-color: #E0E0E0; /* Light gray track */
+    border-radius: 50px; /* Rounded track */
+    height: 10px; /* Slimmer bar */
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.progress-bar {
+    width: 0%; /* Initial width */
+    height: 100%;
+    background-color: var(--primary-color);
+    border-radius: 50px;
+    transition: width 0.5s ease-in-out;
+}
+
+.progress-markers {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75em;
+    color: var(--text-light);
+    padding: 0 5px; /* Slight padding for markers */
+}
+.progress-markers span:nth-child(2) {
+    opacity: 0; /* Middle marker hidden by default, can be shown if needed */
+}
+
+
+.time-toggles {
+    display: flex;
+    justify-content: space-around; /* Or space-between */
+    background-color: var(--card-background);
+    border-radius: 50px; /* Pill shape container */
+    padding: 6px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.toggle-btn {
+    flex-grow: 1; /* Make buttons take equal space */
+    background-color: transparent;
+    color: var(--text-light);
+    border: none;
+    padding: 12px 10px;
+    border-radius: 50px; /* Pill shape buttons */
+    font-size: 0.95em;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    text-align: center;
+}
+
+.toggle-btn.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* Modal styles */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: var(--card-background);
+    margin: auto;
+    padding: 25px 30px;
+    border-radius: var(--border-radius);
+    width: 90%;
+    max-width: 450px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.modal-content h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    text-align: center;
+    color: var(--text-color);
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+    color: var(--text-light);
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1em;
+}
+.form-group input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(74, 123, 254, 0.2);
+}
+
+.modal-content button[type="submit"] {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1em;
+    width: 100%;
+    transition: background-color 0.2s ease;
+}
+
+.modal-content button[type="submit"]:hover {
+    background-color: #3a68df;
+}
+
+.settings-trigger-button { /* Or reuse .search-button if styles are identical */
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    color: #555; /* Or var(--text-light) */
+}
+.settings-trigger-button svg {
+    width: 22px;
+    height: 22px;
+}
+
+/* ... (previous CSS) ... */
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+    color: var(--text-light);
+}
+
+.form-group input,
+.form-group select { /* Apply to select as well */
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1em;
+    background-color: white; /* Ensure background for select */
+    color: var(--text-color); /* Ensure text color for select */
+}
+.form-group input:focus,
+.form-group select:focus { /* Apply to select as well */
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(74, 123, 254, 0.2);
+}
+
+/* Custom styling for the select dropdown */
+.select-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.select-wrapper select {
+    appearance: none; /* Remove default arrow for Chrome, Safari, Opera, Edge */
+    -webkit-appearance: none; /* Safari */
+    -moz-appearance: none; /* Firefox */
+    padding-right: 30px; /* Make space for custom arrow */
+    cursor: pointer;
+}
+
+/* Custom arrow for the select */
+.select-wrapper::after {
+    content: '▼'; /* Or use an SVG icon */
+    font-size: 0.8em;
+    color: var(--text-light);
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none; /* So it doesn't interfere with select click */
+}
+
+/* For Firefox, -moz-appearance: none; might not fully hide the arrow.
+   Sometimes you need to target it specifically, or use a more complex overlay.
+   This basic styling works for most modern browsers.
+*/
+
+
+.modal-content button[type="submit"] {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1em;
+    width: 100%;
+    transition: background-color 0.2s ease;
+}
+
+#anchorDateGroup small {
+    display: block;
+    font-size: 0.8em;
+    color: var(--text-light);
+    margin-top: 4px;
+}
