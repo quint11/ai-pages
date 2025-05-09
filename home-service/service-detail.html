@@ -3,79 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>服务详情</title>
+    <title>服务详情 - 酷兔家政</title> <!-- Updated title -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/service-details.css">
 </head>
 <body>
     <div class="mobile-screen-view">
-        <!-- Optional: If this page also needs a standard app header -->
-        <!-- <header class="app-header"> ... </header> -->
-        
-        <header class="header-tabs"> <!-- This can be the top-most bar for this page -->
+        <!-- Note: Removed app-header as tabs seem to be the top bar -->
+
+        <header class="header-tabs">
             <span class="tab-item active" onclick="switchTab(this)">开荒保洁</span>
             <span class="tab-item" onclick="switchTab(this)">日常保洁</span>
-            <!-- ... more tabs ... -->
+            <span class="tab-item" onclick="switchTab(this)">深度保洁</span>
+            <span class="tab-item" onclick="switchTab(this)">家电清洗</span>
+            <span class="tab-item" onclick="switchTab(this)">更多</span>
         </header>
 
         <main class="app-container">
-            <div class="service-options-slider">
-                <div class="service-option-card">
+            <!-- Branding Section -->
+            <div class="branding-section">
+                <strong>酷兔家政</strong> - 张家界的开荒保洁专家
+            </div>
+
+            <!-- Service Options List (Vertical) -->
+            <section class="section-card service-options-list">
+                <!-- Added section-title-bar if needed, but screenshot doesn't show one explicitly above the options -->
+                <!-- <div class="section-title-bar"><i class="fas fa-concierge-bell"></i> 服务项目</div> -->
+                
+                <div class="service-option-item" onclick="goToOrder('初开荒 (无家具) 50㎡以内', '299')">
                     <div class="title">初开荒 (无家具) 50㎡以内</div>
                     <div class="description">新房首次保洁，不含家具内部，适合50平米以内空间。</div>
                     <div class="price-action">
                         <div class="price">¥299 <span class="unit">/次</span></div>
-                        <button class="order-button" onclick="goToOrder('初开荒 (无家具) 50㎡以内', '299')">去下单</button>
+                        <button class="order-button">去下单</button>
                     </div>
                 </div>
-                <div class="service-option-card">
+                <div class="service-option-item" onclick="goToOrder('初开荒 (有家具) 80㎡以内', '459')">
                     <div class="title">初开荒 (有家具) 80㎡以内</div>
                     <div class="description">新房首次保洁，包含家具表面，适合80平米以内空间。</div>
                     <div class="price-action">
                         <div class="price">¥459 <span class="unit">/次</span></div>
-                        <button class="order-button" onclick="goToOrder('初开荒 (有家具) 80㎡以内', '459')">去下单</button>
+                        <button class="order-button">去下单</button>
                     </div>
                 </div>
-                <!-- ... more service option cards ... -->
-            </div>
-
-            <section class="section-card service-content-highlights">
-                <div class="section-title-bar"><i class="fas fa-clipboard-list"></i> 服务内容</div>
-                <div class="highlight-grid section-card-padded" style="padding-top:0;"> <!-- Adjusted padding -->
-                    <!-- ... highlight items ... -->
+                 <div class="service-option-item" onclick="goToOrder('精开荒 (别墅) 200㎡', '1299')">
+                    <div class="title">精开荒 (别墅) 200㎡</div>
+                    <div class="description">别墅级精细开荒，全屋无死角，专业团队作业。</div>
+                    <div class="price-action">
+                        <div class="price">¥1299 <span class="unit">/次</span></div>
+                        <button class="order-button">去下单</button>
+                    </div>
                 </div>
             </section>
 
-            <!-- service-details.html (snippet) -->
+            <section class="section-card service-content-highlights section-card-padded">
+                <div class="section-title-bar" style="margin: -15px -15px 15px -15px; border-bottom: 1px solid var(--border-light-color);"> <!-- Adjust padding and margin to fit card -->
+                   <i class="fas fa-clipboard-list"></i> 服务内容
+                </div>
+                <div class="highlight-grid" style="padding-top:0;">
+                    <div class="highlight-item">
+                        <i class="fas fa-broom"></i>
+                        <p>地面清洁</p>
+                    </div>
+                    <div class="highlight-item">
+                        <i class="fas fa-soap"></i>
+                        <p>厨房油污</p>
+                    </div>
+                    <div class="highlight-item">
+                        <i class="fas fa-toilet"></i>
+                        <p>卫生间洁具</p>
+                    </div>
+                    <div class="highlight-item">
+                        <i class="fas fa-door-open"></i>
+                        <p>门窗清洁</p>
+                    </div>
+                    <div class="highlight-item">
+                        <i class="fas fa-trash-alt"></i>
+                        <p>垃圾清理</p>
+                    </div>
+                     <div class="highlight-item">
+                        <i class="fas fa-wind"></i>
+                        <p>除尘除螨</p>
+                    </div>
+                </div>
+            </section>
+
             <section class="section-card section-card-padded">
-                <div class="section-title-bar" style="border-bottom: none; padding-bottom: 5px;">
+                <div class="section-title-bar" style="margin: -15px -15px 15px -15px; border-bottom: 1px solid var(--border-light-color);">
                    <i class="fas fa-medal"></i> 更高服务标准 清洁更省心
                 </div>
                 <div class="image-text-section">
-                    <!-- Changed image source -->
-                    <img src="https://picsum.photos/350/150?random=1" alt="专业设备">
+                    <!-- Using landscape images -->
+                    <img src="https://picsum.photos/400/250?random=1" alt="专业设备">
                     <h3>全方位无死角除尘</h3>
-                    <p>采用专业吸尘设备，对天花板、墙面、地面、缝隙等进行彻底除尘。</p>
+                    <p>采用专业吸尘设备，对天花板、墙面、地面、缝隙等进行彻底除尘，不放过任何一个角落。</p>
                 </div>
                 <div class="image-text-section">
-                     <!-- Changed image source -->
-                    <img src="https://picsum.photos/350/150?random=2" alt="清洁效果">
+                     <img src="https://picsum.photos/400/250?random=2" alt="清洁效果">
                     <h3>除胶除漆无残留</h3>
                     <p>针对装修残留的胶渍、漆点，使用专用清洁剂和工具，安全有效去除，不损伤物品表面。</p>
                 </div>
-                <div class="image-text-section">
-                     <!-- Added another example section -->
-                    <img src="https://picsum.photos/350/150?random=3" alt="高温蒸汽消毒">
-                    <h3>高温蒸汽消毒</h3>
+                 <div class="image-text-section">
+                     <img src="https://picsum.photos/400/250?random=3" alt="高温蒸汽消毒">
+                    <h3>马桶高温蒸汽消毒</h3>
                     <p>马桶、地漏等易滋生细菌区域，采用高温蒸汽机进行消毒杀菌，呵护家人健康。</p>
+                </div>
+                 <div class="image-text-section">
+                     <img src="https://picsum.photos/400/250?random=4" alt="家具养护">
+                    <h3>家具家电深度清洁</h3>
+                    <p>针对家具、家电表面进行细致擦拭和养护，使其恢复光泽。不包含家电内部清洗。</p>
                 </div>
             </section>
             
-            <!-- ... other sections ... -->
+            <section class="section-card section-card-padded">
+                 <div class="section-title-bar" style="margin: -15px -15px 15px -15px; border-bottom: 1px solid var(--border-light-color);">
+                    <i class="fas fa-question-circle"></i> 常见开荒问题
+                 </div>
+                 <div class="faq-item">
+                    <div class="question">开荒保洁需要提前准备什么吗？</div>
+                    <div class="answer">请确保水电畅通，并将贵重物品妥善保管。如有特别需要清洁或避开的区域，请提前告知服务人员。</div>
+                </div>
+                 <div class="faq-item">
+                    <div class="question">服务时长大概多久？</div>
+                    <div class="answer">服务时长根据房屋面积和脏乱程度而定，一般50㎡的初开荒约需3-4小时。具体可与客服沟通。</div>
+                </div>
+                 <div class="faq-item">
+                    <div class="question">如果我不满意清洁效果怎么办？</div>
+                    <div class="answer">如果您对清洁结果不满意，请在服务完成后24小时内联系平台，我们将核实情况并安排返工或进行赔偿。</div>
+                </div>
+            </section>
 
             <section class="section-card section-card-padded">
-                 <div class="section-title-bar"><i class="fas fa-comments"></i> 用户评价 (15624+)</div>
+                 <div class="section-title-bar" style="margin: -15px -15px 15px -15px; border-bottom: 1px solid var(--border-light-color);">
+                    <i class="fas fa-comments"></i> 用户评价 (15624+)
+                 </div>
                  <div class="user-review">
                     <div class="user-info">
                         <div class="avatar"><i class="fas fa-user"></i></div>
@@ -88,7 +150,6 @@
                     </div>
                     <p class="comment">阿姨打扫得非常干净，新家焕然一新！边边角角都处理得很到位，非常满意！</p>
                     <div class="review-images">
-                        <!-- Changed image sources -->
                         <img src="https://picsum.photos/70/70?random=101" alt="Review image 1">
                         <img src="https://picsum.photos/70/70?random=102" alt="Review image 2">
                         <img src="https://picsum.photos/70/70?random=103" alt="Review image 3">
@@ -97,7 +158,7 @@
                  <div class="user-review">
                     <div class="user-info">
                         <div class="avatar"><i class="fas fa-user"></i></div>
-                        <div class="user-details">
+                         <div class="user-details">
                             <span class="username">李先生</span>
                              <div class="rating">
                                 <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
@@ -105,14 +166,15 @@
                         </div>
                     </div>
                     <p class="comment">整体不错，就是厨房油烟机外面擦了，里面没擦。希望下次能更细致一点。</p>
-                    <!-- No images for this review example -->
                 </div>
+                <!-- Add more reviews as needed -->
             </section>
+
 
             <div style="height: 20px;"></div> <!-- Spacer for footer -->
         </main>
 
-        <footer class="app-footer-bar service-footer-actions">
+        <footer class="app-footer-actions service-footer-actions">
             <button class="app-button consult-button" onclick="consultService()">
                 <i class="fas fa-comments"></i> 咨询客服
             </button>
@@ -122,5 +184,74 @@
         </footer>
     </div>
     <script src="js/service-details.js"></script>
+    <!-- It's better to include showModernAlert from a shared file -->
+    <script>
+    // PASTE THE showModernAlert function HERE if not using a shared file
+    function showModernAlert(message, title = "提示", type = "info") {
+         // Remove existing alert if any to prevent stacking
+        const existingAlert = document.getElementById('modernAlertOverlay');
+        if (existingAlert) {
+            existingAlert.remove();
+        }
+
+        const overlay = document.createElement('div');
+        overlay.id = 'modernAlertOverlay';
+        overlay.className = 'modern-alert-overlay';
+
+        const alertBox = document.createElement('div');
+        alertBox.className = 'modern-alert-box';
+
+        const alertIcon = document.createElement('i');
+        alertIcon.className = 'fas alert-icon'; // Font Awesome icon
+        switch(type) {
+            case 'success':
+                alertIcon.classList.add('fa-check-circle', 'success');
+                break;
+            case 'error':
+                alertIcon.classList.add('fa-times-circle', 'error');
+                break;
+            case 'warning':
+                alertIcon.classList.add('fa-exclamation-triangle', 'warning');
+                break;
+            case 'info':
+            default:
+                alertIcon.classList.add('fa-info-circle', 'info'); // Default or info
+                break;
+        }
+        alertBox.appendChild(alertIcon);
+
+        const alertTitle = document.createElement('h3');
+        alertTitle.className = 'alert-title';
+        alertTitle.textContent = title;
+
+        const alertMessage = document.createElement('p');
+        alertMessage.className = 'alert-message';
+        alertMessage.innerHTML = message;
+
+        const closeButton = document.createElement('button');
+        closeButton.className = 'modern-alert-button';
+        closeButton.textContent = '确定';
+
+        closeButton.onclick = function() {
+            overlay.classList.remove('visible');
+            overlay.addEventListener('transitionend', function(e) {
+                if (e.propertyName === 'opacity' && !overlay.classList.contains('visible')) {
+                    overlay.remove();
+                }
+            });
+        };
+
+        alertBox.appendChild(alertTitle);
+        alertBox.appendChild(alertMessage);
+        alertBox.appendChild(closeButton);
+        overlay.appendChild(alertBox);
+        document.body.appendChild(overlay);
+
+        void overlay.offsetWidth; // Trigger reflow
+
+        overlay.classList.add('visible');
+        closeButton.focus();
+    }
+    </script>
 </body>
 </html>

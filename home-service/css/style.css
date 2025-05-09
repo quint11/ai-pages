@@ -1,11 +1,12 @@
 /* css/style.css */
 :root {
-    --primary-color: #007bff; /* 主题蓝 */
-    --secondary-color: #6c757d; /* 次要灰 */
-    --accent-color: #ff7f50; /* 强调橙 (如按钮) */
-    --danger-color: #ff5050; /* 危险/价格红 */
-    --success-color: #28a745; /* 成功绿 */
-    --light-bg: #f8f9fa; /* 浅背景 */
+    --primary-color: #007bff; /* 主题蓝 (可以保留或调整) */
+    --secondary-color: #6c757d;
+    --accent-color: #ff8a65; /* 强调橙 (稍暖一些) */
+    --accent-button-color: #ff7043; /* 强调按钮颜色 (更深的橙) */
+    --danger-color: #ff5050;
+    --success-color: #28a745;
+    --light-bg: #f8f8f8; /* 浅背景，可以与白色卡片形成对比 */
     --white-bg: #ffffff;
     --text-color: #333333;
     --text-light-color: #666666;
@@ -17,9 +18,11 @@
     --font-size-md: 14px;
     --font-size-lg: 16px;
     --font-size-xl: 18px;
+    --font-size-xxl: 20px; /* For titles */
+
 
     --border-radius: 8px;
-    --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* 更柔和的阴影 */
 }
 
 * {
@@ -33,35 +36,36 @@ body {
     font-size: var(--font-size-md);
     line-height: 1.6;
     color: var(--text-color);
-    background-color: #ccc; /* Desktop background outside the app frame */
+    background-color: #e0e0e0; /* 桌面背景 */
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* Align to top if content is short */
+    align-items: flex-start;
     min-height: 100vh;
-    padding-top: 20px; /* Optional: space from top for desktop view */
-    padding-bottom: 20px; /* Optional: space from bottom for desktop view */
+    padding-top: 20px;
+    padding-bottom: 20px;
 }
 
 .mobile-screen-view {
     width: 100%;
-    max-width: 414px; /* Common mobile width, adjust as needed */
-    min-height: calc(100vh - 40px); /* Adjust based on body padding */
-    max-height: 800px; /* Optional: max height for very tall content */
+    max-width: 414px;
+    min-height: calc(100vh - 40px);
+    /* max-height: 800px; */ /* Remove max-height to allow longer scrolling views */
     background-color: var(--light-bg);
-    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-    border-radius: 10px; /* Optional: rounded corners for the "phone" */
-    overflow: hidden; /* Clip content to the "screen" */
+    box-shadow: 0 5px 25px rgba(0,0,0,0.3); /* 更明显的手机框阴影 */
+    border-radius: 10px;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
 }
 
-.app-container { /* This will be the main scrollable area within mobile-screen-view */
+.app-container {
     flex-grow: 1;
     overflow-y: auto;
-    background-color: var(--light-bg); /* Or var(--white-bg) if sections have their own bg */
+    background-color: var(--light-bg); /* 让卡片在浅色背景上浮动 */
+    padding-top: 10px; /* Add some top padding to the scrollable area */
 }
 
-/* Common Header */
+/* Common Header (Optional for service details page depending on final design) */
 .app-header {
     display: flex;
     justify-content: space-between;
@@ -72,7 +76,7 @@ body {
     position: sticky;
     top: 0;
     z-index: 1000;
-    height: 56px; /* Standard app header height */
+    height: 56px;
 }
 .app-header .title {
     font-size: var(--font-size-xl);
@@ -91,19 +95,21 @@ body {
     margin-left: 15px;
 }
 
-/* Common Footer Bar */
-.app-footer-bar {
+
+/* Common Footer Bar - Actions specific */
+.app-footer-actions {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 15px;
+    gap: 10px;
+    padding: 10px 15px; /* Padding inside the footer */
     background-color: var(--white-bg);
     border-top: 1px solid var(--border-color);
     position: sticky;
     bottom: 0;
     z-index: 1000;
     min-height: 60px;
+    align-items: center; /* Vertically center buttons */
 }
+
 
 .app-button {
     padding: 10px 20px;
@@ -112,17 +118,21 @@ body {
     font-size: var(--font-size-lg);
     font-weight: 500;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    transition: background-color 0.2s ease, opacity 0.2s ease;
+    text-align: center; /* Ensure text is centered in the button */
+    display: inline-flex; /* Use flex to center content if needed */
+    align-items: center;
+    justify-content: center;
 }
 .app-button-primary {
-    background-color: var(--accent-color);
+    background-color: var(--accent-button-color);
     color: white;
 }
 .app-button-primary:hover {
-    background-color: #e66a40;
+    background-color: #ff5722; /* Darker orange */
 }
 
-/* Helper for list items */
+/* Helper for list items (adjust if needed for service details) */
 .list-item-base {
     display: flex;
     align-items: center;
@@ -146,7 +156,7 @@ body {
 }
 .list-item-base .label i {
     margin-right: 10px;
-    color: var(--text-light-color);
+    color: var(--primary-color); /* Use primary color for icons */
     width: 20px;
     text-align: center;
     font-size: 18px;
@@ -166,10 +176,10 @@ body {
 /* Section styling */
 .section-card {
     background-color: var(--white-bg);
-    margin: 10px;
+    margin: 0 10px 10px 10px; /* Add margin around cards */
     border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-    overflow: hidden; /* Important if children have margins */
+    box-shadow: var(--card-shadow);
+    overflow: hidden; /* Important for rounded corners with child elements */
 }
 .section-card-padded {
     padding: 15px;
@@ -182,6 +192,7 @@ body {
     border-bottom: 1px solid var(--border-light-color);
     display: flex;
     align-items: center;
+    color: var(--text-color);
 }
 .section-title-bar i {
     color: var(--primary-color);
@@ -205,6 +216,9 @@ body {
     background-color: #e9f7ff;
     color: var(--primary-color);
 }
+
+/* Modern Alert Styles (Keep these, already added) */
+/* ... (previous modern-alert-overlay, modern-alert-box, etc. styles) ... */
 
 /* css/style.css (add this at the end or in a new section) */
 

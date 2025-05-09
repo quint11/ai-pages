@@ -4,16 +4,16 @@
 .header-tabs {
     display: flex;
     background-color: var(--white-bg);
-    padding: 0 10px; /* Remove vertical padding, add horizontal */
+    padding: 0 10px;
     border-bottom: 1px solid var(--border-color);
     position: sticky;
-    top: 0; /* Stick below the main app header if it exists, or at top */
-    z-index: 999; /* Below main header if any */
+    top: 0;
+    z-index: 999;
     overflow-x: auto;
     white-space: nowrap;
-    -webkit-overflow-scrolling: touch; /* Smooth scroll on iOS */
+    -webkit-overflow-scrolling: touch;
 }
-.header-tabs::-webkit-scrollbar { display: none; } /* Hide scrollbar */
+.header-tabs::-webkit-scrollbar { display: none; }
 
 .header-tabs .tab-item {
     padding: 12px 15px;
@@ -25,6 +25,7 @@
     transition: color 0.2s ease, border-color 0.2s ease;
     display: inline-block;
     position: relative;
+    flex-shrink: 0; /* Prevent shrinking */
 }
 .header-tabs .tab-item.active {
     color: var(--primary-color);
@@ -32,68 +33,76 @@
     border-bottom-color: var(--primary-color);
 }
 
-/* Service Options Slider */
-.service-options-slider {
-    padding: 15px 0 15px 15px; /* Left padding for the first item */
-    background-color: var(--light-bg); /* or transparent if section-card handles it */
-    overflow-x: auto;
-    white-space: nowrap;
-    -webkit-overflow-scrolling: touch;
-    margin-bottom: 10px; /* Space before next section */
+/* Branding Section */
+.branding-section {
+    padding: 15px 15px 5px 15px; /* Adjust padding */
+    background-color: var(--white-bg); /* Match tab background */
+    text-align: center; /* Center brand text */
+    font-size: var(--font-size-sm);
+    color: var(--secondary-color);
+    border-bottom: 1px solid var(--border-light-color);
 }
-.service-options-slider::-webkit-scrollbar { display: none; }
 
-.service-option-card {
-    display: inline-block;
-    width: 280px;
-    background-color: var(--white-bg);
-    border: 1px solid var(--border-light-color);
-    border-radius: var(--border-radius);
-    margin-right: 10px;
-    padding: 15px;
-    box-shadow: var(--box-shadow);
-    vertical-align: top;
+/* Service Options List (Vertical) */
+.service-options-list {
+    /* This will be a section-card */
 }
-.service-option-card .title {
+
+.service-option-item {
+    /* Using list-item-base for consistency with confirm page */
+    /* Or define a new style if needed */
+    border-bottom: 1px solid var(--border-light-color);
+    padding: 15px;
+    display: flex;
+    flex-direction: column; /* Stack title, description, price */
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+.service-option-item:hover {
+     background-color: #fdfdfd;
+}
+.service-option-item:last-child {
+    border-bottom: none;
+}
+
+.service-option-item .title {
     font-size: var(--font-size-lg);
     font-weight: 600;
-    margin-bottom: 8px;
-    white-space: normal;
+    margin-bottom: 5px;
+    color: var(--text-color);
 }
-.service-option-card .description {
+.service-option-item .description {
     font-size: var(--font-size-sm);
     color: var(--text-light-color);
-    margin-bottom: 12px;
-    white-space: normal;
-    min-height: 3.2em; /* Approx 2 lines */
-    line-height: 1.6;
+    margin-bottom: 10px;
 }
-.service-option-card .price-action {
+.service-option-item .price-action {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 10px;
 }
-.service-option-card .price {
-    font-size: var(--font-size-xl);
+.service-option-item .price {
+    font-size: var(--font-size-xxl); /* Larger price font */
     font-weight: bold;
     color: var(--danger-color);
 }
-.service-option-card .price .unit {
-    font-size: var(--font-size-sm);
+.service-option-item .price .unit {
+    font-size: var(--font-size-md); /* Unit size relative to item text */
     font-weight: normal;
     color: var(--text-light-color);
 }
-.service-option-card .order-button {
-    background-color: var(--accent-color);
+.service-option-item .order-button {
+     background-color: var(--accent-button-color); /* Use accent button color */
     color: white;
-    padding: 8px 18px;
+    padding: 8px 20px; /* Adjusted padding */
     border: none;
-    border-radius: 16px;
+    border-radius: 18px; /* Slightly less rounded */
     font-size: var(--font-size-md);
     font-weight: 500;
     cursor: pointer;
+    transition: background-color 0.2s ease;
 }
+
 
 /* Service Content Highlights in a section-card */
 .service-content-highlights .highlight-grid {
@@ -101,7 +110,7 @@
     grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
     gap: 15px;
     text-align: center;
-    padding-top: 10px; /* Add some space if section-title-bar is used */
+    padding-top: 10px;
 }
 .service-content-highlights .highlight-item i {
     font-size: 26px;
@@ -116,22 +125,23 @@
 
 /* Image + Text Sections */
 .image-text-section {
-    margin-bottom: 20px;
+    margin-bottom: 20px; /* Space between these blocks */
 }
 .image-text-section:last-child {
     margin-bottom: 0;
 }
 .image-text-section img {
-    width: 100%;
+    width: 100%; /* Image fills card width */
     border-radius: 6px;
-    margin-bottom: 10px;
+    margin-bottom: 12px; /* Space after image */
     display: block;
+    object-fit: cover; /* Ensure image covers the area without distortion */
 }
 .image-text-section h3 {
     font-size: var(--font-size-lg);
     font-weight: 600;
     margin-top: 0;
-    margin-bottom: 8px;
+    margin-bottom: 8px; /* Space after title */
 }
 .image-text-section p {
     font-size: var(--font-size-md);
@@ -140,7 +150,7 @@
     margin-top: 0;
 }
 
-/* FAQ */
+/* FAQ (Keep existing styles largely as is) */
 .faq-item {
     margin-bottom: 15px;
     padding-bottom: 15px;
@@ -155,7 +165,7 @@
     font-weight: 600;
     margin-bottom: 8px;
     color: var(--text-color);
-    display: flex; /* For Q: prefix */
+    display: flex;
 }
 .faq-item .question::before {
     content: "Q:";
@@ -167,23 +177,21 @@
     font-size: var(--font-size-md);
     color: var(--text-light-color);
     line-height: 1.7;
-    padding-left: 25px; /* Align with question text */
-}
-.faq-item .answer::before {
-    content: "A:";
-    color: var(--success-color); /* Or another distinct color */
-    margin-right: 8px;
-    font-weight: bold;
-    position: absolute; /* Requires .answer to be relative or adjust padding */
-    left: 15px; /* Match question's Q: padding */
-}
-.faq-item .answer {
     position: relative;
     padding-left: 30px; /* Make space for "A:" */
 }
+.faq-item .answer::before {
+    content: "A:";
+    color: var(--success-color);
+    margin-right: 8px;
+    font-weight: bold;
+    position: absolute;
+    left: 0; /* Position relative to the answer padding */
+    top: 0; /* Align with the top of the text */
+}
 
 
-/* User Reviews */
+/* User Reviews (Keep existing styles largely as is) */
 .user-review {
     padding-bottom: 15px;
     margin-bottom: 15px;
@@ -203,23 +211,27 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background-color: #e0e0e0; /* Placeholder */
+    background-color: #e0e0e0;
     margin-right: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden; /* If using img inside */
+    overflow: hidden;
+    flex-shrink: 0; /* Prevent shrinking */
 }
 .user-review .avatar i {
     font-size: 20px;
     color: #757575;
+}
+.user-review .user-details {
+     flex-grow: 1; /* Allow details to take up space */
 }
 .user-review .user-details .username {
     font-weight: 600;
     font-size: var(--font-size-md);
 }
 .user-review .user-details .rating .fa-star {
-    color: #fdd835; /* Yellow star */
+    color: #fdd835;
     font-size: var(--font-size-sm);
 }
 .user-review .comment {
@@ -230,7 +242,7 @@
 }
 .user-review .review-images {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: wrap; /* Allow images to wrap if too many */
     gap: 8px;
     margin-top: 8px;
 }
@@ -242,13 +254,13 @@
     border: 1px solid var(--border-light-color);
 }
 
-/* Footer Actions for service details */
+
+/* Service Footer Actions */
 .service-footer-actions {
-    display: flex;
-    gap: 10px;
+    /* Using app-footer-actions base class now */
 }
 .service-footer-actions .consult-button {
-    flex-basis: 40%; /* Consult button smaller */
+    flex-basis: 40%;
     background-color: var(--white-bg);
     border: 1px solid var(--primary-color);
     color: var(--primary-color);
@@ -257,5 +269,5 @@
     background-color: #f0f8ff;
 }
 .service-footer-actions .book-button {
-    flex-grow: 1; /* Book button larger */
+    flex-grow: 1;
 }

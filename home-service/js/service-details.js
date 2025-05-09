@@ -1,7 +1,6 @@
 // js/service-details.js
 
-// PASTE THE showModernAlert function HERE (or link a shared JS file)
-function showModernAlert(message, title = "提示", type = "info") { /* ... (full function code) ... */ }
+// PASTE THE showModernAlert function HERE if not using a shared file
 
 function switchTab(tabElement) {
     document.querySelectorAll('.header-tabs .tab-item').forEach(tab => tab.classList.remove('active'));
@@ -24,11 +23,12 @@ function consultService() {
 }
 
 function bookNowDefault() {
-    const firstServiceCard = document.querySelector('.service-option-card');
-    if (firstServiceCard) {
-        const title = firstServiceCard.querySelector('.title').textContent;
-        const priceText = firstServiceCard.querySelector('.price').textContent;
-        const priceMatch = priceText.match(/(\d+(\.\d+)?)/); // Extract numbers, including decimals
+    // Select the first item in the vertical list
+    const firstServiceItem = document.querySelector('.service-options-list .service-option-item');
+    if (firstServiceItem) {
+        const title = firstServiceItem.querySelector('.title').textContent;
+        const priceText = firstServiceItem.querySelector('.price').textContent;
+        const priceMatch = priceText.match(/(\d+(\.\d+)?)/);
         const price = priceMatch ? priceMatch[1] : '0';
         goToOrder(title, price);
     } else {
