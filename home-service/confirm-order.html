@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>确认订单</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/confirm-order.css">
+</head>
+<body>
+    <div class="mobile-screen-view">
+        <header class="app-header">
+            <div class="back-icon" onclick="goBack()"><i class="fas fa-chevron-left"></i></div>
+            <span class="title">确认订单</span>
+            <div class="actions">
+                <i class="fas fa-ellipsis-h"></i>
+                <i class="fas fa-headset"></i>
+            </div>
+        </header>
+
+        <main class="app-container">
+            <div class="info-banner">
+                <span class="info-banner-item"><i class="fas fa-shield-alt"></i> 极速维权</span>
+                <span class="info-banner-item"><i class="fas fa-check-circle"></i> 不满意免费重做</span>
+                <span class="info-banner-item"><i class="fas fa-user-shield"></i> 全程上险</span>
+            </div>
+
+            <div class="list-item-base" onclick="selectAddress()">
+                <div class="label">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span id="address-text">请输入正确的服务地址</span>
+                </div>
+                <div class="value">
+                    <i class="fas fa-chevron-right arrow-right"></i>
+                </div>
+            </div>
+            
+            <div class="list-item-base" onclick="selectService()">
+                <div class="label">
+                    <i class="fas fa-concierge-bell"></i>
+                    <span>选择服务</span>
+                </div>
+                <div class="value">
+                    <span id="service-name-display">初开荒 (无家具) 50㎡以内</span>
+                    <i class="fas fa-chevron-right arrow-right"></i>
+                </div>
+            </div>
+            
+            <!-- ... other list items using list-item-base class ... -->
+             <div class="list-item-base" onclick="selectTime()">
+                <div class="label">
+                    <i class="fas fa-clock"></i>
+                    <span>上门时间</span>
+                </div>
+                <div class="value">
+                    <span>今天15:00</span>
+                    <i class="fas fa-chevron-right arrow-right"></i>
+                </div>
+            </div>
+
+            <div class="list-item-base" onclick="selectDiscount()">
+                <div class="label">
+                    <i class="fas fa-tags"></i>
+                    <span>优惠</span>
+                </div>
+                <div class="value">
+                    <span class="tag tag-info">已选推荐优惠券</span>
+                    <span class="tag tag-promo">9.5折券</span>
+                    <i class="fas fa-chevron-right arrow-right"></i>
+                </div>
+            </div>
+
+
+            <div class="recharge-promo-section">
+                <div class="recharge-promo-header">
+                    <span class="title"><i class="fas fa-gift"></i> 现在储值，本单最高立减<span style="font-size:18px;">50</span>元</span>
+                    <span class="status-tag">权益未生效</span>
+                </div>
+                <div class="recharge-options">
+                    <div class="recharge-option" onclick="selectRecharge(this, 1000)">
+                        <div class="price">¥1000</div>
+                        <div class="benefit">充值就送1866元优惠券</div>
+                    </div>
+                    <div class="recharge-option" onclick="selectRecharge(this, 2000)">
+                        <div class="price">¥2000</div>
+                        <div class="benefit">充值就送2666元优惠券</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section-card" style="margin-top: 10px;"> <!-- Grouping related items in a card -->
+                <div class="list-item-base" onclick="addRemarks()">
+                    <div class="label">
+                        <i class="fas fa-pencil-alt"></i>
+                        <span>备注</span>
+                    </div>
+                    <div class="value">
+                        <span>可填写特殊需求</span>
+                        <i class="fas fa-chevron-right arrow-right"></i>
+                    </div>
+                </div>
+
+                <div class="list-item-base" onclick="selectPaymentMethod()">
+                    <div class="label">
+                        <i class="fas fa-wallet"></i>
+                        <span>支付方式</span>
+                    </div>
+                    <div class="value">
+                        <span>微信支付</span>
+                        <i class="fas fa-chevron-right arrow-right"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section-card purchase-notice-section section-card-padded"> <!-- Combined classes -->
+                <div class="notice-title">购买须知</div>
+                <div class="notice-text">
+                    服务开始前120分钟可免费取消；120分钟内取消且服务人员已经接单，平台将扣除您20%的支付金额(...)
+                    <span class="view-notice-link" onclick="viewFullNotice()">查看购买须知</span>
+                </div>
+                <div class="agreement-checkbox">
+                    <input type="checkbox" id="agreementCheckbox">
+                    <label for="agreementCheckbox">我已阅读并同意 <a href="#">《“58到家”服务协议》</a> 和 <a href="#">《“58到家”赔诊服务协议》</a></label>
+                </div>
+            </div>
+            <div style="height: 20px;"></div> <!-- Spacer for footer -->
+        </main>
+
+        <footer class="app-footer-bar">
+            <div class="footer-bar-price">
+                共计 <span class="amount" id="total-amount-display">¥531</span>
+                <span class="original-price">¥549</span>
+                <span class="discount-info">优惠 ¥18</span>
+            </div>
+            <button class="app-button app-button-primary" onclick="submitOrder()">预约并支付</button>
+        </footer>
+    </div>
+    <script src="js/confirm-order.js"></script>
+</body>
+</html>

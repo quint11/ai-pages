@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>服务详情</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/service-details.css">
+</head>
+<body>
+    <div class="mobile-screen-view">
+        <!-- Optional: If this page also needs a standard app header -->
+        <!-- <header class="app-header"> ... </header> -->
+        
+        <header class="header-tabs"> <!-- This can be the top-most bar for this page -->
+            <span class="tab-item active" onclick="switchTab(this)">开荒保洁</span>
+            <span class="tab-item" onclick="switchTab(this)">日常保洁</span>
+            <!-- ... more tabs ... -->
+        </header>
+
+        <main class="app-container">
+            <div class="service-options-slider">
+                <div class="service-option-card">
+                    <div class="title">初开荒 (无家具) 50㎡以内</div>
+                    <div class="description">新房首次保洁，不含家具内部，适合50平米以内空间。</div>
+                    <div class="price-action">
+                        <div class="price">¥299 <span class="unit">/次</span></div>
+                        <button class="order-button" onclick="goToOrder('初开荒 (无家具) 50㎡以内', '299')">去下单</button>
+                    </div>
+                </div>
+                <div class="service-option-card">
+                    <div class="title">初开荒 (有家具) 80㎡以内</div>
+                    <div class="description">新房首次保洁，包含家具表面，适合80平米以内空间。</div>
+                    <div class="price-action">
+                        <div class="price">¥459 <span class="unit">/次</span></div>
+                        <button class="order-button" onclick="goToOrder('初开荒 (有家具) 80㎡以内', '459')">去下单</button>
+                    </div>
+                </div>
+                <!-- ... more service option cards ... -->
+            </div>
+
+            <section class="section-card service-content-highlights">
+                <div class="section-title-bar"><i class="fas fa-clipboard-list"></i> 服务内容</div>
+                <div class="highlight-grid section-card-padded" style="padding-top:0;"> <!-- Adjusted padding -->
+                    <!-- ... highlight items ... -->
+                </div>
+            </section>
+
+            <!-- service-details.html (snippet) -->
+            <section class="section-card section-card-padded">
+                <div class="section-title-bar" style="border-bottom: none; padding-bottom: 5px;">
+                   <i class="fas fa-medal"></i> 更高服务标准 清洁更省心
+                </div>
+                <div class="image-text-section">
+                    <!-- Changed image source -->
+                    <img src="https://picsum.photos/350/150?random=1" alt="专业设备">
+                    <h3>全方位无死角除尘</h3>
+                    <p>采用专业吸尘设备，对天花板、墙面、地面、缝隙等进行彻底除尘。</p>
+                </div>
+                <div class="image-text-section">
+                     <!-- Changed image source -->
+                    <img src="https://picsum.photos/350/150?random=2" alt="清洁效果">
+                    <h3>除胶除漆无残留</h3>
+                    <p>针对装修残留的胶渍、漆点，使用专用清洁剂和工具，安全有效去除，不损伤物品表面。</p>
+                </div>
+                <div class="image-text-section">
+                     <!-- Added another example section -->
+                    <img src="https://picsum.photos/350/150?random=3" alt="高温蒸汽消毒">
+                    <h3>高温蒸汽消毒</h3>
+                    <p>马桶、地漏等易滋生细菌区域，采用高温蒸汽机进行消毒杀菌，呵护家人健康。</p>
+                </div>
+            </section>
+            
+            <!-- ... other sections ... -->
+
+            <section class="section-card section-card-padded">
+                 <div class="section-title-bar"><i class="fas fa-comments"></i> 用户评价 (15624+)</div>
+                 <div class="user-review">
+                    <div class="user-info">
+                        <div class="avatar"><i class="fas fa-user"></i></div>
+                        <div class="user-details">
+                            <span class="username">张女士</span>
+                            <div class="rating">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="comment">阿姨打扫得非常干净，新家焕然一新！边边角角都处理得很到位，非常满意！</p>
+                    <div class="review-images">
+                        <!-- Changed image sources -->
+                        <img src="https://picsum.photos/70/70?random=101" alt="Review image 1">
+                        <img src="https://picsum.photos/70/70?random=102" alt="Review image 2">
+                        <img src="https://picsum.photos/70/70?random=103" alt="Review image 3">
+                    </div>
+                </div>
+                 <div class="user-review">
+                    <div class="user-info">
+                        <div class="avatar"><i class="fas fa-user"></i></div>
+                        <div class="user-details">
+                            <span class="username">李先生</span>
+                             <div class="rating">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="comment">整体不错，就是厨房油烟机外面擦了，里面没擦。希望下次能更细致一点。</p>
+                    <!-- No images for this review example -->
+                </div>
+            </section>
+
+            <div style="height: 20px;"></div> <!-- Spacer for footer -->
+        </main>
+
+        <footer class="app-footer-bar service-footer-actions">
+            <button class="app-button consult-button" onclick="consultService()">
+                <i class="fas fa-comments"></i> 咨询客服
+            </button>
+            <button class="app-button app-button-primary book-button" onclick="bookNowDefault()">
+                立即预约
+            </button>
+        </footer>
+    </div>
+    <script src="js/service-details.js"></script>
+</body>
+</html>

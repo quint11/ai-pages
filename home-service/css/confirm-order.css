@@ -1,0 +1,143 @@
+/* css/confirm-order.css */
+.info-banner {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 15px;
+    background-color: #e9f7ff;
+    font-size: var(--font-size-sm);
+    color: var(--primary-color);
+}
+.info-banner-item {
+    display: flex;
+    align-items: center;
+}
+.info-banner-item i {
+    margin-right: 5px;
+    color: var(--success-color);
+}
+
+/* Recharge Promo */
+.recharge-promo-section {
+    background-color: #fff8e1; /* Light yellow */
+    padding: 15px;
+    margin: 10px;
+    border-radius: var(--border-radius);
+    border: 1px solid #ffeccc;
+}
+.recharge-promo-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+.recharge-promo-header .title {
+    font-size: var(--font-size-md);
+    font-weight: 600;
+    color: var(--danger-color);
+}
+.recharge-promo-header .title i {
+    margin-right: 5px;
+}
+.recharge-promo-header .status-tag {
+    background-color: #f0f0f0;
+    color: var(--text-light-color);
+    padding: 4px 10px;
+    font-size: 11px;
+    border-radius: 12px;
+}
+.recharge-options {
+    display: flex;
+    gap: 10px; /* Spacing between options */
+}
+.recharge-option {
+    flex: 1;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    padding: 10px;
+    text-align: center;
+    background-color: var(--white-bg);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.recharge-option.selected {
+    border-color: var(--danger-color);
+    background-color: #fff5f5;
+    box-shadow: 0 0 0 1px var(--danger-color);
+}
+.recharge-option .price {
+    font-size: var(--font-size-xl);
+    font-weight: bold;
+    color: var(--danger-color);
+    margin-bottom: 5px;
+}
+.recharge-option .benefit {
+    font-size: var(--font-size-sm);
+    color: var(--text-light-color);
+}
+
+/* Purchase Notice */
+.purchase-notice-section {
+    padding: 15px; /* Already in section-card-padded */
+    font-size: var(--font-size-sm);
+    color: var(--text-light-color);
+}
+.purchase-notice-section .notice-title {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 10px;
+}
+.purchase-notice-section .notice-text {
+    line-height: 1.7;
+    margin-bottom: 10px;
+}
+.purchase-notice-section .view-notice-link {
+    color: var(--primary-color);
+    text-decoration: none;
+    cursor: pointer;
+    font-weight: 500;
+}
+.agreement-checkbox {
+    display: flex;
+    align-items: flex-start;
+    margin-top: 15px;
+    font-size: var(--font-size-sm);
+    color: var(--text-light-color);
+}
+.agreement-checkbox input[type="checkbox"] {
+    margin-right: 8px;
+    margin-top: 3px; /* Align checkbox better */
+    width: 16px;
+    height: 16px;
+}
+.agreement-checkbox label a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+.agreement-checkbox label a:hover {
+    text-decoration: underline;
+}
+
+
+/* Footer price section */
+.footer-bar-price .total-price {
+    font-size: var(--font-size-md);
+    color: var(--text-color);
+}
+.footer-bar-price .amount {
+    font-size: 22px;
+    font-weight: bold;
+    color: var(--danger-color);
+}
+.footer-bar-price .original-price {
+    text-decoration: line-through;
+    color: #999;
+    font-size: var(--font-size-sm);
+    margin-left: 5px;
+}
+.footer-bar-price .discount-info {
+    font-size: var(--font-size-sm);
+    color: var(--danger-color);
+    display: block;
+}

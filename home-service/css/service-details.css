@@ -1,0 +1,261 @@
+/* css/service-details.css */
+
+/* Header Tabs */
+.header-tabs {
+    display: flex;
+    background-color: var(--white-bg);
+    padding: 0 10px; /* Remove vertical padding, add horizontal */
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 0; /* Stick below the main app header if it exists, or at top */
+    z-index: 999; /* Below main header if any */
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch; /* Smooth scroll on iOS */
+}
+.header-tabs::-webkit-scrollbar { display: none; } /* Hide scrollbar */
+
+.header-tabs .tab-item {
+    padding: 12px 15px;
+    margin: 0 2px;
+    font-size: var(--font-size-md);
+    color: var(--text-light-color);
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: color 0.2s ease, border-color 0.2s ease;
+    display: inline-block;
+    position: relative;
+}
+.header-tabs .tab-item.active {
+    color: var(--primary-color);
+    font-weight: 600;
+    border-bottom-color: var(--primary-color);
+}
+
+/* Service Options Slider */
+.service-options-slider {
+    padding: 15px 0 15px 15px; /* Left padding for the first item */
+    background-color: var(--light-bg); /* or transparent if section-card handles it */
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 10px; /* Space before next section */
+}
+.service-options-slider::-webkit-scrollbar { display: none; }
+
+.service-option-card {
+    display: inline-block;
+    width: 280px;
+    background-color: var(--white-bg);
+    border: 1px solid var(--border-light-color);
+    border-radius: var(--border-radius);
+    margin-right: 10px;
+    padding: 15px;
+    box-shadow: var(--box-shadow);
+    vertical-align: top;
+}
+.service-option-card .title {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    margin-bottom: 8px;
+    white-space: normal;
+}
+.service-option-card .description {
+    font-size: var(--font-size-sm);
+    color: var(--text-light-color);
+    margin-bottom: 12px;
+    white-space: normal;
+    min-height: 3.2em; /* Approx 2 lines */
+    line-height: 1.6;
+}
+.service-option-card .price-action {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+.service-option-card .price {
+    font-size: var(--font-size-xl);
+    font-weight: bold;
+    color: var(--danger-color);
+}
+.service-option-card .price .unit {
+    font-size: var(--font-size-sm);
+    font-weight: normal;
+    color: var(--text-light-color);
+}
+.service-option-card .order-button {
+    background-color: var(--accent-color);
+    color: white;
+    padding: 8px 18px;
+    border: none;
+    border-radius: 16px;
+    font-size: var(--font-size-md);
+    font-weight: 500;
+    cursor: pointer;
+}
+
+/* Service Content Highlights in a section-card */
+.service-content-highlights .highlight-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 15px;
+    text-align: center;
+    padding-top: 10px; /* Add some space if section-title-bar is used */
+}
+.service-content-highlights .highlight-item i {
+    font-size: 26px;
+    color: var(--primary-color);
+    margin-bottom: 8px;
+}
+.service-content-highlights .highlight-item p {
+    font-size: var(--font-size-sm);
+    margin: 0;
+    color: var(--text-color);
+}
+
+/* Image + Text Sections */
+.image-text-section {
+    margin-bottom: 20px;
+}
+.image-text-section:last-child {
+    margin-bottom: 0;
+}
+.image-text-section img {
+    width: 100%;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    display: block;
+}
+.image-text-section h3 {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 8px;
+}
+.image-text-section p {
+    font-size: var(--font-size-md);
+    color: var(--text-light-color);
+    line-height: 1.7;
+    margin-top: 0;
+}
+
+/* FAQ */
+.faq-item {
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-light-color);
+}
+.faq-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+.faq-item .question {
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text-color);
+    display: flex; /* For Q: prefix */
+}
+.faq-item .question::before {
+    content: "Q:";
+    color: var(--primary-color);
+    margin-right: 8px;
+    font-weight: bold;
+}
+.faq-item .answer {
+    font-size: var(--font-size-md);
+    color: var(--text-light-color);
+    line-height: 1.7;
+    padding-left: 25px; /* Align with question text */
+}
+.faq-item .answer::before {
+    content: "A:";
+    color: var(--success-color); /* Or another distinct color */
+    margin-right: 8px;
+    font-weight: bold;
+    position: absolute; /* Requires .answer to be relative or adjust padding */
+    left: 15px; /* Match question's Q: padding */
+}
+.faq-item .answer {
+    position: relative;
+    padding-left: 30px; /* Make space for "A:" */
+}
+
+
+/* User Reviews */
+.user-review {
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid var(--border-light-color);
+}
+.user-review:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+.user-review .user-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.user-review .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #e0e0e0; /* Placeholder */
+    margin-right: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden; /* If using img inside */
+}
+.user-review .avatar i {
+    font-size: 20px;
+    color: #757575;
+}
+.user-review .user-details .username {
+    font-weight: 600;
+    font-size: var(--font-size-md);
+}
+.user-review .user-details .rating .fa-star {
+    color: #fdd835; /* Yellow star */
+    font-size: var(--font-size-sm);
+}
+.user-review .comment {
+    font-size: var(--font-size-md);
+    line-height: 1.7;
+    color: var(--text-color);
+    margin-bottom: 10px;
+}
+.user-review .review-images {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+}
+.user-review .review-images img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 1px solid var(--border-light-color);
+}
+
+/* Footer Actions for service details */
+.service-footer-actions {
+    display: flex;
+    gap: 10px;
+}
+.service-footer-actions .consult-button {
+    flex-basis: 40%; /* Consult button smaller */
+    background-color: var(--white-bg);
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+}
+.service-footer-actions .consult-button:hover {
+    background-color: #f0f8ff;
+}
+.service-footer-actions .book-button {
+    flex-grow: 1; /* Book button larger */
+}
