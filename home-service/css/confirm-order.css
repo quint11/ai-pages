@@ -4,9 +4,10 @@
     justify-content: space-around;
     align-items: center;
     padding: 10px 15px;
-    background-color: #e9f7ff;
+    background-color: #e9f7ff; /* Light blue from var(--primary-color) with alpha */
     font-size: var(--font-size-sm);
     color: var(--primary-color);
+    border-bottom: 1px solid var(--border-light-color);
 }
 .info-banner-item {
     display: flex;
@@ -17,44 +18,84 @@
     color: var(--success-color);
 }
 
-/* Recharge Promo */
+/* Input fields within list items */
+.list-item-base .value.input-value {
+    flex-grow: 1; /* Allow input to take space */
+    margin-left: 15px; /* Space between label and input */
+}
+.form-input {
+    width: 100%;
+    padding: 8px 0; /* Adjust padding */
+    border: none;
+    background-color: transparent;
+    font-size: var(--font-size-md);
+    color: var(--text-color);
+    text-align: right; /* Align text to the right like other values */
+    outline: none;
+}
+.form-input::placeholder {
+    color: #bbb;
+    font-size: var(--font-size-md);
+}
+.form-input.time-input { /* Special handling for datetime-local if needed */
+    min-width: 160px; /* Ensure enough space for date and time */
+}
+/* Attempt to hide the default ugly clear button on some browsers for datetime-local */
+input[type="datetime-local"]::-webkit-clear-button,
+input[type="datetime-local"]::-webkit-inner-spin-button {
+    display: none;
+}
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  /* You can try to style this, but it's very limited. 
+     Often better to create a custom picker for full control.
+     For now, we'll leave it default or try to hide it and trigger via JS if needed. */
+  /* background: none; */
+  /* color: var(--primary-color); */
+  /* cursor: pointer; */
+}
+
+
+/* Recharge Promo Section - Refined */
 .recharge-promo-section {
     background-color: #fff8e1; /* Light yellow */
-    padding: 15px;
-    margin: 10px;
-    border-radius: var(--border-radius);
+    padding: 15px 20px; /* Increased padding */
+    margin: 12px 10px; /* Consistent with section-card */
+    border-radius: 12px; /* Consistent rounding */
     border: 1px solid #ffeccc;
 }
 .recharge-promo-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 12px;
+    margin-bottom: 15px; /* More space */
 }
 .recharge-promo-header .title {
     font-size: var(--font-size-md);
-    font-weight: 600;
-    color: var(--danger-color);
+    font-weight: 500; /* Less bold */
+    color: #c88f00; /* Darker yellow/brown for text */
+    line-height: 1.4;
 }
 .recharge-promo-header .title i {
-    margin-right: 5px;
+    color: var(--danger-color); /* Keep gift icon red */
+    margin-right: 8px;
 }
 .recharge-promo-header .status-tag {
-    background-color: #f0f0f0;
-    color: var(--text-light-color);
+    background-color: #fff0cc;
+    color: #c88f00;
     padding: 4px 10px;
     font-size: 11px;
     border-radius: 12px;
+    font-weight: 500;
 }
 .recharge-options {
     display: flex;
-    gap: 10px; /* Spacing between options */
+    gap: 12px;
 }
 .recharge-option {
     flex: 1;
-    border: 1px solid #ddd;
-    border-radius: var(--border-radius);
-    padding: 10px;
+    border: 1.5px solid #ffeccc; /* Border matches section */
+    border-radius: 10px; /* Slightly less rounding than section */
+    padding: 12px 10px;
     text-align: center;
     background-color: var(--white-bg);
     cursor: pointer;
@@ -63,34 +104,34 @@
 .recharge-option.selected {
     border-color: var(--danger-color);
     background-color: #fff5f5;
-    box-shadow: 0 0 0 1px var(--danger-color);
+    box-shadow: 0 0 0 1px var(--danger-color), 0 2px 5px rgba(255,80,80,0.2); /* More prominent selection */
 }
 .recharge-option .price {
-    font-size: var(--font-size-xl);
+    font-size: var(--font-size-lg); /* Adjusted size */
     font-weight: bold;
     color: var(--danger-color);
-    margin-bottom: 5px;
+    margin-bottom: 6px;
 }
 .recharge-option .benefit {
     font-size: var(--font-size-sm);
     color: var(--text-light-color);
+    line-height: 1.3;
 }
 
 /* Purchase Notice */
-.purchase-notice-section {
-    padding: 15px; /* Already in section-card-padded */
+.purchase-notice-section { /* Already in section-card */
     font-size: var(--font-size-sm);
     color: var(--text-light-color);
 }
 .purchase-notice-section .notice-title {
-    font-size: var(--font-size-lg);
+    font-size: var(--font-size-lg); /* Consistent with section title */
     font-weight: 600;
     color: var(--text-color);
     margin-bottom: 10px;
 }
 .purchase-notice-section .notice-text {
     line-height: 1.7;
-    margin-bottom: 10px;
+    margin-bottom: 15px; /* More space */
 }
 .purchase-notice-section .view-notice-link {
     color: var(--primary-color);
@@ -104,12 +145,14 @@
     margin-top: 15px;
     font-size: var(--font-size-sm);
     color: var(--text-light-color);
+    line-height: 1.5;
 }
 .agreement-checkbox input[type="checkbox"] {
     margin-right: 8px;
-    margin-top: 3px; /* Align checkbox better */
+    margin-top: 3px;
     width: 16px;
     height: 16px;
+    flex-shrink: 0; /* Prevent checkbox from shrinking */
 }
 .agreement-checkbox label a {
     color: var(--primary-color);
@@ -120,10 +163,11 @@
 }
 
 
-/* Footer price section */
-.footer-bar-price .total-price {
-    font-size: var(--font-size-md);
+/* Footer price section - slightly refined for clarity */
+.footer-bar-price {
+    font-size: var(--font-size-sm); /* Base size for "共计" etc. */
     color: var(--text-color);
+    line-height: 1.4;
 }
 .footer-bar-price .amount {
     font-size: 22px;
@@ -139,5 +183,69 @@
 .footer-bar-price .discount-info {
     font-size: var(--font-size-sm);
     color: var(--danger-color);
-    display: block;
+    /* display: block; (Removed, handled by <br> in HTML for now) */
+}
+
+/* css/confirm-order.css */
+/* ... (other styles for confirm-order page) ... */
+
+/* Footer price section - Enhanced and specific to confirm-order page */
+.app-footer-bar.confirm-order-footer { /* New specific class for this footer */
+    padding: 12px 20px; /* Adjusted padding */
+    min-height: 70px; /* Slightly taller */
+    align-items: center; /* Vertically align items well */
+}
+
+.confirm-order-footer .footer-price-details { /* Container for all price info */
+    display: flex;
+    flex-direction: column; /* Stack price lines */
+    justify-content: center;
+    line-height: 1.3; /* Adjust line height */
+}
+
+.confirm-order-footer .price-line-main { /* For "共计 ¥AMOUNT" */
+    display: flex;
+    align-items: baseline; /* Align "共计" and "¥" nicely */
+    font-size: var(--font-size-sm); /* "共计" text size */
+    color: var(--text-light-color);
+}
+
+.confirm-order-footer .price-line-main .amount {
+    font-size: 26px; /* Larger main price */
+    font-weight: 700; /* Bold */
+    color: var(--danger-color);
+    margin-left: 5px; /* Space after "共计" */
+}
+
+.confirm-order-footer .price-line-secondary { /* For "原价 & 优惠" */
+    font-size: var(--font-size-sm);
+    color: var(--text-light-color);
+    margin-top: 2px; /* Small space from main price line */
+}
+
+.confirm-order-footer .price-line-secondary .original-price {
+    text-decoration: line-through;
+    margin-right: 8px; /* Space between original and discount */
+}
+
+.confirm-order-footer .price-line-secondary .discount-info {
+    color: var(--danger-color); /* Keep discount text red */
+    font-weight: 500;
+}
+
+.confirm-order-footer .submit-payment-button { /* Specific class for the button */
+    padding: 12px 35px; /* Generous padding for a prominent button */
+    border-radius: 25px; /* Fully rounded ends */
+    font-size: var(--font-size-lg); /* 16px */
+    font-weight: 600; /* Bolder */
+    background-color: var(--accent-color); /* Main action color - orange */
+    color: white;
+    min-width: 120px; /* Ensure button has a decent width */
+    text-align: center;
+}
+.confirm-order-footer .submit-payment-button:hover {
+    background-color: #e66a40; /* Darker orange on hover */
+}
+.confirm-order-footer .submit-payment-button:active {
+    transform: scale(0.97); /* Slightly more noticeable press effect */
 }

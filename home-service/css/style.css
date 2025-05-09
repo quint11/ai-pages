@@ -308,3 +308,38 @@ body {
 .modern-alert-box .modern-alert-button:active {
     transform: scale(0.98);
 }
+
+/* css/style.css - (Locate .app-footer-bar and modify/ensure it's like this) */
+.app-footer-bar {
+    display: flex;
+    justify-content: space-between; /* Default for two items */
+    align-items: center;
+    padding: 10px 15px;
+    background-color: var(--white-bg);
+    border-top: 1px solid var(--border-color);
+    position: sticky;
+    bottom: 0;
+    z-index: 1000;
+    min-height: 60px; /* Existing */
+    box-shadow: 0 -2px 8px rgba(0,0,0,0.05); /* Add a subtle top shadow */
+}
+
+.app-button { /* Ensure this is defined */
+    padding: 10px 20px;
+    border-radius: 20px; /* Default rounding */
+    border: none;
+    font-size: var(--font-size-lg);
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+.app-button-primary {
+    background-color: var(--accent-color);
+    color: white;
+}
+.app-button-primary:hover {
+    background-color: #e66a40; /* Darker accent */
+}
+.app-button-primary:active {
+    transform: scale(0.98);
+}
