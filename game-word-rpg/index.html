@@ -25,8 +25,9 @@
         }
         
         .container {
-            max-width: 1100px;
+            max-width: 1500px;
             width: 100%;
+            height: 100%;
             background: rgba(10, 15, 30, 0.85);
             border-radius: 20px;
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
@@ -297,7 +298,7 @@
         
         .combat-buttons {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 12px;
         }
         
@@ -503,10 +504,10 @@
         }
         
         .start-title {
-            font-size: 4.5rem;
+            font-size: 4.0rem;
             color: #ffd700;
             text-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             animation: pulse 2s infinite;
         }
         
@@ -519,7 +520,7 @@
         .start-subtitle {
             font-size: 1.8rem;
             color: #a8c6ff;
-            max-width: 700px;
+            max-width: 1200px;
             margin-bottom: 40px;
             line-height: 1.6;
         }
@@ -708,7 +709,6 @@
         <div class="decoration shield">🛡️</div>
         
         <header>
-            <h1>冒险者传说</h1>
             <div class="subtitle">探索神秘大陆，击败强大敌人，成为传奇英雄！</div>
         </header>
         
@@ -752,9 +752,9 @@
                     <h2 class="section-title"><i class="fas fa-user"></i> 冒险者信息</h2>
                     
                     <div class="player-info">
-                        <div class="player-image" id="playerIcon">🧙‍♂️</div>
-                        <div class="player-name" id="playerName">艾利克斯</div>
-                        <div class="player-class" id="playerClass">魔法战士</div>
+                        <div class="player-image" id="playerIcon"></div>
+                        <div class="player-name" id="playerName"></div>
+                        <div class="player-class" id="playerClass"></div>
                     </div>
                     
                     <div class="status-container">
@@ -808,21 +808,6 @@
                             <div>生命药水</div>
                             <div class="item-count" id="potion-count">1</div>
                         </div>
-                        <div class="item" id="mana-potion">
-                            <div class="item-icon">💧</div>
-                            <div>魔法药水</div>
-                            <div class="item-count" id="mana-potion-count">0</div>
-                        </div>
-                        <div class="item" id="attack-potion">
-                            <div class="item-icon">⚔️</div>
-                            <div>攻击药剂</div>
-                            <div class="item-count" id="attack-potion-count">0</div>
-                        </div>
-                        <div class="item" id="defense-potion">
-                            <div class="item-icon">🛡️</div>
-                            <div>防御药剂</div>
-                            <div class="item-count" id="defense-potion-count">0</div>
-                        </div>
                         <div class="item" id="key-item">
                             <div class="item-icon">🔑</div>
                             <div>神秘钥匙</div>
@@ -842,30 +827,8 @@
                 </div>
                 
                 <div class="game-section">
-                    <h2 class="section-title"><i class="fas fa-scroll"></i> 冒险日志</h2>
-                    <div class="game-log" id="gameLog">
-                        <p>欢迎来到冒险者传说！你是一名初出茅庐的冒险者。</p>
-                        <p>你出现在宁静村庄的广场上。村民们看起来有些不安，似乎有事情发生。</p>
-                        <p class="event">村长告诉你：最近村庄附近出现了怪物，请帮帮我们！</p>
-                        <p class="quest">任务：击败幽暗森林的怪物（0/3）</p>
-                    </div>
                     
-                    <h3 class="section-title"><i class="fas fa-map-marker-alt"></i> 当前位置: <span id="location">宁静村庄</span></h3>
-                    
-                    <div class="action-buttons">
-                        <button id="exploreBtn"><i class="fas fa-binoculars"></i> 探索当前区域</button>
-                        <button id="restBtn"><i class="fas fa-bed"></i> 休息恢复</button>
-                        <button id="shopBtn"><i class="fas fa-shopping-cart"></i> 访问商店</button>
-                        <button id="upgradeBtn"><i class="fas fa-tools"></i> 升级装备</button>
-                    </div>
-                    
-                    <div class="location-buttons">
-                        <button id="forestBtn"><i class="fas fa-tree"></i> 幽暗森林</button>
-                        <button id="caveBtn"><i class="fas fa-mountain"></i> 神秘洞穴</button>
-                        <button id="mountainBtn"><i class="fas fa-dragon"></i> 巨龙山脉</button>
-                    </div>
-                    
-                    <div id="combatSection" style="display: none;">
+                    <div id="combatSection">
                         <div class="enemy-info">
                             <div class="enemy-image" id="enemyImage">🐺</div>
                             <div style="font-size: 1.3rem; margin-bottom: 10px;">敌人: <span id="enemyName">野狼</span></div>
@@ -887,11 +850,41 @@
                         
                         <div class="combat-buttons">
                             <button id="attackBtn"><i class="fas fa-fist-raised"></i> 攻击</button>
-                            <button id="skillBtn"><i class="fas fa-magic"></i> 使用技能</button>
-                            <button id="potionBtn"><i class="fas fa-wine-bottle"></i> 使用药水</button>
+                            <button id="skillBtn"><i class="fas fa-magic"></i> 技能</button>
+                            <button id="potionBtn"><i class="fas fa-wine-bottle"></i> 药水</button>
                             <button id="fleeBtn"><i class="fas fa-running"></i> 逃跑</button>
                         </div>
                     </div>
+
+                    <div id="noCombatSection" style="text-align: center; padding: 40px 20px;">
+                        <div style="font-size: 4rem; margin-bottom: 20px;">⚔️</div>
+                        <p>当前没有战斗</p>
+                        <p class="event" style="margin-top: 10px;">探索区域可能会遇到敌人！</p>
+                    </div>
+                    
+                    <h3 class="section-title"><i class="fas fa-map-marker-alt"></i> 当前位置: <span id="location">宁静村庄</span></h3>
+                    
+                    <div class="action-buttons">
+                        <button id="exploreBtn"><i class="fas fa-binoculars"></i> 探索当前区域</button>
+                        <button id="restBtn"><i class="fas fa-bed"></i> 休息恢复</button>
+                        <button id="shopBtn"><i class="fas fa-shopping-cart"></i> 访问商店</button>
+                        <button id="upgradeBtn"><i class="fas fa-tools"></i> 升级装备</button>
+                    </div>
+                    
+                    <div class="location-buttons">
+                        <button id="forestBtn"><i class="fas fa-tree"></i> 幽暗森林</button>
+                        <button id="caveBtn"><i class="fas fa-mountain"></i> 神秘洞穴</button>
+                        <button id="mountainBtn"><i class="fas fa-dragon"></i> 巨龙山脉</button>
+                    </div>
+                    
+                    <h2 class="section-title"><i class="fas fa-scroll"></i> 冒险日志</h2>
+                    <div class="game-log" id="gameLog">
+                        <p>欢迎来到冒险者传说！你是一名初出茅庐的冒险者。</p>
+                        <p>你出现在宁静村庄的广场上。村民们看起来有些不安，似乎有事情发生。</p>
+                        <p class="event">村长告诉你：最近村庄附近出现了怪物，请帮帮我们！</p>
+                        <p class="quest">任务：击败幽暗森林的怪物（0/3）</p>
+                    </div>
+                    
                 </div>
             </div>
         </div>
@@ -968,19 +961,19 @@
         // 敌人数据
         const enemies = {
             forest: [
-                { name: "野狼", health: 40, maxHealth: 40, attack: 10, minGold: 5, maxGold: 15, exp: 30, emoji: "🐺" },
-                { name: "巨蜘蛛", health: 30, maxHealth: 30, attack: 12, minGold: 8, maxGold: 18, exp: 40, emoji: "🕷️" },
-                { name: "森林巨熊", health: 80, maxHealth: 80, attack: 18, minGold: 20, maxGold: 35, exp: 70, emoji: "🐻" }
+                { name: "野狼", health: 80, maxHealth: 80, attack: 10, minGold: 5, maxGold: 15, exp: 30, emoji: "🐺" },
+                { name: "巨蜘蛛", health: 60, maxHealth: 60, attack: 12, minGold: 8, maxGold: 18, exp: 40, emoji: "🕷️" },
+                { name: "森林巨熊", health: 150, maxHealth: 150, attack: 18, minGold: 20, maxGold: 35, exp: 70, emoji: "🐻" }
             ],
             cave: [
-                { name: "洞穴蝙蝠", health: 25, maxHealth: 25, attack: 8, minGold: 3, maxGold: 10, exp: 20, emoji: "🦇" },
-                { name: "剧毒蝎子", health: 35, maxHealth: 35, attack: 14, minGold: 10, maxGold: 20, exp: 45, emoji: "🦂" },
-                { name: "石像鬼", health: 100, maxHealth: 100, attack: 22, minGold: 30, maxGold: 50, exp: 100, emoji: "🗿" }
+                { name: "洞穴蝙蝠", health: 65, maxHealth: 65, attack: 8, minGold: 3, maxGold: 10, exp: 20, emoji: "🦇" },
+                { name: "剧毒蝎子", health: 85, maxHealth: 85, attack: 14, minGold: 10, maxGold: 20, exp: 45, emoji: "🦂" },
+                { name: "石像鬼", health: 180, maxHealth: 180, attack: 22, minGold: 30, maxGold: 50, exp: 100, emoji: "🗿" }
             ],
             mountain: [
-                { name: "山鹰", health: 45, maxHealth: 45, attack: 16, minGold: 15, maxGold: 25, exp: 50, emoji: "🦅" },
-                { name: "雪怪", health: 120, maxHealth: 120, attack: 26, minGold: 40, maxGold: 70, exp: 150, emoji: "❄️" },
-                { name: "红龙", health: 400, maxHealth: 400, attack: 45, minGold: 200, maxGold: 300, exp: 500, emoji: "🐉" }
+                { name: "山鹰", health: 125, maxHealth: 125, attack: 16, minGold: 15, maxGold: 25, exp: 50, emoji: "🦅" },
+                { name: "雪怪", health: 200, maxHealth: 200, attack: 26, minGold: 40, maxGold: 70, exp: 150, emoji: "❄️" },
+                { name: "红龙", health: 500, maxHealth: 500, attack: 45, minGold: 200, maxGold: 300, exp: 500, emoji: "🐉" }
             ]
         };
         
@@ -1036,9 +1029,6 @@
         const expEl = document.getElementById('exp');
         const levelEl = document.getElementById('level');
         const potionCountEl = document.getElementById('potion-count');
-        const manaPotionCountEl = document.getElementById('mana-potion-count');
-        const attackPotionCountEl = document.getElementById('attack-potion-count');
-        const defensePotionCountEl = document.getElementById('defense-potion-count');
         const keyCountEl = document.getElementById('key-count');
         const gemCountEl = document.getElementById('gem-count');
         const locationEl = document.getElementById('location');
@@ -1059,6 +1049,67 @@
         const finalGold = document.getElementById('finalGold');
         const finalMonsters = document.getElementById('finalMonsters');
         
+        // 更新战斗UI
+        function updateCombatUI() {
+            if (gameState.inCombat && gameState.enemy) {
+                combatSection.style.display = 'block';
+                noCombatSection.style.display = 'none';
+                updateEnemyInfo();
+            } else {
+                combatSection.style.display = 'none';
+                noCombatSection.style.display = 'block';
+            }
+        }
+        
+        // 禁用战斗按钮
+        function disableCombatButtons() {
+            gameState.actionInProgress = true;
+            attackBtn.disabled = true;
+            skillBtn.disabled = true;
+            potionBtn.disabled = true;
+            fleeBtn.disabled = true;
+        }
+        
+        // 启用战斗按钮
+        function enableCombatButtons() {
+            gameState.actionInProgress = false;
+            attackBtn.disabled = false;
+            skillBtn.disabled = false;
+            potionBtn.disabled = false;
+            fleeBtn.disabled = false;
+            
+            // 更新技能冷却状态
+            updateSkillCooldown();
+        }
+        
+        // 更新技能冷却
+        function updateSkillCooldown() {
+            if (gameState.skillCooldown > 0) {
+                skillBtn.disabled = true;
+                const cooldownElement = document.createElement('div');
+                cooldownElement.className = 'skill-cooldown';
+                cooldownElement.textContent = gameState.skillCooldown;
+                
+                // 移除现有的冷却显示
+                const existingCooldown = document.querySelector('.skill-cooldown');
+                if (existingCooldown) existingCooldown.remove();
+                
+                skillBtn.appendChild(cooldownElement);
+            } else {
+                skillBtn.disabled = false;
+                const existingCooldown = document.querySelector('.skill-cooldown');
+                if (existingCooldown) existingCooldown.remove();
+            }
+        }
+        
+        // 减少技能冷却
+        function reduceSkillCooldown() {
+            if (gameState.skillCooldown > 0) {
+                gameState.skillCooldown--;
+                updateSkillCooldown();
+            }
+        }
+
         // 显示通知
         function showNotification(message) {
             notification.textContent = message;
@@ -1125,7 +1176,7 @@
             updateStats();
             updateInventory();
             locationEl.textContent = locationNames[gameState.location];
-            combatSection.style.display = 'none';
+            updateCombatUI();
             
             // 切换到游戏界面
             startScreen.classList.remove('active');
@@ -1156,9 +1207,6 @@
         // 更新背包
         function updateInventory() {
             potionCountEl.textContent = gameState.potions;
-            manaPotionCountEl.textContent = gameState.manaPotions;
-            attackPotionCountEl.textContent = gameState.attackPotions;
-            defensePotionCountEl.textContent = gameState.defensePotions;
             keyCountEl.textContent = gameState.keys;
             gemCountEl.textContent = gameState.gems;
         }
@@ -1229,17 +1277,13 @@
             const enemyList = enemies[gameState.location];
             const enemy = {...enemyList[Math.floor(Math.random() * enemyList.length)]};
             
-            // 如果是巨龙山脉，确保第三次遇到红龙
-            if (gameState.location === 'mountain' && gameState.monstersDefeated >= 2 && !gameState.dragonDefeated) {
-                gameState.enemy = {...enemies.mountain[2]};
-            } else {
-                gameState.enemy = enemy;
-            }
+      
+            gameState.enemy = enemy;
             
             gameState.inCombat = true;
             
             // 显示战斗界面
-            combatSection.style.display = 'block';
+            updateCombatUI();
             updateEnemyInfo();
             
             addToLog(`你在${locationNames[gameState.location]}遇到了一只${gameState.enemy.name}！`, "event");
@@ -1264,8 +1308,9 @@
         function playerAttack() {
             if (!gameState.inCombat || !gameState.enemy) return;
             
-            // 计算伤害（有20%几率暴击）
-            const isCritical = Math.random() < 0.2;
+            disableCombatButtons()
+            // 计算伤害（有10%几率暴击）
+            const isCritical = Math.random() < 0.1;
             let damage = gameState.attack + Math.floor(Math.random() * 6);
             
             if (isCritical) {
@@ -1295,6 +1340,7 @@
             const isDodged = Math.random() < 0.15;
             if (isDodged) {
                 addToLog(`你闪避了${gameState.enemy.name}的攻击！`, "event");
+                enableCombatButtons()
                 return;
             }
             
@@ -1303,7 +1349,7 @@
             
             addToLog(`${gameState.enemy.name}对你造成了${damage}点伤害！`, "damage");
             updateStats();
-            
+            enableCombatButtons()
             if (gameState.health <= 0) {
                 gameOver();
                 return;
@@ -1314,7 +1360,7 @@
         function enemyDefeated() {
             gameState.monstersDefeated++;
             addToLog(`你击败了${gameState.enemy.name}！`, "event");
-            
+            enableCombatButtons();
             // 获取奖励
             const goldGain = Math.floor(Math.random() * (gameState.enemy.maxGold - gameState.enemy.minGold + 1)) + gameState.enemy.minGold;
             gameState.gold += goldGain;
@@ -1330,11 +1376,6 @@
                 showNotification("获得生命药水 x1");
             }
             
-            if (Math.random() < 0.1) {
-                gameState.manaPotions++;
-                addToLog("获得了1瓶魔法药水！", "event");
-                showNotification("获得魔法药水 x1");
-            }
             
             // 任务系统
             if (gameState.location === 'forest' && gameState.questStep === 1) {
@@ -1371,7 +1412,7 @@
             // 结束战斗
             gameState.inCombat = false;
             gameState.enemy = null;
-            combatSection.style.display = 'none';
+            updateCombatUI();
             
             updateStats();
         }
@@ -1405,6 +1446,8 @@
                 addToLog(`你使用了一瓶生命药水，恢复了${healAmount}点生命值。`, "heal");
                 updateStats();
                 updateInventory();
+                // 敌人反击
+                setTimeout(enemyAttack, 800);
             } else {
                 addToLog("你没有生命药水了！", "event");
             }
@@ -1420,7 +1463,8 @@
             }
             
             gameState.mana -= 20;
-            
+            disableCombatButtons()
+
             let damage = 0;
             switch(gameState.characterClass) {
                 case 'warrior':
@@ -1467,13 +1511,15 @@
         // 逃跑
         function flee() {
             if (!gameState.inCombat) return;
-            
+
+            disableCombatButtons()
             // 70%的几率逃跑成功
             if (Math.random() < 0.7) {
                 addToLog("你成功逃离了战斗！", "event");
                 gameState.inCombat = false;
                 gameState.enemy = null;
-                combatSection.style.display = 'none';
+                updateCombatUI();
+                enableCombatButtons();
             } else {
                 addToLog("逃跑失败！", "event");
                 setTimeout(enemyAttack, 800);
@@ -1572,7 +1618,8 @@
             addToLog("你被击败了...游戏结束！", "event");
             addToLog("按F5刷新页面重新开始游戏。");
             gameState.inCombat = false;
-            combatSection.style.display = 'none';
+            updateCombatUI();
+            enableCombatButtons();
         }
         
         // 保存游戏
