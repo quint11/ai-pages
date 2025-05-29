@@ -19,13 +19,14 @@ header {
   background: none;
   border: 1px solid #ccc;
   border-radius: 20px;
-  padding: 8px 16px;
+  padding: 5px 16px;
   cursor: pointer;
   transition: all 0.3s;
-  font-size: 14px;
+  font-size: 19px;
 }
 #toggle-theme:hover {
   background: #f0f0f0;
+  transform: scale(1.05);
 }
 body.dark #toggle-theme {
   border-color: #555;
@@ -58,8 +59,8 @@ body.dark #toggle-theme:hover {
 }
 
 .github-button svg {
-  width: 18px;
-  height: 18px;
+  width: 19px;
+  height: 19px;
 }
 
 body.dark .github-button {
