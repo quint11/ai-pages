@@ -187,7 +187,7 @@
         }
         
         .progress-bar {
-            height: 6px;
+            height: 50px;
             background: rgba(0,0,0,0.3);
             border-radius: 3px;
             margin-top: 5px;
@@ -722,19 +722,19 @@
                     <div class="character" data-class="warrior">
                         <div class="character-icon">⚔️</div>
                         <div class="character-name">战士</div>
-                        <div class="character-desc">强大的近战专家，拥有高生命值和防御力。特殊能力：雷霆一击 - 造成双倍伤害</div>
+                        <div class="character-desc">强大的近战专家，拥有高生命值和防御力<br>特殊能力：雷霆一击 - 造成双倍伤害</div>
                     </div>
                     
                     <div class="character" data-class="mage">
                         <div class="character-icon">🧙‍♂️</div>
                         <div class="character-name">法师</div>
-                        <div class="character-desc">元素魔法大师，拥有强大的法术攻击。特殊能力：火焰风暴 - 对敌人造成持续伤害</div>
+                        <div class="character-desc">元素魔法大师，拥有强大的法术攻击<br>特殊能力：火焰风暴 - 对敌人造成持续伤害</div>
                     </div>
                     
                     <div class="character" data-class="ranger">
                         <div class="character-icon">🏹</div>
                         <div class="character-name">游侠</div>
-                        <div class="character-desc">敏捷的远程专家，擅长闪避和致命一击。特殊能力：精准射击 - 必定命中并造成额外伤害</div>
+                        <div class="character-desc">敏捷的远程专家，擅长闪避和致命一击<br>特殊能力：精准射击 - 必定命中并造成额外伤害</div>
                     </div>
                 </div>
                 
@@ -773,22 +773,6 @@
                         <div class="progress-bar">
                             <div class="progress-fill mana-fill" id="mana-bar" style="width: 100%"></div>
                         </div>
-                        
-                        <div class="status-bar">
-                            <span class="status-label"><i class="fas fa-shield-alt"></i> 攻击力:</span>
-                            <span id="attack">15</span>
-                        </div>
-                        
-                        <div class="status-bar">
-                            <span class="status-label"><i class="fas fa-shield-virus"></i> 防御力:</span>
-                            <span id="defense">8</span>
-                        </div>
-                        
-                        <div class="status-bar">
-                            <span class="status-label"><i class="fas fa-coins"></i> 金币:</span>
-                            <span id="gold">50</span>
-                        </div>
-                        
                         <div class="status-bar">
                             <span class="status-label"><i class="fas fa-star"></i> 经验值:</span>
                             <div class="xp-bar">
@@ -799,6 +783,25 @@
                         <div class="progress-bar">
                             <div class="progress-fill exp-fill" id="exp-bar" style="width: 0%"></div>
                         </div>
+                        
+
+                        <div class="status-bar">
+                            <span class="status-label"><i class="fas fa-shield-alt"></i> 攻击力:</span>
+                            <span id="attack">15</span>
+                        </div>
+                       
+                        <div class="status-bar">
+                            <span class="status-label"><i class="fas fa-shield-virus"></i> 防御力:</span>
+                            <span id="defense">8</span>
+                        </div>
+                        
+                        <div class="status-bar">
+                            <span class="status-label"><i class="fas fa-coins"></i> 金币:</span>
+                            <span id="gold">50</span>
+                        </div>
+                        
+                        
+            
                     </div>
                     
                     <h3 class="section-title"><i class="fas fa-backpack"></i> 背包</h3>
