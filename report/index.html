@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI每日动态</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Noto Sans SC', sans-serif;
+        }
+        
+        body {
+            width: 3840px;
+            height: 2160px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .container {
+            width: 100%;
+            height: 100%;
+            padding: 80px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: 120px auto;
+            gap: 60px;
+        }
+        
+        .header {
+            grid-column: 1 / 4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        h1 {
+            font-size: 96px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-align: center;
+        }
+        
+        .subtitle {
+            font-size: 42px;
+            color: #666;
+            text-align: center;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 40px;
+            padding: 60px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 8px;
+            height: 100%;
+            background: linear-gradient(to bottom, #3b82f6, #8b5cf6);
+        }
+        
+        .card-title {
+            font-size: 54px;
+            font-weight: 700;
+            margin-bottom: 40px;
+            color: #333;
+            display: flex;
+            align-items: center;
+        }
+        
+        .card-title span {
+            margin-right: 20px;
+        }
+        
+        .card-content {
+            font-size: 36px;
+            line-height: 1.6;
+            color: #555;
+            flex-grow: 1;
+        }
+        
+        .highlight {
+            color: #2563eb;
+            font-weight: 700;
+        }
+        
+        .number {
+            color: #8b5cf6;
+            font-weight: 700;
+        }
+        
+        .brand {
+            color: #dc2626;
+            font-weight: 700;
+        }
+        
+        .image-card {
+            grid-column: span 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+        
+        .news-image {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 30px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .decoration {
+            position: absolute;
+            opacity: 0.1;
+            z-index: -1;
+        }
+        
+        .circle-1 {
+            width: 800px;
+            height: 800px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+            top: -300px;
+            right: -300px;
+        }
+        
+        .circle-2 {
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #8b5cf6, #ec4899);
+            bottom: -200px;
+            left: -200px;
+        }
+    </style>
+</head>
+<body>
+    <div class="decoration circle-1"></div>
+    <div class="decoration circle-2"></div>
+    
+    <div class="container">
+        <div class="header">
+            <h1>AI每日动态速览 🚀</h1>
+            <div class="subtitle">前沿人工智能资讯 · 关键技术创新 · 行业发展趋势</div>
+        </div>
+        
+        <!-- 卡片1 -->
+        <div class="card">
+            <div class="card-title"><span>🔍</span>AI研究新突破</div>
+            <div class="card-content">
+                谷歌DeepMind推出<span class="highlight">新一代蛋白质结构预测模型</span>AlphaFold 3，准确率提升<span class="number">50%</span>，可预测<span class="number">DNA、RNA</span>等分子结构。该技术将加速<span class="highlight">药物研发</span>和<span class="highlight">疾病治疗</span>研究。
+            </div>
+        </div>
+        
+        <!-- 卡片2 -->
+        <div class="card">
+            <div class="card-title"><span>💡</span>AI应用新场景</div>
+            <div class="card-content">
+                <span class="brand">OpenAI</span>与<span class="brand">Figure</span>合作开发<span class="highlight">人形机器人AI系统</span>，实现<span class="number">端到端</span>语音交互和任务执行。机器人可理解自然语言指令并完成<span class="number">整理餐具、分类垃圾</span>等复杂操作。
+            </div>
+        </div>
+        
+        <!-- 卡片3 -->
+        <div class="card">
+            <div class="card-title"><span>📊</span>行业数据洞察</div>
+            <div class="card-content">
+                2024年全球AI市场规模预计达<span class="number">1.8万亿美元</span>，年增长率<span class="number">32%</span>。中国AI企业数量突破<span class="number">5000家</span>，核心产业规模超<span class="number">5000亿元</span>，在<span class="highlight">计算机视觉</span>和<span class="highlight">语音识别</span>领域领先。
+            </div>
+        </div>
+        
+        <!-- 卡片4 -->
+        <div class="card">
+            <div class="card-title"><span>🤖</span>大模型新进展</div>
+            <div class="card-content">
+                <span class="brand">Anthropic</span>发布Claude 3系列模型，其中<span class="highlight">Opus版本</span>在多项基准测试中超越<span class="brand">GPT-4</span>和<span class="brand">Gemini Ultra</span>。新模型具备更强的<span class="number">复杂任务处理</span>和<span class="number">长文本理解</span>能力。
+            </div>
+        </div>
+        
+        <!-- 卡片5 -->
+        <div class="card">
+            <div class="card-title"><span>🌐</span>AI伦理与治理</div>
+            <div class="card-content">
+                欧盟通过全球首个全面<span class="highlight">AI监管法案</span>，对高风险AI系统实施严格限制。法案要求<span class="number">透明度披露</span>和<span class="number">人工监督</span>，违规企业最高面临<span class="number">全球营业额6%</span>的罚款。
+            </div>
+        </div>
+        
+        <!-- 卡片6 - 图片 -->
+        <div class="card image-card">
+            <img src="https://www.aibase.com/storage/uploads/2024/05/14/6642f9e1e4a5a.jpg" alt="AI技术应用" class="news-image">
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            // 背景装饰动画
+            gsap.to('.circle-1', {
+                rotation: 360,
+                duration: 120,
+                repeat: -1,
+                ease: 'none'
+            });
+            
+            gsap.to('.circle-2', {
+                rotation: -360,
+                duration: 150,
+                repeat: -1,
+                ease: 'none'
+            });
+            
+            // 卡片入场动画
+            gsap.from('.card', {
+                opacity: 0,
+                y: 100,
+                duration: 1,
+                stagger: 0.2,
+                ease: 'back.out(1.7)'
+            });
+            
+            // 标题动画
+            gsap.from('h1', {
+                opacity: 0,
+                y: -50,
+                duration: 1,
+                ease: 'power3.out'
+            });
+            
+            gsap.from('.subtitle', {
+                opacity: 0,
+                y: 50,
+                duration: 1,
+                delay: 0.3,
+                ease: 'power3.out'
+            });
+            
+            // 悬停效果
+            document.querySelectorAll('.card').forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    gsap.to(card, {
+                        y: -20,
+                        scale: 1.02,
+                        duration: 0.3,
+                        ease: 'power2.out'
+                    });
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    gsap.to(card, {
+                        y: 0,
+                        scale: 1,
+                        duration: 0.3,
+                        ease: 'power2.out'
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

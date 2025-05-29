@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>成语时空穿越</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <header>
+            <h1 id="level-title">关卡 1</h1>
+            <div id="timer">时间剩余: 03:00</div>
+        </header>
+
+        <main id="game-area">
+            <p id="level-intro">...</p> <!-- 关卡介绍/提示 -->
+
+            <div id="scene-section">
+                <h2 id="scene-title">场景 1</h2>
+                <div id="character-pool">
+                    <!-- 16个字将动态生成在这里 -->
+                </div>
+                <div id="selected-characters">
+                    <span class="char-slot">□</span>
+                    <span class="char-slot">□</span>
+                    <span class="char-slot">□</span>
+                    <span class="char-slot">□</span>
+                </div>
+                 <button id="submit-idiom" disabled>确认成语</button> <!-- 可选：或者选满4个字自动提交 -->
+                <div id="scene-image-container">
+                    <img id="scene-image" src="" alt="场景图片" style="display: none;">
+                </div>
+                <p id="message-area"></p> <!-- 游戏提示信息 -->
+            </div>
+        </main>
+
+        <footer>
+            <button id="retry-button" style="display: none;">重新挑战本关</button>
+            <button id="next-level-button" style="display: none;">进入下一关</button>
+        </footer>
+    </div>
+
+    <script src="game-data.js"></script> <!-- 游戏数据 -->
+    <script src="script.js"></script>   <!-- 游戏逻辑 -->
+</body>
+</html>

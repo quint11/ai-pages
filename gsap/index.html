@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>酷兔家政 - 专业家庭服务</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Montserrat:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- Base Styles & Reset --- */
+        :root {
+            --brand-primary: #28a745; /* 主品牌色 - 清新绿色 */
+            --brand-secondary: #20c997; /* 辅助品牌色 - 亮绿 */
+            --text-dark: #2c3e50;     /* 深蓝灰色 - 标题/重要文字 */
+            --text-body: #555;       /* 深灰色 - 正文 */
+            --text-light: #777;      /* 浅灰色 - 次要文字 */
+            --bg-light: #f8f9fa;     /* 极浅灰背景 - 替代原f4f7f6，更柔和 */
+            --bg-white: #ffffff;
+            --border-light: #e0e0e0; /* 浅边框色 */
+            --shadow-soft: 0 8px 25px rgba(0, 0, 0, 0.07);
+            --shadow-medium: 0 12px 35px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            scroll-behavior: smooth; /* 平滑滚动到锚点 */
+        }
+        body {
+            font-family: 'Noto Sans SC', 'Montserrat', sans-serif; /* 优先使用 Noto Sans SC 中文 */
+            background-color: var(--bg-light);
+            color: var(--text-body);
+            overflow-x: hidden;
+            line-height: 1.7; /* 增加行高以提高可读性 */
+        }
+        .container {
+            width: 90%;
+            max-width: 1140px; /* 稍微调整最大宽度 */
+            margin: 0 auto;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: color 0.3s ease;
+        }
+
+        /* --- Loader --- */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: var(--bg-light);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        .loader-logo {
+            width: 120px;
+            height: auto;
+            opacity: 0;
+            transform: scale(0.5);
+        }
+
+        /* --- Header & Navigation --- */
+        .main-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px 0; /* 稍微减少padding */
+            z-index: 1000;
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px); /* 增强模糊效果 */
+            box-shadow: 0 2px 15px rgba(0,0,0,0.06);
+            transform: translateY(-100%);
+            opacity: 0;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease; /* 添加header滚动时的背景变化过渡 */
+        }
+        .main-header.scrolled { /* JS会添加这个class */
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        .main-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav-logo img {
+            width: 55px; /* 略微调整 */
+            transition: transform 0.3s ease;
+        }
+        .nav-logo:hover img {
+            transform: scale(1.05);
+        }
+        .main-nav ul {
+            list-style: none;
+            display: flex;
+        }
+        .main-nav li {
+            margin-left: 35px; /* 增加间距 */
+        }
+        .main-nav a {
+            font-size: 0.95rem; /* 略微调整 */
+            font-weight: 500;
+            color: var(--text-dark);
+            padding: 10px 5px; /* 增加垂直padding，减少水平padding */
+            position: relative;
+            display: inline-block;
+        }
+        .main-nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%; /* 从中间展开 */
+            width: 0;  /* 初始宽度为0 */
+            height: 2px;
+            background-color: var(--brand-primary);
+            transform: translateX(-50%); /* 配合left: 50% 居中 */
+            transition: width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .main-nav a:hover,
+        .main-nav a.active-link { /* 激活状态 */
+            color: var(--brand-primary);
+        }
+        .main-nav a:hover::after,
+        .main-nav a.active-link::after {
+            width: 100%; /* 悬停或激活时展开 */
+        }
+
+        /* --- Hero Section --- */
+        .hero-section {
+            min-height: 100vh; /* 使用 min-height 保证内容多时也能撑开 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            padding: 80px 0; /* 为小屏幕设备增加上下padding */
+        }
+        .hero-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://picsum.photos/1920/1080?random=1');
+            background-size: cover;
+            background-position: center;
+            z-index: -1;
+            opacity: 0;
+            transform: scale(1.05);
+        }
+         .hero-background::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(0deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.1) 100%); /* 渐变遮罩，底部更暗 */
+        }
+        .hero-content h1 {
+            font-size: clamp(2.5rem, 6vw, 4.8rem); /* 调整字体大小范围 */
+            font-weight: 700;
+            color: var(--bg-white);
+            margin-bottom: 30px;
+            line-height: 1.25;
+            text-shadow: 0 3px 15px rgba(0,0,0,0.4);
+        }
+        .hero-content h1 .char {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        .hero-content .cta-button {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 18px 45px; /* 增大按钮 */
+            background: linear-gradient(95deg, var(--brand-primary), var(--brand-secondary));
+            color: white;
+            border-radius: 50px;
+            font-size: 1.15rem; /* 增大字体 */
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px; /* 增加字间距 */
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.45);
+            transition: transform 0.25s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+            transform: scale(1);
+        }
+
+        /* --- Content Sections (Modules) --- */
+        .content-section {
+            padding: 100px 0;
+        }
+        .content-section h2.section-title {
+            font-size: clamp(2rem, 4vw, 3rem); /* 调整标题大小 */
+            text-align: center;
+            margin-bottom: 70px; /* 增加与下方内容的间距 */
+            color: var(--text-dark);
+            font-weight: 700;
+            opacity: 0;
+            transform: translateY(30px);
+            position: relative;
+            padding-bottom: 15px; /* 为下划线留出空间 */
+        }
+        /* 标题下划线装饰 */
+        .content-section h2.section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70px;
+            height: 3px;
+            background-color: var(--brand-primary);
+            border-radius: 2px;
+        }
+
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 35px; /* 增加卡片间距 */
+        }
+        .module-card {
+            background-color: var(--bg-white);
+            padding: 40px 35px; /* 增加内边距 */
+            border-radius: 15px; /* 更圆润的边角 */
+            box-shadow: var(--shadow-soft);
+            opacity: 0;
+            transform: translateY(40px);
+            transition: transform 0.35s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.35s cubic-bezier(0.25, 0.8, 0.25, 1), border-left-color 0.3s ease;
+            border-left: 5px solid transparent; /* 左侧边框，悬停时变色 */
+        }
+        .module-card:hover {
+            transform: translateY(-8px) scale(1.02); /* 悬停效果增强 */
+            box-shadow: var(--shadow-medium);
+            border-left-color: var(--brand-primary);
+        }
+        .module-card h3 {
+            font-size: 1.7rem; /* 增大标题 */
+            color: var(--brand-primary);
+            margin-bottom: 18px;
+            font-weight: 600;
+        }
+        .module-card p {
+            font-size: 1rem;
+            color: var(--text-body);
+            line-height: 1.75;
+        }
+        /* 为第二个内容区增加不同背景 */
+        #services {
+           background-color: var(--bg-white); /* 尝试用白色背景区分 */
+        }
+
+
+        /* --- CTA Section --- */
+        .cta-section {
+            padding: 90px 0;
+            text-align: center;
+            background-color: var(--text-dark); /* 深色背景CTA */
+            color: var(--bg-white);
+        }
+        .cta-section h2 { /* .section-title class used in HTML, so we modify it here */
+            font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+            margin-bottom: 35px;
+            color: var(--bg-white); /* 确保在深色背景下文字可见 */
+        }
+        .cta-section .cta-button { /* 确保样式继承或重新定义 */
+             background: linear-gradient(95deg, var(--brand-primary), var(--brand-secondary));
+             box-shadow: 0 6px 20px rgba(40, 167, 69, 0.5);
+             color: var(--bg-white); /* 确保按钮文字颜色 */
+        }
+        .cta-section .cta-button:hover {
+            box-shadow: 0 8px 25px rgba(40, 167, 69, 0.6);
+            transform: scale(1.05) translateY(-2px);
+        }
+
+
+        /* --- Footer --- */
+        .main-footer {
+            padding: 50px 0; /* 增加padding */
+            text-align: center;
+            font-size: 0.9rem;
+            background-color: #343a40;
+            color: #adb5bd;
+        }
+        .main-footer p {
+             margin: 0;
+             line-height: 1.8;
+        }
+        .main-footer a {
+            color: var(--brand-secondary);
+            font-weight: 500;
+        }
+        .main-footer a:hover {
+            color: var(--bg-white);
+            text-decoration: underline;
+        }
+
+        /* --- Responsive Adjustments --- */
+        @media (max-width: 992px) {
+            .main-nav li {
+                margin-left: 25px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-header .container {
+                flex-direction: column;
+                align-items: center;
+            }
+            .nav-logo {
+                margin-bottom: 20px;
+            }
+            .main-nav ul {
+                margin-top: 0;
+                padding-left: 0;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            .main-nav li {
+                margin: 8px 12px;
+            }
+            .hero-content h1 {
+                 font-size: clamp(2.2rem, 10vw, 3.2rem); /* 移动端标题调整 */
+            }
+            .hero-content .cta-button {
+                padding: 15px 35px;
+                font-size: 1rem;
+            }
+            .modules-grid {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+             .content-section h2.section-title {
+                font-size: clamp(1.8rem, 7vw, 2.3rem);
+                margin-bottom: 50px;
+            }
+            .module-card h3 {
+                font-size: 1.5rem;
+            }
+            .module-card {
+                padding: 30px 25px;
+            }
+            .cta-section {
+                padding: 70px 0;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- 1. Page Loader -->
+    <div class="loader">
+        <img src="kutoo-logo-light.svg" alt="酷兔家政 Logo" class="loader-logo">
+    </div>
+
+    <!-- 2. Header / Navigation -->
+    <header class="main-header">
+        <div class="container">
+            <div class="nav-logo">
+                <a href="#home"><img src="kutoo-logo-small.svg" alt="酷兔家政"></a>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#features">核心优势</a></li>
+                    <li><a href="#services">服务范围</a></li>
+                    <li><a href="#process">服务流程</a></li> <!-- 假设有一个服务流程区域 -->
+                    <!-- <li><a href="#about">关于我们</a></li> --> <!-- 暂时注释，如果内容不多，可以精简导航 -->
+                    <li><a href="#contact">联系我们</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section" id="home">
+        <div class="hero-background"></div>
+        <div class="container">
+            <div class="hero-content">
+                <!-- data-text 用于 SplitText，确保JS能正确获取完整文本 -->
+                <h1 data-text="酷兔家政. 洁净生活. 轻松享受.">酷兔家政. 洁净生活. 轻松享受.</h1>
+                <a href="#contact" class="cta-button main-cta-button">立即预约服务</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content Section 1 (Core Advantages) -->
+    <section class="content-section" id="features">
+        <div class="container">
+            <h2 class="section-title">我们的核心优势</h2>
+            <div class="modules-grid">
+                <div class="module-card">
+                    <h3><i class="fas fa-users"></i> 专业团队</h3> <!-- 建议添加图标 -->
+                    <p>所有服务人员均经过严格筛选和专业培训，持证上岗，经验丰富，为您提供高品质服务。</p>
+                </div>
+                <div class="module-card">
+                    <h3><i class="fas fa-tachometer-alt"></i> 高效清洁</h3>
+                    <p>采用先进清洁设备和环保清洁剂，标准化服务流程，确保快速高效，不留死角。</p>
+                </div>
+                <div class="module-card">
+                    <h3><i class="fas fa-shield-alt"></i> 安心保障</h3>
+                    <p>全程服务购买商业保险，出现意外损坏有赔付。价格透明，无隐形消费，让您安心选择。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content Section: Service Process (New Section Example) -->
+    <section class="content-section" id="process" style="background-color: var(--bg-white);">
+        <div class="container">
+            <h2 class="section-title">便捷服务流程</h2>
+            <div class="modules-grid">
+                <!-- 这里可以放步骤卡片，例如 -->
+                <div class="module-card">
+                    <h3>1. 在线预约</h3>
+                    <p>通过官网、App或电话轻松预约您需要的家政服务项目和时间。</p>
+                </div>
+                <div class="module-card">
+                    <h3>2. 专人确认</h3>
+                    <p>客服将与您联系确认服务细节，并匹配合适的专业服务人员。</p>
+                </div>
+                <div class="module-card">
+                    <h3>3. 上门服务</h3>
+                    <p>服务人员准时上门，携带专业工具提供高效、细致的清洁服务。</p>
+                </div>
+                <div class="module-card">
+                    <h3>4. 服务评价</h3>
+                    <p>服务完成后，您可以对本次服务进行评价，帮助我们持续改进。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content Section 2 (Service Range) -->
+    <section class="content-section" id="services"> <!-- 原背景色 #f8f9fa -->
+        <div class="container">
+            <h2 class="section-title">我们的服务范围</h2>
+            <div class="modules-grid">
+                <div class="module-card">
+                    <h3>日常保洁</h3>
+                    <p>包括地面清洁、家具擦拭、厨房卫浴清洁等，维持您家庭环境的日常整洁与舒适。</p>
+                </div>
+                <div class="module-card">
+                    <h3>深度清洁</h3>
+                    <p>针对长时间未清洁或有特殊需求的家庭，进行全方位、彻底的清洁服务，焕新居家环境。</p>
+                </div>
+                <div class="module-card">
+                    <h3>家电清洗</h3>
+                    <p>专业清洗空调、油烟机、洗衣机等家用电器，去除污垢细菌，保障家人健康，延长电器寿命。</p>
+                </div>
+                 <div class="module-card">
+                    <h3>专项服务</h3>
+                    <p>除螨、地板打蜡、沙发清洗、窗帘清洗等，满足您个性化的家政需求。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section" id="contact">
+        <div class="container">
+            <h2 class="section-title">准备好拥有一个焕然一新的家了吗？</h2>
+            <a href="tel:YOUR_PHONE_NUMBER" class="cta-button bottom-cta-button">立即咨询</a> <!-- 建议改为电话链接 -->
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <p>© <span id="current-year">2023</span> 酷兔家政. 版权所有. 专业家政服务品牌.</p>
+            <p>客服热线: <a href="tel:400-123-4567">400-123-4567</a> | 地址: XX市XX区XX街道XX号</p>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script> <!-- 更新到3.12.5 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script> <!-- 更新到3.12.5 -->
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger, SplitText);
+
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- 0. Dynamic Year in Footer ---
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+
+            // --- 1. Page Load Animation ---
+            const loader = document.querySelector('.loader');
+            const loaderLogo = document.querySelector('.loader-logo');
+            const heroBg = document.querySelector('.hero-background');
+            const heroH1 = document.querySelector('.hero-content h1');
+            const mainHeader = document.querySelector('.main-header');
+            const heroCta = document.querySelector('.hero-content .cta-button');
+
+            const originalHeroH1Text = heroH1.dataset.text || heroH1.textContent;
+            heroH1.textContent = '';
+            let splitHeroH1 = new SplitText(heroH1, { type: "chars,words" });
+
+            const masterTl = gsap.timeline({
+                onComplete: () => {
+                    ScrollTrigger.refresh(); // Refresh ScrollTrigger after all initial animations
+                    document.body.style.overflowY = 'auto'; // Re-enable scrolling
+                }
+            });
+            document.body.style.overflowY = 'hidden'; // Disable scrolling during load
+
+            masterTl
+                .to(loaderLogo, {
+                    opacity: 1,
+                    scale: 1,
+                    duration: 0.8, // Slightly faster
+                    ease: "elastic.out(1, 0.6)"
+                })
+                .to(heroBg, {
+                    opacity: 1,
+                    scale: 1,
+                    duration: 1, // Slightly faster
+                    ease: "power2.inOut"
+                }, "-=0.4") // Overlap slightly more
+                .from(splitHeroH1.chars, { // Use 'from' for clarity
+                    opacity: 0,
+                    y: 40, // Increase initial Y offset
+                    rotateX: -90, // Add a subtle 3D rotation
+                    duration: 0.7,
+                    stagger: 0.03,
+                    ease: "back.out(1.4)" // A bouncier ease
+                }, "-=0.6")
+                .from(heroCta, { // Animate hero CTA button
+                    opacity: 0,
+                    y: 20,
+                    duration: 0.5,
+                    ease: "power2.out"
+                }, "-=0.5")
+                .to(loader, {
+                    opacity: 0,
+                    duration: 0.4, // Faster fade out
+                    onComplete: () => loader.style.display = 'none'
+                }, "-=0.2") // Start fading loader slightly earlier
+                .to(mainHeader, {
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.7, // Slightly faster
+                    ease: "power3.out"
+                }, "<"); // Start with loader fade out
+
+
+            // --- 2. Header Scroll Animation & Active Nav Link ---
+            ScrollTrigger.create({
+                start: 'top -80', // When top of viewport is 80px below header's initial top
+                onUpdate: self => {
+                    mainHeader.classList.toggle('scrolled', self.direction === 1 && self.progress > 0);
+                },
+                onLeaveBack: () => { // When scrolling back to top
+                    mainHeader.classList.remove('scrolled');
+                }
+            });
+
+            const navLinks = gsap.utils.toArray('.main-nav a');
+            navLinks.forEach(link => {
+                const sectionId = link.getAttribute('href');
+                const section = document.querySelector(sectionId);
+                if (!section) return;
+
+                ScrollTrigger.create({
+                    trigger: section,
+                    start: "top center", // When section top hits center of viewport
+                    end: "bottom center", // When section bottom hits center of viewport
+                    toggleClass: {targets: link, className: "active-link"},
+                    // markers: true // for debugging
+                });
+            });
+
+
+            // --- 3. ScrollTrigger Animations for Sections & Cards ---
+            gsap.utils.toArray('.section-title').forEach(title => {
+                gsap.fromTo(title,
+                    { opacity: 0, y: 50, scale: 0.95 }, // Start slightly scaled down
+                    {
+                        opacity: 1,
+                        y: 0,
+                        scale: 1,
+                        duration: 0.8,
+                        ease: 'power3.out',
+                        scrollTrigger: {
+                            trigger: title,
+                            start: 'top 88%', // Trigger a bit earlier
+                            toggleActions: 'play none none none',
+                            // once: true // Optional: animate only once
+                        }
+                    }
+                );
+            });
+
+            gsap.utils.toArray('.module-card').forEach((card, index) => {
+                gsap.fromTo(card,
+                    { opacity: 0, y: 60, scale: 0.9 }, // More pronounced start
+                    {
+                        opacity: 1,
+                        y: 0,
+                        scale: 1,
+                        duration: 0.7,
+                        ease: 'power3.out',
+                        scrollTrigger: {
+                            trigger: card,
+                            start: 'top 92%', // Trigger a bit earlier
+                            toggleActions: 'play none none none',
+                            // once: true
+                        },
+                        // Stagger based on index within its parent grid
+                        delay: (index % (gsap.getProperty(card.parentNode, 'grid-template-columns').split(' ').length) ) * 0.1
+                    }
+                );
+            });
+
+            // Hero Background Parallax (subtle)
+            gsap.to(heroBg, {
+                yPercent: -10, // Reduced parallax effect
+                ease: "none",
+                scrollTrigger: {
+                    trigger: ".hero-section",
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: 0.5 // Smoother scrubbing
+                }
+            });
+
+            // --- 4. CTA Button Animations (CSS handles hover, JS for click) ---
+            const ctaButtons = gsap.utils.toArray('.cta-button');
+            ctaButtons.forEach(button => {
+                const initialBoxShadow = window.getComputedStyle(button).boxShadow; // Store initial for reset if needed by GSAP
+
+                button.addEventListener('mousedown', () => {
+                    gsap.to(button, {
+                        scale: 0.95, // Slightly more pronounced press
+                        duration: 0.15,
+                        ease: "power1.in"
+                    });
+                });
+
+                button.addEventListener('mouseup', () => {
+                    gsap.to(button, {
+                        scale: 1, // Return to normal scale (CSS hover will handle hover scale)
+                        duration: 0.35,
+                        ease: "elastic.out(1, 0.6)"
+                    });
+                });
+                button.addEventListener('mouseleave', () => { // Ensure scale resets if mouse leaves while pressed
+                    gsap.to(button, {
+                        scale: 1,
+                        duration: 0.2,
+                        ease: "power1.out"
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
