@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>优化版文字冒险 RPG</title>
+    <title>文字冒险 RPG - 完整闭环</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -25,7 +25,7 @@
         }
         
         .container {
-            max-width: 1200px;
+            max-width: 1100px;
             width: 100%;
             background: rgba(10, 15, 30, 0.85);
             border-radius: 20px;
@@ -97,20 +97,23 @@
             text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
         
-        .game-container {
-            display: flex;
+        .screen {
+            display: none;
             padding: 25px;
-            gap: 25px;
+            min-height: 500px;
         }
         
-        .left-panel {
-            flex: 1;
+        .screen.active {
+            display: block;
+        }
+        
+        .game-container {
             display: flex;
-            flex-direction: column;
             gap: 25px;
         }
         
         .player-section {
+            flex: 1;
             background: rgba(20, 30, 50, 0.7);
             border-radius: 15px;
             padding: 20px;
@@ -120,25 +123,11 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.4);
             border: 1px solid #3a506b;
             position: relative;
-        }
-        
-        .combat-section {
-            background: rgba(20, 30, 50, 0.7);
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
-            border: 1px solid #3a506b;
-            min-height: 300px;
-        }
-        
-        .right-panel {
-            flex: 1.5;
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
+            min-width: 300px;
         }
         
         .game-section {
+            flex: 2;
             background: rgba(20, 30, 50, 0.7);
             border-radius: 15px;
             padding: 20px;
@@ -147,6 +136,7 @@
             gap: 20px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.4);
             border: 1px solid #3a506b;
+            min-width: 500px;
         }
         
         .section-title {
@@ -193,12 +183,6 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            min-width: 100px;
-        }
-        
-        .status-value {
-            text-align: right;
-            flex: 1;
         }
         
         .progress-bar {
@@ -313,7 +297,7 @@
         
         .combat-buttons {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 12px;
         }
         
@@ -354,18 +338,6 @@
             transform: none;
             box-shadow: none;
             border: 1px solid #555;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        button:disabled::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
         }
         
         .save-load {
@@ -411,7 +383,7 @@
         
         .enemy-info {
             background: linear-gradient(to right, #4b0000, #8b0000);
-            padding: 10px;
+            padding: 20px;
             border-radius: 10px;
             margin-bottom: 20px;
             text-align: center;
@@ -520,25 +492,151 @@
             transform: translateX(0);
         }
         
-        .skill-cooldown {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
+        .start-screen, .end-screen {
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
-            font-size: 1.2rem;
-            color: white;
-            z-index: 10;
-            border-radius: 10px;
+            text-align: center;
+            min-height: 500px;
+            padding: 40px;
         }
         
-        .combat-controls {
-            position: relative;
+        .start-title {
+            font-size: 4.5rem;
+            color: #ffd700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .start-subtitle {
+            font-size: 1.8rem;
+            color: #a8c6ff;
+            max-width: 700px;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+        
+        .start-options {
+            display: flex;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .start-btn {
+            padding: 18px 40px;
+            font-size: 1.5rem;
+            border-radius: 15px;
+        }
+        
+        .character-select {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .character {
+            background: rgba(30, 40, 70, 0.7);
+            border-radius: 15px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .character:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 25px rgba(0,0,0,0.3);
+            border-color: #d4af37;
+            background: rgba(40, 50, 90, 0.8);
+        }
+        
+        .character.selected {
+            border-color: #ffd700;
+            background: rgba(50, 60, 100, 0.9);
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
+        }
+        
+        .character-icon {
+            font-size: 5rem;
+            margin-bottom: 20px;
+        }
+        
+        .character-name {
+            font-size: 1.8rem;
+            color: #ffd700;
+            margin-bottom: 10px;
+        }
+        
+        .character-desc {
+            font-size: 1.1rem;
+            color: #a8c6ff;
+            line-height: 1.6;
+        }
+        
+        .victory-screen {
+            text-align: center;
+        }
+        
+        .victory-title {
+            font-size: 5rem;
+            color: #ffd700;
+            margin-bottom: 30px;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
+        }
+        
+        .victory-image {
+            font-size: 10rem;
+            margin: 30px 0;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .victory-text {
+            font-size: 1.8rem;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            line-height: 1.7;
+            color: #a8c6ff;
+        }
+        
+        .end-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+            max-width: 800px;
+        }
+        
+        .end-stat {
+            background: rgba(30, 40, 70, 0.7);
+            border-radius: 10px;
+            padding: 20px;
+        }
+        
+        .end-stat-value {
+            font-size: 2.5rem;
+            color: #ffd700;
+            margin: 10px 0;
+        }
+        
+        .end-stat-label {
+            font-size: 1.2rem;
+            color: #a8c6ff;
         }
         
         @media (max-width: 900px) {
@@ -546,12 +644,20 @@
                 flex-direction: column;
             }
             
-            .left-panel, .right-panel {
-                width: 100%;
+            .player-section, .game-section {
+                min-width: auto;
             }
             
             .inventory {
                 grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .character-select {
+                grid-template-columns: 1fr;
+            }
+            
+            .end-stats {
+                grid-template-columns: 1fr;
             }
         }
         
@@ -573,12 +679,25 @@
                 gap: 10px;
             }
             
-            .status-container {
-                grid-template-columns: 1fr;
+            .start-options {
+                flex-direction: column;
+                gap: 15px;
             }
             
-            .section-title {
-                font-size: 1.4rem;
+            .start-title {
+                font-size: 3rem;
+            }
+            
+            .start-subtitle {
+                font-size: 1.3rem;
+            }
+            
+            .victory-title {
+                font-size: 3rem;
+            }
+            
+            .victory-image {
+                font-size: 6rem;
             }
         }
     </style>
@@ -589,26 +708,59 @@
         <div class="decoration shield">🛡️</div>
         
         <header>
-            <h1>文字冒险 RPG</h1>
-            <div class="subtitle">探索世界 · 收集宝藏 · 战胜敌人</div>
+            <h1>冒险者传说</h1>
+            <div class="subtitle">探索神秘大陆，击败强大敌人，成为传奇英雄！</div>
         </header>
         
-        <div class="game-container">
-            <!-- 左侧面板：玩家信息和战斗 -->
-            <div class="left-panel">
+        <!-- 开始界面 -->
+        <div id="startScreen" class="screen active">
+            <div class="start-screen">
+                <div class="start-title">冒险者传说</div>
+                <div class="start-subtitle">在这片被黑暗笼罩的大陆上，一条古老的巨龙苏醒了，它的力量威胁着整个王国。作为被选中的冒险者，你必须踏上征途，收集强大的神器，最终在巨龙山脉与恶龙决一死战！</div>
+                
+                <div class="character-select">
+                    <div class="character" data-class="warrior">
+                        <div class="character-icon">⚔️</div>
+                        <div class="character-name">战士</div>
+                        <div class="character-desc">强大的近战专家，拥有高生命值和防御力。特殊能力：雷霆一击 - 造成双倍伤害</div>
+                    </div>
+                    
+                    <div class="character" data-class="mage">
+                        <div class="character-icon">🧙‍♂️</div>
+                        <div class="character-name">法师</div>
+                        <div class="character-desc">元素魔法大师，拥有强大的法术攻击。特殊能力：火焰风暴 - 对敌人造成持续伤害</div>
+                    </div>
+                    
+                    <div class="character" data-class="ranger">
+                        <div class="character-icon">🏹</div>
+                        <div class="character-name">游侠</div>
+                        <div class="character-desc">敏捷的远程专家，擅长闪避和致命一击。特殊能力：精准射击 - 必定命中并造成额外伤害</div>
+                    </div>
+                </div>
+                
+                <div class="start-options">
+                    <button id="newGameBtn" class="start-btn"><i class="fas fa-play"></i> 开始新游戏</button>
+                    <button id="continueBtn" class="start-btn"><i class="fas fa-folder-open"></i> 继续游戏</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 游戏主界面 -->
+        <div id="gameScreen" class="screen">
+            <div class="game-container">
                 <div class="player-section">
                     <h2 class="section-title"><i class="fas fa-user"></i> 冒险者信息</h2>
                     
                     <div class="player-info">
-                        <div class="player-image">🧙‍♂️</div>
-                        <div class="player-name">艾利克斯</div>
-                        <div class="player-class">魔法战士</div>
+                        <div class="player-image" id="playerIcon">🧙‍♂️</div>
+                        <div class="player-name" id="playerName">艾利克斯</div>
+                        <div class="player-class" id="playerClass">魔法战士</div>
                     </div>
                     
                     <div class="status-container">
                         <div class="status-bar">
                             <span class="status-label"><i class="fas fa-heart"></i> 生命值:</span>
-                            <span class="status-value" id="health">100/100</span>
+                            <span id="health">100/100</span>
                         </div>
                         <div class="progress-bar">
                             <div class="progress-fill health-fill" id="health-bar" style="width: 100%"></div>
@@ -616,7 +768,7 @@
                         
                         <div class="status-bar">
                             <span class="status-label"><i class="fas fa-fire"></i> 魔法值:</span>
-                            <span class="status-value" id="mana">50/50</span>
+                            <span id="mana">50/50</span>
                         </div>
                         <div class="progress-bar">
                             <div class="progress-fill mana-fill" id="mana-bar" style="width: 100%"></div>
@@ -624,26 +776,24 @@
                         
                         <div class="status-bar">
                             <span class="status-label"><i class="fas fa-shield-alt"></i> 攻击力:</span>
-                            <span class="status-value" id="attack">15</span>
+                            <span id="attack">15</span>
                         </div>
                         
                         <div class="status-bar">
                             <span class="status-label"><i class="fas fa-shield-virus"></i> 防御力:</span>
-                            <span class="status-value" id="defense">8</span>
+                            <span id="defense">8</span>
                         </div>
                         
                         <div class="status-bar">
                             <span class="status-label"><i class="fas fa-coins"></i> 金币:</span>
-                            <span class="status-value" id="gold">50</span>
+                            <span id="gold">50</span>
                         </div>
                         
                         <div class="status-bar">
                             <span class="status-label"><i class="fas fa-star"></i> 经验值:</span>
-                            <div class="status-value">
-                                <div class="xp-bar">
-                                    <span id="exp">0/100</span>
-                                    <span class="level-badge">Lv.<span id="level">1</span></span>
-                                </div>
+                            <div class="xp-bar">
+                                <span id="exp">0/100</span>
+                                <span class="level-badge">Lv.<span id="level">1</span></span>
                             </div>
                         </div>
                         <div class="progress-bar">
@@ -680,61 +830,24 @@
                         </div>
                         <div class="item" id="gem-item">
                             <div class="item-icon">💎</div>
-                            <div>魔法宝石</div>
+                            <div>龙之宝石</div>
                             <div class="item-count" id="gem-count">0</div>
                         </div>
                     </div>
                     
                     <div class="save-load">
                         <button id="saveBtn"><i class="fas fa-save"></i> 保存进度</button>
-                        <button id="loadBtn"><i class="fas fa-folder-open"></i> 读取进度</button>
+                        <button id="menuBtn"><i class="fas fa-home"></i> 返回菜单</button>
                     </div>
                 </div>
                 
-                
-            </div>
-            
-            <!-- 右侧面板：日志和游戏操作 -->
-            <div class="right-panel">
                 <div class="game-section">
-                    <div class="combat-section">
-                        <h2 class="section-title"><i class="fas fa-fist-raised"></i> 战斗状态</h2>
-                        
-                        <div id="combatSection" style="display: none;">
-                            <div class="enemy-info">
-                                <div class="enemy-image" id="enemyImage">🐺</div>
-                                <div style="font-size: 1.3rem; margin-bottom: 10px;">敌人: <span id="enemyName">野狼</span></div>
-                                
-                                <div class="enemy-stats">
-                                    <div class="enemy-stat">
-                                        <div>生命值</div>
-                                        <div id="enemyHealth">40/40</div>
-                                        <div class="progress-bar">
-                                            <div class="progress-fill health-fill" id="enemy-health-bar" style="width: 100%"></div>
-                                        </div>
-                                    </div>
-                                    <div class="enemy-stat">
-                                        <div>攻击力</div>
-                                        <div id="enemyAttack">10</div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="combat-controls">
-                                <div class="combat-buttons">
-                                    <button id="attackBtn"><i class="fas fa-fist-raised"></i> 攻击</button>
-                                    <button id="skillBtn"><i class="fas fa-magic"></i> 技能</button>
-                                    <button id="potionBtn"><i class="fas fa-wine-bottle"></i> 药水</button>
-                                    <button id="fleeBtn"><i class="fas fa-running"></i> 逃跑</button>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div id="noCombatSection" style="text-align: center; padding: 40px 20px;">
-                            <div style="font-size: 4rem; margin-bottom: 20px;">⚔️</div>
-                            <p>当前没有战斗</p>
-                            <p class="event" style="margin-top: 10px;">探索区域可能会遇到敌人！</p>
-                        </div>
+                    <h2 class="section-title"><i class="fas fa-scroll"></i> 冒险日志</h2>
+                    <div class="game-log" id="gameLog">
+                        <p>欢迎来到冒险者传说！你是一名初出茅庐的冒险者。</p>
+                        <p>你出现在宁静村庄的广场上。村民们看起来有些不安，似乎有事情发生。</p>
+                        <p class="event">村长告诉你：最近村庄附近出现了怪物，请帮帮我们！</p>
+                        <p class="quest">任务：击败幽暗森林的怪物（0/3）</p>
                     </div>
                     
                     <h3 class="section-title"><i class="fas fa-map-marker-alt"></i> 当前位置: <span id="location">宁静村庄</span></h3>
@@ -751,20 +864,71 @@
                         <button id="caveBtn"><i class="fas fa-mountain"></i> 神秘洞穴</button>
                         <button id="mountainBtn"><i class="fas fa-dragon"></i> 巨龙山脉</button>
                     </div>
-                    <h2 class="section-title"><i class="fas fa-scroll"></i> 冒险日志</h2>
-                    <div class="game-log" id="gameLog">
-                        <p>欢迎来到文字RPG世界！你是一名初出茅庐的冒险者。</p>
-                        <p>你出现在一个小村庄的广场上。村民们看起来有些不安，似乎有事情发生。</p>
-                        <p class="event">村长告诉你：最近村庄附近出现了怪物，请帮帮我们！</p>
-                        <p class="quest">任务：击败幽暗森林的怪物（0/3）</p>
+                    
+                    <div id="combatSection" style="display: none;">
+                        <div class="enemy-info">
+                            <div class="enemy-image" id="enemyImage">🐺</div>
+                            <div style="font-size: 1.3rem; margin-bottom: 10px;">敌人: <span id="enemyName">野狼</span></div>
+                            
+                            <div class="enemy-stats">
+                                <div class="enemy-stat">
+                                    <div>生命值</div>
+                                    <div id="enemyHealth">40/40</div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill health-fill" id="enemy-health-bar" style="width: 100%"></div>
+                                    </div>
+                                </div>
+                                <div class="enemy-stat">
+                                    <div>攻击力</div>
+                                    <div id="enemyAttack">10</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="combat-buttons">
+                            <button id="attackBtn"><i class="fas fa-fist-raised"></i> 攻击</button>
+                            <button id="skillBtn"><i class="fas fa-magic"></i> 使用技能</button>
+                            <button id="potionBtn"><i class="fas fa-wine-bottle"></i> 使用药水</button>
+                            <button id="fleeBtn"><i class="fas fa-running"></i> 逃跑</button>
+                        </div>
                     </div>
-
+                </div>
+            </div>
+        </div>
+        
+        <!-- 游戏结束界面 -->
+        <div id="endScreen" class="screen">
+            <div class="end-screen">
+                <div class="victory-screen">
+                    <div class="victory-title">胜利！</div>
+                    <div class="victory-image">🏆</div>
+                    
+                    <div class="victory-text">
+                        经过漫长而艰苦的战斗，你终于击败了可怕的远古红龙！它的力量消散在空气中，王国终于从阴影中解放出来。人民将永远铭记你的名字，吟游诗人将传唱你的传奇故事！
+                    </div>
+                    
+                    <div class="end-stats">
+                        <div class="end-stat">
+                            <div class="end-stat-value" id="finalLevel">1</div>
+                            <div class="end-stat-label">最终等级</div>
+                        </div>
+                        <div class="end-stat">
+                            <div class="end-stat-value" id="finalGold">0</div>
+                            <div class="end-stat-label">获得金币</div>
+                        </div>
+                        <div class="end-stat">
+                            <div class="end-stat-value" id="finalMonsters">0</div>
+                            <div class="end-stat-label">击败怪物</div>
+                        </div>
+                    </div>
+                    
+                    <button id="restartBtn" class="start-btn"><i class="fas fa-redo"></i> 重新开始</button>
                 </div>
             </div>
         </div>
         
         <footer>
-            <p>优化版文字冒险 RPG | 使用HTML5, CSS3和JavaScript构建 | 按F5重新开始游戏</p>
+            <p>冒险者传说 RPG | 完整闭环游戏 | 使用HTML5, CSS3和JavaScript构建</p>
         </footer>
     </div>
 
@@ -773,6 +937,7 @@
     <script>
         // 游戏状态
         const gameState = {
+            characterClass: "warrior",
             health: 100,
             maxHealth: 100,
             mana: 50,
@@ -793,9 +958,11 @@
             enemy: null,
             nextLevelExp: 100,
             forestKills: 0,
-            questCompleted: false,
-            actionInProgress: false,
-            skillCooldown: 0
+            caveExplored: false,
+            dragonDefeated: false,
+            monstersDefeated: 0,
+            questStep: 1,
+            gameCompleted: false
         };
         
         // 敌人数据
@@ -813,7 +980,7 @@
             mountain: [
                 { name: "山鹰", health: 45, maxHealth: 45, attack: 16, minGold: 15, maxGold: 25, exp: 50, emoji: "🦅" },
                 { name: "雪怪", health: 120, maxHealth: 120, attack: 26, minGold: 40, maxGold: 70, exp: 150, emoji: "❄️" },
-                { name: "红龙", health: 300, maxHealth: 300, attack: 40, minGold: 100, maxGold: 200, exp: 500, emoji: "🐉" }
+                { name: "红龙", health: 400, maxHealth: 400, attack: 45, minGold: 200, maxGold: 300, exp: 500, emoji: "🐉" }
             ]
         };
         
@@ -825,14 +992,41 @@
             mountain: "巨龙山脉"
         };
         
-        // 技能数据
-        const skills = [
-            { name: "火球术", cost: 15, damage: 25, description: "发射一个火球攻击敌人" },
-            { name: "治疗术", cost: 20, heal: 30, description: "恢复自身生命值" },
-            { name: "雷霆一击", cost: 25, damage: 35, description: "召唤闪电攻击敌人" }
-        ];
+        // 角色数据
+        const classes = {
+            warrior: {
+                name: "战士",
+                icon: "⚔️",
+                attack: 18,
+                defense: 12,
+                health: 120,
+                mana: 30,
+                skill: "雷霆一击"
+            },
+            mage: {
+                name: "法师",
+                icon: "🧙‍♂️",
+                attack: 22,
+                defense: 6,
+                health: 90,
+                mana: 70,
+                skill: "火焰风暴"
+            },
+            ranger: {
+                name: "游侠",
+                icon: "🏹",
+                attack: 20,
+                defense: 8,
+                health: 100,
+                mana: 50,
+                skill: "精准射击"
+            }
+        };
         
         // DOM 元素
+        const startScreen = document.getElementById('startScreen');
+        const gameScreen = document.getElementById('gameScreen');
+        const endScreen = document.getElementById('endScreen');
         const gameLog = document.getElementById('gameLog');
         const healthEl = document.getElementById('health');
         const manaEl = document.getElementById('mana');
@@ -849,7 +1043,6 @@
         const gemCountEl = document.getElementById('gem-count');
         const locationEl = document.getElementById('location');
         const combatSection = document.getElementById('combatSection');
-        const noCombatSection = document.getElementById('noCombatSection');
         const enemyNameEl = document.getElementById('enemyName');
         const enemyHealthEl = document.getElementById('enemyHealth');
         const enemyAttackEl = document.getElementById('enemyAttack');
@@ -859,10 +1052,12 @@
         const expBar = document.getElementById('exp-bar');
         const enemyHealthBar = document.getElementById('enemy-health-bar');
         const notification = document.getElementById('notification');
-        const attackBtn = document.getElementById('attackBtn');
-        const skillBtn = document.getElementById('skillBtn');
-        const potionBtn = document.getElementById('potionBtn');
-        const fleeBtn = document.getElementById('fleeBtn');
+        const playerIcon = document.getElementById('playerIcon');
+        const playerName = document.getElementById('playerName');
+        const playerClass = document.getElementById('playerClass');
+        const finalLevel = document.getElementById('finalLevel');
+        const finalGold = document.getElementById('finalGold');
+        const finalMonsters = document.getElementById('finalMonsters');
         
         // 显示通知
         function showNotification(message) {
@@ -873,16 +1068,68 @@
             }, 3000);
         }
         
-        // 初始化游戏
-        function initGame() {
-            updateStats();
-            addToLog("游戏开始！你准备好冒险了吗？");
-            locationEl.textContent = locationNames[gameState.location];
-            updateInventory();
-            updateCombatUI();
+        // 开始新游戏
+        function startNewGame() {
+            // 重置游戏状态
+            Object.assign(gameState, {
+                health: 100,
+                maxHealth: 100,
+                mana: 50,
+                maxMana: 50,
+                attack: 15,
+                defense: 8,
+                gold: 50,
+                exp: 0,
+                level: 1,
+                potions: 1,
+                manaPotions: 0,
+                attackPotions: 0,
+                defensePotions: 0,
+                keys: 0,
+                gems: 0,
+                location: 'village',
+                inCombat: false,
+                enemy: null,
+                nextLevelExp: 100,
+                forestKills: 0,
+                caveExplored: false,
+                dragonDefeated: false,
+                monstersDefeated: 0,
+                questStep: 1,
+                gameCompleted: false
+            });
             
-            // 更新技能冷却
-            updateSkillCooldown();
+            // 应用角色职业加成
+            const charClass = classes[gameState.characterClass];
+            gameState.maxHealth = charClass.health;
+            gameState.health = charClass.health;
+            gameState.maxMana = charClass.mana;
+            gameState.mana = charClass.mana;
+            gameState.attack = charClass.attack;
+            gameState.defense = charClass.defense;
+            
+            // 更新角色显示
+            playerIcon.textContent = charClass.icon;
+            playerName.textContent = charClass.name;
+            playerClass.textContent = charClass.name;
+            
+            // 清空日志
+            gameLog.innerHTML = `
+                <p>欢迎来到冒险者传说！你是一名${charClass.name}。</p>
+                <p>你出现在宁静村庄的广场上。村民们看起来有些不安，似乎有事情发生。</p>
+                <p class="event">村长告诉你：最近村庄附近出现了怪物，请帮帮我们！</p>
+                <p class="quest">任务：击败幽暗森林的怪物（0/3）</p>
+            `;
+            
+            // 更新UI
+            updateStats();
+            updateInventory();
+            locationEl.textContent = locationNames[gameState.location];
+            combatSection.style.display = 'none';
+            
+            // 切换到游戏界面
+            startScreen.classList.remove('active');
+            gameScreen.classList.add('active');
         }
         
         // 更新状态显示
@@ -925,81 +1172,6 @@
             gameLog.scrollTop = gameLog.scrollHeight;
         }
         
-        // 更新战斗UI
-        function updateCombatUI() {
-            if (gameState.inCombat && gameState.enemy) {
-                combatSection.style.display = 'block';
-                noCombatSection.style.display = 'none';
-                updateEnemyInfo();
-            } else {
-                combatSection.style.display = 'none';
-                noCombatSection.style.display = 'block';
-            }
-        }
-        
-        // 更新敌人信息
-        function updateEnemyInfo() {
-            if (!gameState.enemy) return;
-            
-            enemyNameEl.textContent = gameState.enemy.name;
-            enemyHealthEl.textContent = `${gameState.enemy.health}/${gameState.enemy.maxHealth}`;
-            enemyAttackEl.textContent = gameState.enemy.attack;
-            enemyImageEl.textContent = gameState.enemy.emoji;
-            
-            // 更新敌人血条
-            const healthPercent = (gameState.enemy.health / gameState.enemy.maxHealth) * 100;
-            enemyHealthBar.style.width = `${healthPercent}%`;
-        }
-        
-        // 禁用战斗按钮
-        function disableCombatButtons() {
-            gameState.actionInProgress = true;
-            attackBtn.disabled = true;
-            skillBtn.disabled = true;
-            potionBtn.disabled = true;
-            fleeBtn.disabled = true;
-        }
-        
-        // 启用战斗按钮
-        function enableCombatButtons() {
-            gameState.actionInProgress = false;
-            attackBtn.disabled = false;
-            skillBtn.disabled = false;
-            potionBtn.disabled = false;
-            fleeBtn.disabled = false;
-            
-            // 更新技能冷却状态
-            updateSkillCooldown();
-        }
-        
-        // 更新技能冷却
-        function updateSkillCooldown() {
-            if (gameState.skillCooldown > 0) {
-                skillBtn.disabled = true;
-                const cooldownElement = document.createElement('div');
-                cooldownElement.className = 'skill-cooldown';
-                cooldownElement.textContent = gameState.skillCooldown;
-                
-                // 移除现有的冷却显示
-                const existingCooldown = document.querySelector('.skill-cooldown');
-                if (existingCooldown) existingCooldown.remove();
-                
-                skillBtn.appendChild(cooldownElement);
-            } else {
-                skillBtn.disabled = false;
-                const existingCooldown = document.querySelector('.skill-cooldown');
-                if (existingCooldown) existingCooldown.remove();
-            }
-        }
-        
-        // 减少技能冷却
-        function reduceSkillCooldown() {
-            if (gameState.skillCooldown > 0) {
-                gameState.skillCooldown--;
-                updateSkillCooldown();
-            }
-        }
-        
         // 探索当前区域
         function explore() {
             if (gameState.inCombat) {
@@ -1036,6 +1208,19 @@
                     updateInventory();
                 }
                 
+                // 洞穴探索特殊事件
+                if (gameState.location === 'cave' && !gameState.caveExplored && Math.random() < 0.5) {
+                    gameState.keys++;
+                    addToLog("在洞穴深处，你找到了神秘钥匙！", "event");
+                    showNotification("获得神秘钥匙 x1");
+                    gameState.caveExplored = true;
+                    updateInventory();
+                    
+                    // 更新任务
+                    addToLog("任务：前往巨龙山脉击败红龙", "quest");
+                    gameState.questStep = 3;
+                }
+                
                 updateStats();
                 return;
             }
@@ -1044,21 +1229,40 @@
             const enemyList = enemies[gameState.location];
             const enemy = {...enemyList[Math.floor(Math.random() * enemyList.length)]};
             
-            gameState.enemy = enemy;
+            // 如果是巨龙山脉，确保第三次遇到红龙
+            if (gameState.location === 'mountain' && gameState.monstersDefeated >= 2 && !gameState.dragonDefeated) {
+                gameState.enemy = {...enemies.mountain[2]};
+            } else {
+                gameState.enemy = enemy;
+            }
+            
             gameState.inCombat = true;
             
-            // 更新UI
-            updateCombatUI();
+            // 显示战斗界面
+            combatSection.style.display = 'block';
+            updateEnemyInfo();
             
-            addToLog(`你在${locationNames[gameState.location]}遇到了一只${enemy.name}！`, "event");
-            addToLog(`战斗开始！${enemy.name}向你扑来！`);
+            addToLog(`你在${locationNames[gameState.location]}遇到了一只${gameState.enemy.name}！`, "event");
+            addToLog(`战斗开始！${gameState.enemy.name}向你扑来！`);
+        }
+        
+        // 更新敌人信息
+        function updateEnemyInfo() {
+            if (!gameState.enemy) return;
+            
+            enemyNameEl.textContent = gameState.enemy.name;
+            enemyHealthEl.textContent = `${gameState.enemy.health}/${gameState.enemy.maxHealth}`;
+            enemyAttackEl.textContent = gameState.enemy.attack;
+            enemyImageEl.textContent = gameState.enemy.emoji;
+            
+            // 更新敌人血条
+            const healthPercent = (gameState.enemy.health / gameState.enemy.maxHealth) * 100;
+            enemyHealthBar.style.width = `${healthPercent}%`;
         }
         
         // 玩家攻击
         function playerAttack() {
-            if (!gameState.inCombat || !gameState.enemy || gameState.actionInProgress) return;
-            
-            disableCombatButtons();
+            if (!gameState.inCombat || !gameState.enemy) return;
             
             // 计算伤害（有20%几率暴击）
             const isCritical = Math.random() < 0.2;
@@ -1075,12 +1279,12 @@
             updateEnemyInfo();
             
             if (gameState.enemy.health <= 0) {
-                setTimeout(enemyDefeated, 1000);
+                enemyDefeated();
                 return;
             }
             
             // 敌人反击
-            setTimeout(enemyAttack, 1200);
+            setTimeout(enemyAttack, 800);
         }
         
         // 敌人攻击
@@ -1091,7 +1295,6 @@
             const isDodged = Math.random() < 0.15;
             if (isDodged) {
                 addToLog(`你闪避了${gameState.enemy.name}的攻击！`, "event");
-                enableCombatButtons();
                 return;
             }
             
@@ -1105,12 +1308,11 @@
                 gameOver();
                 return;
             }
-            
-            enableCombatButtons();
         }
         
         // 敌人被击败
         function enemyDefeated() {
+            gameState.monstersDefeated++;
             addToLog(`你击败了${gameState.enemy.name}！`, "event");
             
             // 获取奖励
@@ -1134,21 +1336,32 @@
                 showNotification("获得魔法药水 x1");
             }
             
-            // 幽暗森林任务
-            if (gameState.location === 'forest' && !gameState.questCompleted) {
+            // 任务系统
+            if (gameState.location === 'forest' && gameState.questStep === 1) {
                 gameState.forestKills++;
                 if (gameState.forestKills >= 3) {
-                    gameState.questCompleted = true;
-                    const questReward = 100;
-                    gameState.gold += questReward;
-                    gameState.exp += 50;
+                    gameState.questStep = 2;
                     addToLog("任务完成：击败幽暗森林的怪物！", "quest");
-                    addToLog(`获得了${questReward}金币和50经验值！`, "gold");
-                    showNotification("任务完成！获得 100 金币和 50 经验值");
-                    
-                    // 添加新任务
                     addToLog("任务：探索神秘洞穴并找到钥匙", "quest");
                 }
+            }
+            
+            // 击败红龙
+            if (gameState.enemy.name === "红龙") {
+                gameState.dragonDefeated = true;
+                gameState.gameCompleted = true;
+                addToLog("你击败了远古红龙，拯救了王国！", "victory");
+                showNotification("恭喜！你击败了红龙！");
+                
+                // 显示胜利界面
+                finalLevel.textContent = gameState.level;
+                finalGold.textContent = gameState.gold;
+                finalMonsters.textContent = gameState.monstersDefeated;
+                
+                setTimeout(() => {
+                    gameScreen.classList.remove('active');
+                    endScreen.classList.add('active');
+                }, 3000);
             }
             
             // 检查升级
@@ -1158,8 +1371,7 @@
             // 结束战斗
             gameState.inCombat = false;
             gameState.enemy = null;
-            updateCombatUI();
-            enableCombatButtons();
+            combatSection.style.display = 'none';
             
             updateStats();
         }
@@ -1185,11 +1397,7 @@
         
         // 使用药水
         function usePotion() {
-            if (gameState.actionInProgress) return;
-            
             if (gameState.potions > 0) {
-                disableCombatButtons();
-                
                 gameState.potions--;
                 const healAmount = Math.floor(gameState.maxHealth * 0.6);
                 gameState.health = Math.min(gameState.maxHealth, gameState.health + healAmount);
@@ -1197,10 +1405,6 @@
                 addToLog(`你使用了一瓶生命药水，恢复了${healAmount}点生命值。`, "heal");
                 updateStats();
                 updateInventory();
-                
-                setTimeout(() => {
-                    enemyAttack();
-                }, 1000);
             } else {
                 addToLog("你没有生命药水了！", "event");
             }
@@ -1208,49 +1412,68 @@
         
         // 使用技能
         function useSkill() {
-            if (!gameState.inCombat || !gameState.enemy || gameState.actionInProgress || gameState.skillCooldown > 0) return;
+            const charClass = classes[gameState.characterClass];
             
-            disableCombatButtons();
-            gameState.skillCooldown = 3; // 3回合冷却
-            
-            const skill = skills[0]; // 使用第一个技能
-            gameState.mana -= skill.cost;
-            
-            if (skill.damage) {
-                // 攻击技能
-                gameState.enemy.health -= skill.damage;
-                addToLog(`你使用了${skill.name}，对${gameState.enemy.name}造成了${skill.damage}点伤害！`, "damage");
-                
-                if (gameState.enemy.health <= 0) {
-                    setTimeout(enemyDefeated, 1000);
-                    return;
-                }
-            } else if (skill.heal) {
-                // 治疗技能
-                gameState.health = Math.min(gameState.maxHealth, gameState.health + skill.heal);
-                addToLog(`你使用了${skill.name}，恢复了${skill.heal}点生命值。`, "heal");
-                updateStats();
+            if (gameState.mana < 20) {
+                addToLog("魔法值不足，无法使用技能！", "event");
+                return;
             }
             
-            updateEnemyInfo();
-            updateSkillCooldown();
+            gameState.mana -= 20;
             
-            setTimeout(enemyAttack, 1200);
+            let damage = 0;
+            switch(gameState.characterClass) {
+                case 'warrior':
+                    damage = Math.floor(gameState.attack * 1.8);
+                    addToLog(`你使用了${charClass.skill}，对${gameState.enemy.name}造成了${damage}点伤害！`, "damage");
+                    break;
+                case 'mage':
+                    damage = Math.floor(gameState.attack * 1.5);
+                    // 火焰风暴有2回合持续伤害
+                    addToLog(`你使用了${charClass.skill}，对${gameState.enemy.name}造成了${damage}点伤害并使其燃烧！`, "damage");
+                    // 下一回合额外伤害
+                    setTimeout(() => {
+                        if (gameState.inCombat && gameState.enemy) {
+                            const extraDamage = Math.floor(damage * 0.4);
+                            gameState.enemy.health -= extraDamage;
+                            addToLog(`${gameState.enemy.name}受到${extraDamage}点燃烧伤害！`, "damage");
+                            updateEnemyInfo();
+                            
+                            if (gameState.enemy.health <= 0) {
+                                enemyDefeated();
+                                return;
+                            }
+                        }
+                    }, 1000);
+                    break;
+                case 'ranger':
+                    damage = gameState.attack + 15; // 必定命中并额外伤害
+                    addToLog(`你使用了${charClass.skill}，对${gameState.enemy.name}造成了${damage}点伤害！`, "damage");
+                    break;
+            }
+            
+            gameState.enemy.health -= damage;
+            updateEnemyInfo();
+            
+            if (gameState.enemy.health <= 0) {
+                enemyDefeated();
+                return;
+            }
+            
+            updateStats();
+            setTimeout(enemyAttack, 1000);
         }
         
         // 逃跑
         function flee() {
-            if (!gameState.inCombat || gameState.actionInProgress) return;
-            
-            disableCombatButtons();
+            if (!gameState.inCombat) return;
             
             // 70%的几率逃跑成功
             if (Math.random() < 0.7) {
                 addToLog("你成功逃离了战斗！", "event");
                 gameState.inCombat = false;
                 gameState.enemy = null;
-                updateCombatUI();
-                enableCombatButtons();
+                combatSection.style.display = 'none';
             } else {
                 addToLog("逃跑失败！", "event");
                 setTimeout(enemyAttack, 800);
@@ -1320,6 +1543,12 @@
                 return;
             }
             
+            // 洞穴需要完成森林任务
+            if (location === 'cave' && gameState.questStep < 2) {
+                addToLog("你需要先完成森林任务才能进入洞穴！", "event");
+                return;
+            }
+            
             gameState.location = location;
             locationEl.textContent = locationNames[location];
             addToLog(`你来到了${locationNames[location]}。`, "event");
@@ -1327,8 +1556,14 @@
             // 特殊区域事件
             if (location === 'cave') {
                 addToLog("洞穴中弥漫着神秘的气息，深处似乎隐藏着宝藏...", "event");
+                if (gameState.questStep === 2) {
+                    addToLog("任务：在洞穴深处找到神秘钥匙", "quest");
+                }
             } else if (location === 'mountain') {
                 addToLog("巨龙山脉寒风凛冽，远处传来巨龙的咆哮声...", "event");
+                if (gameState.questStep === 3) {
+                    addToLog("任务：击败远古红龙", "quest");
+                }
             }
         }
         
@@ -1337,8 +1572,7 @@
             addToLog("你被击败了...游戏结束！", "event");
             addToLog("按F5刷新页面重新开始游戏。");
             gameState.inCombat = false;
-            updateCombatUI();
-            enableCombatButtons();
+            combatSection.style.display = 'none';
         }
         
         // 保存游戏
@@ -1355,16 +1589,28 @@
                 try {
                     const savedState = JSON.parse(saveData);
                     Object.assign(gameState, savedState);
+                    
+                    // 更新角色显示
+                    const charClass = classes[gameState.characterClass];
+                    playerIcon.textContent = charClass.icon;
+                    playerName.textContent = charClass.name;
+                    playerClass.textContent = charClass.name;
+                    
                     updateStats();
                     locationEl.textContent = locationNames[gameState.location];
                     updateInventory();
-                    updateCombatUI();
+                    
+                    // 切换到游戏界面
+                    startScreen.classList.remove('active');
+                    gameScreen.classList.add('active');
+                    
                     addToLog("游戏进度已加载！", "event");
+                    showNotification("游戏进度已加载");
                 } catch (e) {
-                    addToLog("加载存档失败！", "event");
+                    alert("加载存档失败！");
                 }
             } else {
-                addToLog("没有找到存档！", "event");
+                alert("没有找到存档！");
             }
         }
         
@@ -1381,16 +1627,36 @@
         document.getElementById('potionBtn').addEventListener('click', usePotion);
         document.getElementById('fleeBtn').addEventListener('click', flee);
         document.getElementById('saveBtn').addEventListener('click', saveGame);
-        document.getElementById('loadBtn').addEventListener('click', loadGame);
+        document.getElementById('menuBtn').addEventListener('click', () => {
+            gameScreen.classList.remove('active');
+            startScreen.classList.add('active');
+        });
+        document.getElementById('restartBtn').addEventListener('click', () => {
+            endScreen.classList.remove('active');
+            startScreen.classList.add('active');
+        });
         
-        // 物品点击事件
-        document.getElementById('health-potion').addEventListener('click', usePotion);
+        // 角色选择
+        const characters = document.querySelectorAll('.character');
+        characters.forEach(character => {
+            character.addEventListener('click', () => {
+                // 移除之前的选择
+                characters.forEach(c => c.classList.remove('selected'));
+                
+                // 设置当前选择
+                character.classList.add('selected');
+                gameState.characterClass = character.dataset.class;
+            });
+        });
         
-        // 每回合减少技能冷却
-        setInterval(reduceSkillCooldown, 3000);
+        // 新游戏按钮
+        document.getElementById('newGameBtn').addEventListener('click', startNewGame);
         
-        // 初始化游戏
-        initGame();
+        // 继续游戏按钮
+        document.getElementById('continueBtn').addEventListener('click', loadGame);
+        
+        // 默认选择战士
+        document.querySelector('.character[data-class="warrior"]').classList.add('selected');
     </script>
 </body>
 </html>
