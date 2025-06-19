@@ -960,7 +960,7 @@
             }
 
             // --- 事件监听器绑定 ---
-            pinyinInput.addEventListener('keydown', (e) => {
+            pinyinInput.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') {
                     // 只需要在这里判断下 completionModal.classList.add('active'); 是否为 true， 为true的话 就执行 startNextLevel();
                     if (completionModal.classList.contains('active')) {
@@ -968,6 +968,16 @@
                     } else if (levels[currentLevelIndex]?.vocabulary?.length > 0) {
                         checkInput();
                     }
+                }
+            });
+            // 如果输入框焦点丢失 也触发一次checkInput
+            pinyinInput.addEventListener('blur', (e) => {
+                // 校验下输入框内是否有值
+                if (pinyinInput.value.trim() === '') {
+                    return;
+                }
+                if (levels[currentLevelIndex]?.vocabulary?.length > 0) {
+                    checkInput();
                 }
             });
             
