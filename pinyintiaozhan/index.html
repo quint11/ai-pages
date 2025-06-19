@@ -336,6 +336,9 @@
             width: 90%;
             transform: translateY(20px);
             transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .completion-modal.active .modal-content {
@@ -346,6 +349,12 @@
             font-size: 2.2rem;
             color: var(--primary);
             margin-bottom: 20px;
+            text-align: center;
+        }
+        #next-level-btn {
+            margin: 20px auto 0;
+            display: block;
+            width: fit-content;
         }
 
         .modal-content p {
@@ -953,7 +962,10 @@
             // --- 事件监听器绑定 ---
             pinyinInput.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter') {
-                    if (levels[currentLevelIndex]?.vocabulary?.length > 0) {
+                    // 只需要在这里判断下 completionModal.classList.add('active'); 是否为 true， 为true的话 就执行 startNextLevel();
+                    if (completionModal.classList.contains('active')) {
+                        startNextLevel();
+                    } else if (levels[currentLevelIndex]?.vocabulary?.length > 0) {
                         checkInput();
                     }
                 }
