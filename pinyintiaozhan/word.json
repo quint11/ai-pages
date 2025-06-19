@@ -1,0 +1,140 @@
+[
+    {
+        "name": "初级关卡",
+        "vocabulary": [
+            {
+                "hanzi": "支持",
+                "pinyin": "zhichi"
+            },
+            {
+                "hanzi": "商人",
+                "pinyin": "shangren"
+            },
+            {
+                "hanzi": "初始",
+                "pinyin": "chushi"
+            },
+            {
+                "hanzi": "承认",
+                "pinyin": "chengren"
+            }
+        ],
+        "completed": false
+    },
+    {
+        "name": "中级进阶关",
+        "vocabulary": [
+            {
+                "hanzi": "平衡",
+                "pinyin": "pingheng"
+            },
+            {
+                "hanzi": "政府",
+                "pinyin": "zhengfu"
+            },
+            {
+                "hanzi": "深沉",
+                "pinyin": "shenchen"
+            },
+            {
+                "hanzi": "升腾",
+                "pinyin": "shengteng"
+            },
+            {
+                "hanzi": "情景",
+                "pinyin": "qingjing"
+            }
+        ],
+        "completed": false
+    },
+    {
+        "name": "高级混合关",
+        "vocabulary": [
+            {
+                "hanzi": "本能",
+                "pinyin": "benneng"
+            },
+            {
+                "hanzi": "风景名胜",
+                "pinyin": "fengjingmingsheng"
+            },
+            {
+                "hanzi": "环境保护",
+                "pinyin": "huanjingbaohu"
+            },
+            {
+                "hanzi": "鹏程万里",
+                "pinyin": "pengchengwanli"
+            },
+            {
+                "hanzi": "争分夺秒",
+                "pinyin": "zhengfenduomiao"
+            }
+        ],
+        "completed": false
+    },
+    {
+        "name": "专家挑战关",
+        "vocabulary": [
+            {
+                "hanzi": "瞠目结舌",
+                "pinyin": "chengmujieshe"
+            },
+            {
+                "hanzi": "错综复杂",
+                "pinyin": "cuozongfuzha"
+            },
+            {
+                "hanzi": "南腔北调",
+                "pinyin": "nanqiangbeidiao"
+            },
+            {
+                "hanzi": "泾渭分明",
+                "pinyin": "jingweifenming"
+            },
+            {
+                "hanzi": "忍俊不禁",
+                "pinyin": "renjunbujin"
+            },
+            {
+                "hanzi": "乘风破浪",
+                "pinyin": "chengfengpolang"
+            }
+        ],
+        "completed": false
+    },
+    {
+        "name": "大师终极关",
+        "vocabulary": [
+            {
+                "hanzi": "兴高采烈",
+                "pinyin": "xinggaocailie"
+            },
+            {
+                "hanzi": "生死存亡",
+                "pinyin": "shengsicunwang"
+            },
+            {
+                "hanzi": "相辅相成",
+                "pinyin": "xiangfuxiangcheng"
+            },
+            {
+                "hanzi": "深谋远虑",
+                "pinyin": "shenmouyuanlu"
+            },
+            {
+                "hanzi": "昂首挺胸",
+                "pinyin": "angshoutingxiong"
+            },
+            {
+                "hanzi": "风驰电掣",
+                "pinyin": "fengchidianche"
+            },
+            {
+                "hanzi": "沁人心脾",
+                "pinyin": "qinrenxinpi"
+            }
+        ],
+        "completed": false
+    }
+]

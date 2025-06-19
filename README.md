@@ -14,6 +14,7 @@
 | [图片量尺器](./image-metering/README.md)      | ✨ 一款简单易用的在线图片量尺工具，帮助您在图片上快速测量和标注距离。非常适合设计师、装修人员或任何需要在图片上进行尺寸标注的场景。       | [👉](https://quint11.github.io/ai-pages/image-metering/index.html)   | ![cover](./image-metering/cover.png)        |
 | [视频搜索工具](./video-search/README.md)      | 🔍一个帮你轻松找片、看片的视频搜索工具     | [👉](https://quint11.github.io/ai-pages/video-search/index.html)   | ![cover](./video-search/cover.png)      
 | [冒险者传说](./game-word-rpg/README.md)      | ⚔️一个基于浏览器的文字冒险 RPG 游戏，可以探索不同的区域，与怪物战斗，收集物品，完成任务，提升角色能力。     | [👉](https://quint11.github.io/ai-pages/game-word-rpg/index.html)   | ![cover](./game-word-rpg/cover.png)      
+| [拼音挑战](./pinyintiaozhan/README.md)      | 📚通过拼音练习掌握汉字发音，挑战不同难度的关卡，针对性消除平翘舌、前后鼻音误用     | [👉](https://quint11.github.io/ai-pages/pinyintiaozhan/index.html)   | ![cover](./pinyintiaozhan/cover.png)      
 
 
 

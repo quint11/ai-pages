@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>汉语拼音挑战</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --success: #4cc9f0;
+            --warning: #f72585;
+            --dark: #1d3557;
+            --light: #f1faee;
+            --background: #f8f9fa;
+            --text: #333;
+            --border-radius: 12px;
+            --box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #a8dadc 0%, #457b9d 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+        }
+
+        .header {
+            background: var(--primary);
+            color: white;
+            padding: 25px 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .header h1 i {
+            font-size: 2.2rem;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .stat-item {
+            text-align: center;
+            flex: 1;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--light);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            padding: 30px;
+        }
+
+        .practice-area {
+            background: var(--light);
+            border-radius: var(--border-radius);
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        .level-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .level-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ddd;
+            transition: var(--transition);
+        }
+
+        .level-dot.active {
+            background: var(--primary);
+            transform: scale(1.2);
+        }
+
+        .level-dot.completed {
+            background: var(--success);
+        }
+
+        #hanzi-display {
+            font-size: 5rem;
+            font-weight: bold;
+            color: var(--dark);
+            margin: 30px 0;
+            min-height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.3s ease;
+        }
+
+        .input-container {
+            position: relative;
+            max-width: 400px;
+            margin: 0 auto 20px;
+        }
+
+        #pinyin-input {
+            width: 100%;
+            padding: 16px 20px;
+            font-size: 1.3rem;
+            border-radius: 50px;
+            border: 2px solid #ddd;
+            text-align: center;
+            transition: var(--transition);
+            outline: none;
+        }
+
+        #pinyin-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        #pinyin-input.error {
+            border-color: var(--warning);
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-8px); }
+            50% { transform: translateX(8px); }
+            75% { transform: translateX(-8px); }
+        }
+
+        .feedback {
+            min-height: 30px;
+            margin-top: 15px;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .feedback.correct {
+            color: var(--success);
+        }
+
+        .feedback.incorrect {
+            color: var(--warning);
+        }
+
+        #progress-bar {
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        #progress-fill {
+            height: 100%;
+            background: var(--success);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .management-area {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            color: var(--dark);
+            font-size: 1.4rem;
+        }
+
+        .section-title i {
+            color: var(--primary);
+        }
+
+        .input-group {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .input-group input {
+            flex: 1;
+            padding: 14px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .input-group input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .btn {
+            padding: 14px;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn:active {
+            transform: translateY(2px);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        .btn-primary:hover {
+            background: var(--secondary);
+        }
+        
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+        .btn-success:hover {
+            background: #35b9e0;
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+        
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+        .btn-warning:hover {
+            background: #e01a6f;
+        }
+
+        #json-upload {
+            display: none;
+        }
+
+        .completion-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .completion-modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 40px;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .completion-modal.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-content h2 {
+            font-size: 2.2rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .modal-content p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: var(--dark);
+        }
+
+        .fireworks {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .firework {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: #ff0;
+            opacity: 0;
+        }
+
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .input-group {
+                flex-direction: column;
+            }
+            
+            .stats {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            #hanzi-display {
+                font-size: 3.5rem;
+                min-height: 80px;
+            }
+            
+            .button-group {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-language"></i> 汉语拼音挑战</h1>
+            <p>通过拼音练习掌握汉字发音，挑战不同难度的关卡，针对性消除平翘舌、前后鼻音误用</p>
+            
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-value" id="level-count">1</div>
+                    <div class="stat-label">当前关卡</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="words-count">0</div>
+                    <div class="stat-label">完成词语</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="accuracy">0%</div>
+                    <div class="stat-label">正确率</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="practice-area">
+                <div class="level-indicator" id="level-indicator">
+                    <!-- Level dots will be added here -->
+                </div>
+                
+                <div id="hanzi-display">准备开始</div>
+                
+                <div class="input-container">
+                    <input type="text" id="pinyin-input" placeholder="请输入拼音..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+                </div>
+                
+                <div class="feedback" id="feedback"></div>
+                
+                <div id="progress-bar">
+                    <div id="progress-fill"></div>
+                </div>
+                
+                <div id="progress-indicator">进度: 0/0</div>
+            </div>
+
+            <div class="management-area">
+                <h2 class="section-title"><i class="fas fa-book"></i> 词库管理</h2>
+                
+                <div class="input-group">
+                    <input type="text" id="new-hanzi" placeholder="中文词语 (例如: 支持)">
+                    <input type="text" id="new-pinyin" placeholder="连续拼音 (例如: zhichi)">
+                </div>
+                <button class="btn btn-success" id="add-word-btn">
+                    <i class="fas fa-plus"></i> 添加新词
+                </button>
+
+                <div class="button-group">
+                    <button class="btn btn-secondary" id="import-btn">
+                        <i class="fas fa-file-import"></i> 导入词库
+                    </button>
+                    <input type="file" id="json-upload" accept=".json">
+                    
+                    <button class="btn btn-primary" id="export-btn">
+                        <i class="fas fa-file-export"></i> 导出词库
+                    </button>
+                    
+                    <button class="btn btn-warning" id="reset-btn">
+                        <i class="fas fa-redo"></i> 重置进度
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Level Completion Modal -->
+    <div class="completion-modal" id="completion-modal">
+        <div class="modal-content">
+            <h2>恭喜！</h2>
+            <p>你已成功完成 <span id="completed-level">第1关</span>！</p>
+            <p>准备挑战下一关！</p>
+            <button class="btn btn-primary" id="next-level-btn" style="margin-top: 20px; padding: 12px 30px;">
+                继续挑战 <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+        <div class="fireworks" id="fireworks"></div>
+    </div>
+
+    <script>
+        // JavaScript - 应用逻辑
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- 状态变量 ---
+            // 默认关卡结构
+            let levels = [
+                {
+                    name: "初级关卡",
+                    vocabulary: [
+                        { "hanzi": "支持", "pinyin": "zhichi" },
+                        { "hanzi": "商人", "pinyin": "shangren" },
+                        { "hanzi": "初始", "pinyin": "chushi" },
+                        { "hanzi": "承认", "pinyin": "chengren" }
+                    ],
+                    completed: false
+                },
+                {
+                    name: "中级关卡",
+                    vocabulary: [
+                        { "hanzi": "计算机", "pinyin": "jisuanji" },
+                        { "hanzi": "互联网", "pinyin": "hulianwang" },
+                        { "hanzi": "科学家", "pinyin": "kexuejia" },
+                        { "hanzi": "工程师", "pinyin": "gongchengshi" }
+                    ],
+                    completed: false
+                },
+                {
+                    name: "高级关卡",
+                    vocabulary: [
+                        { "hanzi": "人工智能", "pinyin": "rengongzhineng" },
+                        { "hanzi": "机器学习", "pinyin": "jiqixuexi" },
+                        { "hanzi": "深度学习", "pinyin": "shenduxuexi" },
+                        { "hanzi": "神经网络", "pinyin": "shenjingwangluo" }
+                    ],
+                    completed: false
+                }
+            ];
+            
+            let currentLevelIndex = 0;
+            let currentWordIndex = -1;
+            let totalWordsCompleted = 0;
+            let correctAnswers = 0;
+            let wordsAttempted = 0;
+
+            // --- DOM 元素引用 ---
+            const hanziDisplay = document.getElementById('hanzi-display');
+            const pinyinInput = document.getElementById('pinyin-input');
+            const progressIndicator = document.getElementById('progress-indicator');
+            const feedback = document.getElementById('feedback');
+            const progressFill = document.getElementById('progress-fill');
+            const levelIndicator = document.getElementById('level-indicator');
+            
+            // 统计元素
+            const levelCount = document.getElementById('level-count');
+            const wordsCount = document.getElementById('words-count');
+            const accuracy = document.getElementById('accuracy');
+            
+            // 词库管理
+            const newHanziInput = document.getElementById('new-hanzi');
+            const newPinyinInput = document.getElementById('new-pinyin');
+            const addWordBtn = document.getElementById('add-word-btn');
+            
+            // 按钮
+            const importBtn = document.getElementById('import-btn');
+            const jsonUpload = document.getElementById('json-upload');
+            const exportBtn = document.getElementById('export-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            
+            // 模态框
+            const completionModal = document.getElementById('completion-modal');
+            const nextLevelBtn = document.getElementById('next-level-btn');
+            const completedLevel = document.getElementById('completed-level');
+            const fireworks = document.getElementById('fireworks');
+
+            // --- 核心函数 ---
+            /**
+             * 更新关卡指示器
+             */
+            function updateLevelIndicators() {
+                levelIndicator.innerHTML = '';
+                levels.forEach((level, index) => {
+                    const dot = document.createElement('div');
+                    dot.className = 'level-dot';
+                    if (index === currentLevelIndex) dot.classList.add('active');
+                    if (level.completed) dot.classList.add('completed');
+                    levelIndicator.appendChild(dot);
+                });
+                
+                levelCount.textContent = currentLevelIndex + 1;
+            }
+
+            /**
+             * 更新界面显示下一个词语
+             */
+            function showNextWord() {
+                const currentLevel = levels[currentLevelIndex];
+                
+                if (!currentLevel || currentLevel.vocabulary.length === 0) {
+                    hanziDisplay.textContent = '当前关卡为空';
+                    pinyinInput.disabled = true;
+                    pinyinInput.placeholder = '请先添加词语或导入词库';
+                    updateProgress();
+                    return;
+                }
+                
+                pinyinInput.disabled = false;
+                pinyinInput.placeholder = '请输入拼音...';
+                
+                currentWordIndex++;
+                
+                // 检查是否完成当前关卡
+                if (currentWordIndex >= currentLevel.vocabulary.length) {
+                    completeCurrentLevel();
+                    return;
+                }
+
+                hanziDisplay.textContent = currentLevel.vocabulary[currentWordIndex].hanzi;
+                pinyinInput.value = '';
+                pinyinInput.focus();
+                feedback.textContent = '';
+                feedback.className = 'feedback';
+                updateProgress();
+            }
+
+            /**
+             * 完成当前关卡
+             */
+            function completeCurrentLevel() {
+                levels[currentLevelIndex].completed = true;
+                
+                // 更新UI
+                completedLevel.textContent = levels[currentLevelIndex].name;
+                completionModal.classList.add('active');
+                createFireworks();
+                
+                // 更新统计
+                totalWordsCompleted += levels[currentLevelIndex].vocabulary.length;
+                wordsCount.textContent = totalWordsCompleted;
+                
+                // 保存进度到localStorage
+                saveProgress();
+            }
+
+            /**
+             * 开始下一关
+             */
+            function startNextLevel() {
+                completionModal.classList.remove('active');
+                
+                if (currentLevelIndex < levels.length - 1) {
+                    currentLevelIndex++;
+                    currentWordIndex = -1;
+                    showNextWord();
+                    updateLevelIndicators();
+                } else {
+                    // 所有关卡完成
+                    hanziDisplay.textContent = '恭喜完成所有关卡!';
+                    pinyinInput.disabled = true;
+                    pinyinInput.placeholder = '所有挑战已完成';
+                    feedback.textContent = '太棒了！你已完成所有关卡！';
+                    updateProgress();
+                }
+            }
+
+            /**
+             * 更新进度指示器
+             */
+            function updateProgress() {
+                const currentLevel = levels[currentLevelIndex];
+                if (currentLevel && currentLevel.vocabulary.length > 0) {
+                    const progress = ((currentWordIndex + 1) / currentLevel.vocabulary.length) * 100;
+                    progressFill.style.width = `${progress}%`;
+                    progressIndicator.textContent = `进度: ${currentWordIndex + 1} / ${currentLevel.vocabulary.length}`;
+                } else {
+                    progressFill.style.width = '0%';
+                    progressIndicator.textContent = '进度: 0/0';
+                }
+            }
+
+            /**
+             * 检查用户输入
+             */
+            function checkInput() {
+                const userInput = pinyinInput.value.toLowerCase().trim();
+                const correctPinyin = levels[currentLevelIndex].vocabulary[currentWordIndex].pinyin;
+                wordsAttempted++;
+                
+                if (userInput === correctPinyin) {
+                    // 输入正确
+                    feedback.textContent = '正确！';
+                    feedback.className = 'feedback correct';
+                    pinyinInput.classList.remove('error');
+                    
+                    // 添加动画效果
+                    hanziDisplay.style.transform = 'scale(1.1)';
+                    setTimeout(() => {
+                        hanziDisplay.style.transform = 'scale(1)';
+                    }, 300);
+                    
+                    correctAnswers++;
+                    accuracy.textContent = `${Math.round((correctAnswers / wordsAttempted) * 100)}%`;
+                    
+                    // 延迟后显示下一个词
+                    setTimeout(showNextWord, 800);
+                } else {
+                    // 输入错误
+                    feedback.textContent = `不正确！`;
+                    feedback.className = 'feedback incorrect';
+                    pinyinInput.classList.add('error');
+                    accuracy.textContent = `${Math.round((correctAnswers / wordsAttempted) * 100)}%`;
+                }
+            }
+            
+            /**
+             * 手动添加新词
+             */
+            function addWord() {
+                const hanzi = newHanziInput.value.trim();
+                const pinyin = newPinyinInput.value.toLowerCase().trim();
+
+                if (hanzi && pinyin) {
+                    // 检查拼音是否只包含小写字母
+                    if (!/^[a-z]+$/.test(pinyin)) {
+                        feedback.textContent = '拼音格式错误！应为小写字母（如：zhichi）';
+                        feedback.className = 'feedback incorrect';
+                        return;
+                    }
+
+                    const newWord = { hanzi, pinyin };
+                    levels[currentLevelIndex].vocabulary.push(newWord);
+                    
+                    feedback.textContent = `"${hanzi}" 已添加到当前关卡！`;
+                    feedback.className = 'feedback correct';
+                    
+                    newHanziInput.value = '';
+                    newPinyinInput.value = '';
+                    
+                    // 如果词库之前是空的，添加后直接开始
+                    if (levels[currentLevelIndex].vocabulary.length === 1) {
+                        currentWordIndex = -1;
+                        showNextWord();
+                    } else {
+                        updateProgress();
+                    }
+                    
+                    // 保存词库到localStorage
+                    saveVocab();
+                } else {
+                    feedback.textContent = '中文词语和拼音都不能为空！';
+                    feedback.className = 'feedback incorrect';
+                }
+            }
+            
+            /**
+             * 触发文件上传
+             */
+            function handleImport() {
+                jsonUpload.click();
+            }
+            
+            /**
+             * 读取并加载JSON文件
+             */
+            async function loadJsonFile(event) {
+                let fileContent;
+                
+                // 处理用户选择的文件
+                if (event && event.target && event.target.files && event.target.files[0]) {
+                    const file = event.target.files[0];
+                    const reader = new FileReader();
+                    
+                    // 使用Promise封装FileReader
+                    const content = await new Promise((resolve, reject) => {
+                        reader.onload = (e) => resolve(e.target.result);
+                        reader.onerror = () => reject(new Error('读取文件时发生错误'));
+                        reader.readAsText(file);
+                    });
+                    
+                    fileContent = content;
+                } else {
+                    // 用户未选择文件，尝试读取同目录下的word.json
+                    try {
+                        const response = await fetch('word.json');
+                        if (!response.ok) {
+                            throw new Error(`无法加载word.json: ${response.statusText}`);
+                        }
+                        fileContent = await response.text();
+                    } catch (error) {
+                        feedback.textContent = `加载默认词库失败: ${error.message}`;
+                        feedback.className = 'feedback incorrect';
+                        return;
+                    }
+                }
+                
+                try {
+                    const importedLevels = JSON.parse(fileContent);
+                    
+                    // 验证文件格式
+                    if (Array.isArray(importedLevels) && importedLevels.every(level => 
+                        level.name && Array.isArray(level.vocabulary) &&
+                        level.vocabulary.every(item => item.hanzi && item.pinyin)
+                    )) {
+                        levels = importedLevels;
+                        currentLevelIndex = 0;
+                        currentWordIndex = -1;
+                        
+                        feedback.textContent = `成功导入 ${levels.length} 个关卡！`;
+                        feedback.className = 'feedback correct';
+                        
+                        showNextWord();
+                        updateLevelIndicators();
+                        
+                        // 保存词库到localStorage
+                        saveVocab();
+                    } else {
+                        throw new Error('JSON格式不符合规范');
+                    }
+                } catch (error) {
+                    feedback.textContent = `解析失败: ${error.message}`;
+                    feedback.className = 'feedback incorrect';
+                } finally {
+                    if (event && event.target) {
+                        event.target.value = '';
+                    }
+                }
+            }
+
+            /**
+             * 生成并下载 JSON 文件
+             */
+            function exportVocabulary() {
+                const jsonString = JSON.stringify(levels, null, 2);
+                const blob = new Blob([jsonString], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `汉语拼音关卡_${new Date().toISOString().slice(0, 10)}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                feedback.textContent = '词库导出成功！';
+                feedback.className = 'feedback correct';
+            }
+            
+            /**
+             * 重置进度
+             */
+            function resetProgress() {
+                if (confirm('确定要重置所有进度吗？这将清除所有学习记录。')) {
+                    levels.forEach(level => level.completed = false);
+                    currentLevelIndex = 0;
+                    currentWordIndex = -1;
+                    totalWordsCompleted = 0;
+                    correctAnswers = 0;
+                    wordsAttempted = 0;
+                    
+                    wordsCount.textContent = '0';
+                    accuracy.textContent = '0%';
+                    
+                    saveProgress();
+                    saveVocab();
+                    
+                    showNextWord();
+                    updateLevelIndicators();
+                    
+                    feedback.textContent = '进度已重置！';
+                    feedback.className = 'feedback correct';
+                }
+            }
+            
+            /**
+             * 创建烟花效果
+             */
+            function createFireworks() {
+                fireworks.innerHTML = '';
+                const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
+                
+                for (let i = 0; i < 50; i++) {
+                    const firework = document.createElement('div');
+                    firework.className = 'firework';
+                    firework.style.left = `${Math.random() * 100}%`;
+                    firework.style.top = `${Math.random() * 100}%`;
+                    firework.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    firework.style.animation = `firework 1s ${i * 0.02}s forwards`;
+                    fireworks.appendChild(firework);
+                }
+                
+                // 添加CSS动画
+                const style = document.createElement('style');
+                style.textContent = `
+                    @keyframes firework {
+                        0% { transform: translate(0, 0); opacity: 1; width: 5px; height: 5px; }
+                        100% { transform: translate(${Math.random() * 200 - 100}px, ${Math.random() * 200 - 100}px); 
+                               opacity: 0; width: 30px; height: 30px; }
+                    }
+                `;
+                fireworks.appendChild(style);
+            }
+            
+            /**
+             * 保存进度到localStorage
+             */
+            function saveProgress() {
+                const progress = {
+                    currentLevelIndex,
+                    totalWordsCompleted,
+                    correctAnswers,
+                    wordsAttempted,
+                    levels: levels.map(level => ({ completed: level.completed }))
+                };
+                localStorage.setItem('pinyinChallengeProgress', JSON.stringify(progress));
+            }
+            
+            /**
+             * 从localStorage加载进度
+             */
+            function loadProgress() {
+                const savedProgress = localStorage.getItem('pinyinChallengeProgress');
+                if (savedProgress) {
+                    const progress = JSON.parse(savedProgress);
+                    currentLevelIndex = progress.currentLevelIndex || 0;
+                    totalWordsCompleted = progress.totalWordsCompleted || 0;
+                    correctAnswers = progress.correctAnswers || 0;
+                    wordsAttempted = progress.wordsAttempted || 0;
+                    
+                    // 更新关卡完成状态
+                    if (progress.levels) {
+                        progress.levels.forEach((levelState, index) => {
+                            if (levels[index]) {
+                                levels[index].completed = levelState.completed;
+                            }
+                        });
+                    }
+                    
+                    wordsCount.textContent = totalWordsCompleted;
+                    accuracy.textContent = wordsAttempted > 0 ? 
+                        `${Math.round((correctAnswers / wordsAttempted) * 100)}%` : '0%';
+                }
+            }
+            
+            /**
+             * 保存词库到localStorage
+             */
+            function saveVocab() {
+                localStorage.setItem('pinyinChallengeVocab', JSON.stringify(levels));
+            }
+            
+            /**
+             * 从localStorage加载词库
+             */
+            function loadVocab() {
+                const savedVocab = localStorage.getItem('pinyinChallengeVocab');
+                if (savedVocab) {
+                    try {
+                        const parsedVocab = JSON.parse(savedVocab);
+                        if (Array.isArray(parsedVocab)) {
+                            levels = parsedVocab;
+                        }
+                    } catch (e) {
+                        console.error('Failed to load vocabulary', e);
+                    }
+                }
+            }
+
+            // --- 事件监听器绑定 ---
+            pinyinInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    if (levels[currentLevelIndex]?.vocabulary?.length > 0) {
+                        checkInput();
+                    }
+                }
+            });
+            
+            addWordBtn.addEventListener('click', addWord);
+            importBtn.addEventListener('click', handleImport);
+            jsonUpload.addEventListener('change', loadJsonFile);
+            exportBtn.addEventListener('click', exportVocabulary);
+            resetBtn.addEventListener('click', resetProgress);
+            nextLevelBtn.addEventListener('click', startNextLevel);
+
+            // --- 初始化 ---
+            loadVocab();
+            loadProgress();
+            updateLevelIndicators();
+            showNextWord();
+            loadJsonFile();
+        });
+    </script>
+</body>
+</html>
